@@ -43,7 +43,7 @@ toc::[]
 | Nom | Rôle 
 
 | Simon CLAVEL | Scrum master et développeur  
-| Bilon KWADJANI | Développeur  
+| https://github.com/kwadjanib[Bilon KWADJANI] | Développeur  
 | https://github.com/summerflamme[Robin GOURGUES] |  développeur  
 | https://github.com/PierreCornu[Pierre CORNU] | Développeur 
 | https://github.com/titouangauze[Titouan Gauze] | Développeur & base de donnée
