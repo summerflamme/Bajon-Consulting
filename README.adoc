@@ -38,11 +38,6 @@ image:https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg[License: MP
 toc::[]
 
 ## Membres du projet
-- Simon CLAVEL (**Scrum Master**)
-- Bilon KWADJANI
-- Robin GOURGUES
-- Titouan GAUZE
-- Pierre CORNU
 
 |=== 
 | Nom | Rôle 
