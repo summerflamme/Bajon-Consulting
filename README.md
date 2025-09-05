@@ -7,6 +7,19 @@
 - Titouan GAUZE
 - Pierre CORNU
 
+|=== 
+| Nom | Rôle 
+
+| Simon CLAVEL | Scrum master et développeur  
+| Bilon KWADJANI | Développeur  
+| https://github.com/summerflamme[Robin GOURGUES] |  développeur  
+| https://github.com/PierreCornu[Pierre CORNU] | Développeur 
+| https://github.com/titouangauze[Titouan Gauze] | Développeur  
+|===
+
+
+
+
 ## Livrables attendus
 **- Dossier de recueil et d’analyse des besoins : (lien)**  
 Ce document détaillera les besoins fonctionnels et techniques de l’application, ainsi que les attentes du client (BAJON Consulting). Il décrira les fonctionnalités principales de l’application, les priorités, ainsi que les spécifications techniques pour le développement.
