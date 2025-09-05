@@ -46,7 +46,7 @@ toc::[]
 | Bilon KWADJANI | Développeur  
 | https://github.com/summerflamme[Robin GOURGUES] |  développeur  
 | https://github.com/PierreCornu[Pierre CORNU] | Développeur 
-| https://github.com/titouangauze[Titouan Gauze] | Développeur  
+| https://github.com/titouangauze[Titouan Gauze] | Développeur & base de donnée
 |===
 
 
