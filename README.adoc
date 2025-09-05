@@ -6,17 +6,7 @@
 :numbered:
 :toc: macro
 :window: _blank
-:correction!:
 
-// Useful definitions
-:asciidoc: http://www.methods.co.nz/asciidoc[AsciiDoc]
-:icongit: icon:git[]
-:git: http://git-scm.com/[{icongit}]
-:plantuml: https://plantuml.com/fr/[plantUML]
-:vscode: https://code.visualstudio.com/[VS Code]
-
-ifndef::env-github[:icons: font]
-// Specific to GitHub
 ifdef::env-github[]
 :correction:
 :!toc-title:
@@ -30,10 +20,6 @@ endif::[]
 
 // /!\ A MODIFIER !!!
 :baseURL: https://github.com/summerflamme/Bajon-Consulting
-
-// Tags
-image:https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg[License: MPL-2.0, link="https://opensource.org/licenses/MPL-2.0"]
-//---------------------------------------------------------------
 
 toc::[]
 
