@@ -58,16 +58,16 @@ La documentation technique détaillera l’architecture du système, les technol
 **- Guide utilisateur : (lien)**  
 Ce document aura pour but de guider les utilisateurs dans l’utilisation de l’application. Il expliquera le fonctionnement de l’application, la gestion des audits, le suivi des livrables et l’utilisation des différentes fonctionnalités. Ce guide sera à la fois simple et complet pour assurer une adoption rapide de l’outil par les équipes de BAJON Consulting.
 
-##Guide d'installation
+## Guide d'installation
 
 
 
-##Guide d'utilisation
+## Guide d'utilisation
 
 
 
-##Roadmap
-**Ce qui est prévu pour les versions futures :**
+## Roadmap
+** Ce qui est prévu pour les versions futures : **
 - Génération document word
 - Génération de document pdf
 - Nouveaux boutons disponibles dans les formulaires
