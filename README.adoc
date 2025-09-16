@@ -51,7 +51,7 @@ Des maquettes visuelles de l'interface utilisateur (UI) de l'application seront 
 La première version de l'application sera développée et déployée en ligne. Cette version fonctionnelle comprendra les principales fonctionnalités permettant de gérer les audits, de suivre les étapes et les livrables, ainsi que de centraliser les informations des clients. L’application sera responsive, accessible depuis différents supports (PC, tablette, mobile), et permettra de gérer l'offre « Essentiel ».
 
 
-- **Documentation technique : (lien)** +
+- **Documentation technique : (https://github.com/summerflamme/Bajon-Consulting/tree/main/Docs/Doc%20Tech[lien temporaire])** +
 La documentation technique détaillera l’architecture du système, les technologies utilisées, les choix techniques faits durant le développement ainsi que les étapes de déploiement et de maintenance. Elle sera utile pour les futures évolutions du projet et pour l’intégration d’autres fonctionnalités.
 
 
