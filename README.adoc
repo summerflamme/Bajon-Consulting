@@ -55,7 +55,7 @@ La première version de l'application sera développée et déployée en ligne. 
 La documentation technique détaillera l’architecture du système, les technologies utilisées, les choix techniques faits durant le développement ainsi que les étapes de déploiement et de maintenance. Elle sera utile pour les futures évolutions du projet et pour l’intégration d’autres fonctionnalités.
 
 
-- **Guide utilisateur : (lien)** +
+- **Guide utilisateur : (https://github.com/summerflamme/Bajon-Consulting/tree/main/Docs/Doc%20Utilisateur[lien temporaire])** +
 Ce document aura pour but de guider les utilisateurs dans l’utilisation de l’application. Il expliquera le fonctionnement de l’application, la gestion des audits, le suivi des livrables et l’utilisation des différentes fonctionnalités. Ce guide sera à la fois simple et complet pour assurer une adoption rapide de l’outil par les équipes de BAJON Consulting.
 
 ## Guide d'installation
