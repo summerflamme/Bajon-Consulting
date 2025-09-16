@@ -68,8 +68,12 @@ Ce document aura pour but de guider les utilisateurs dans l’utilisation de l�
 
 ## Roadmap
 Ce qui est prévu pour les versions futures :
+
 - Génération document word
+
 - Génération de document pdf
+
 - Nouveaux boutons disponibles dans les formulaires
+
 - utilisation de versioning
 
