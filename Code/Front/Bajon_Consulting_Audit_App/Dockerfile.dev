@@ -1,0 +1,26 @@
+FROM node:20-alpine
+
+# Créer un utilisateur non-root avec shell
+RUN addgroup -S vscode && adduser -S vscode -G vscode -s /bin/sh
+
+# Définir le répertoire de travail
+WORKDIR /workspace/Front/Bajon_Consulting_Audit_App
+
+# Copier uniquement les fichiers de dépendances pour profiter du cache Docker
+COPY package*.json ./
+
+# Installer les dépendances en tant que root
+RUN npm install \
+    && chown -R vscode:vscode /workspace
+
+# Copier le reste du code
+COPY . .
+
+# Passer à l'utilisateur non-root
+USER vscode
+
+# Exposer le port Vite
+EXPOSE 5173
+
+# ne pas demarrer 
+CMD ["tail", "-f", "/dev/null"]

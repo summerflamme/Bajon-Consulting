@@ -1,0 +1,25 @@
+# Image Maven + JDK pour Spring Boot
+FROM maven:3.9.6-eclipse-temurin-21
+
+# Créer un utilisateur non-root
+RUN useradd -m -s /bin/bash vscode
+
+WORKDIR /workspace/Back
+
+# Copier uniquement le pom pour installer les dépendances d'abord (caching)
+COPY pom.xml ./
+COPY .mvn/ .mvn
+
+# Installer les dépendances via Maven Wrapper
+COPY mvnw ./
+RUN chmod +x mvnw && ./mvnw dependency:resolve
+
+# Copier le code source
+COPY src ./src
+
+EXPOSE 8080
+
+# Commande par défaut pour le dev
+CMD ["./mvnw", "spring-boot:run"]
+
+USER vscode

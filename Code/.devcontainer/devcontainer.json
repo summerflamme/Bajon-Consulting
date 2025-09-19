@@ -1,0 +1,19 @@
+{
+  "name": "Bajon Consulting Fullstack Dev",
+  "dockerComposeFile": [
+    "../docker-compose.dev.yml"
+  ],
+  "service": "frontend",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "extensions": [
+    "vscjava.vscode-java-pack",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "forwardPorts": [5173, 8080, 5432],
+  "remoteUser": "vscode"
+}

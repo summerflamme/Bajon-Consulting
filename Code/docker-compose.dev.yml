@@ -1,0 +1,45 @@
+services:
+  backend:
+    build:
+      context: ./Back/Bajon_audit_App
+      dockerfile: Dockerfile.dev
+    container_name: bajon_backend_dev
+    volumes:
+      - ./Back/Bajon_audit_App:/workspace/Back:cached
+      - backend_target:/workspace/Back/target
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bajon_audit_db
+      SPRING_DATASOURCE_USERNAME: bajon
+      SPRING_DATASOURCE_PASSWORD: bajon
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ./Front/Bajon_Consulting_Audit_App
+      dockerfile: Dockerfile.dev
+    container_name: bajon_frontend_dev
+    volumes:
+      - ./Front/Bajon_Consulting_Audit_App:/workspace/Front:cached
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8080
+    depends_on:
+      - backend
+  db:
+    image: postgres:15-alpine
+    container_name: bajon_db_dev
+    environment:
+      POSTGRES_DB: bajon_audit_db
+      POSTGRES_USER: bajon
+      POSTGRES_PASSWORD: bajon
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+  backend_target:

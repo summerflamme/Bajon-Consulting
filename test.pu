@@ -1,0 +1,150 @@
+@startuml
+hide circle
+hide methods
+hide stereotypes
+
+' ========================
+' Entités principales
+' ========================
+class users {
+  +id : PK
+  first_name
+  last_name
+  email
+  username
+  password_hash
+  role : enum(admin, employe)
+  created_at
+  last_login
+}
+
+class clients {
+  +id : PK
+  name
+  industry
+  contact_name
+  contact_email
+  created_at
+  updated_at
+}
+
+class templates {
+  +id : PK
+  name
+  category
+  description
+  created_by : FK -> users
+  created_at
+}
+
+class template_versions {
+  +id : PK
+  template_id : FK -> templates
+  version_number
+  status : enum(draft, pending_validation, published, rejected)
+  created_by : FK -> users
+  created_at
+  approved_by : FK -> users
+  approved_at
+}
+
+class template_paragraphs {
+  +id : PK
+  template_version_id : FK -> template_versions
+  title
+  order_index
+}
+
+class template_questions {
+  +id : PK
+  paragraph_id : FK -> template_paragraphs
+  text
+  type_answer : enum(choix_unique, choix_multiple, texte_libre)
+  order_index
+}
+
+' ========================
+' AUDITS
+' ========================
+class audits {
+  +id : PK
+  client_id : FK -> clients
+  base_template_version_id : FK -> template_versions
+  title
+  created_by : FK -> users
+  created_at
+  updated_at
+  status : enum(draft, in_progress, finalized, archived)
+  score_total
+}
+
+class audit_paragraphs {
+  +id : PK
+  audit_id : FK -> audits
+  title
+  order_index
+}
+
+class audit_questions {
+  +id : PK
+  paragraph_id : FK -> audit_paragraphs
+  text
+  type_answer : enum(choix_unique, choix_multiple, texte_libre)
+  order_index
+}
+
+class audit_options {
+  +id : PK
+  question_id : FK -> audit_questions
+  text
+  order_index
+  score
+}
+
+class audit_answers {
+  +id : PK
+  audit_id : FK -> audits
+  question_id : FK -> audit_questions
+  selected_option_id : FK -> audit_options
+  answer_text
+  score_obtained
+  created_by : FK -> users
+  created_at
+}
+
+' ========================
+' Promotion requests
+' ========================
+class promotion_requests {
+  +id : PK
+  audit_id : FK -> audits
+  requested_by : FK -> users
+  requested_at
+  status : enum(pending, approved, rejected)
+  reviewed_by : FK -> users
+  reviewed_at
+  admin_comment
+  created_template_version_id : FK -> template_versions
+}
+
+' ========================
+' Relations
+' ========================
+users "1" -- "many" templates : created_by
+templates "1" -- "many" template_versions
+template_versions "1" -- "many" template_paragraphs
+template_paragraphs "1" -- "many" template_questions
+
+clients "1" -- "many" audits
+template_versions "1" -- "many" audits : base_version
+audits "1" -- "many" audit_paragraphs
+audit_paragraphs "1" -- "many" audit_questions
+audit_questions "1" -- "many" audit_options
+audit_questions "1" -- "many" audit_answers
+audit_options "1" -- "many" audit_answers
+
+audits "1" -- "many" promotion_requests
+users "1" -- "many" promotion_requests : requested_by
+users "1" -- "many" promotion_requests : reviewed_by
+
+@enduml
