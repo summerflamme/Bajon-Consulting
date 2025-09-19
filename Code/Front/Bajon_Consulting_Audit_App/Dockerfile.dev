@@ -9,8 +9,10 @@ WORKDIR /workspace/Front/Bajon_Consulting_Audit_App
 # Copier uniquement les fichiers de dépendances pour profiter du cache Docker
 COPY package*.json ./
 
-# Installer les dépendances en tant que root
-RUN npm install \
+# Installer les dépendances et git en tant que root
+RUN apk update \
+    && apk add git \
+    && npm install \
     && chown -R vscode:vscode /workspace
 
 # Copier le reste du code
@@ -24,3 +26,4 @@ EXPOSE 5173
 
 # ne pas demarrer 
 CMD ["tail", "-f", "/dev/null"]
+

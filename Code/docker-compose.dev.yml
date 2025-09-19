@@ -22,6 +22,7 @@ services:
     container_name: bajon_frontend_dev
     volumes:
       - ./Front/Bajon_Consulting_Audit_App:/workspace/Front:cached
+      - ../.git:/workspace/Front/Bajon_Consulting_Audit_App/.git
     ports:
       - "5173:5173"
     environment:
