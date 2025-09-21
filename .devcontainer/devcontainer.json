@@ -1,7 +1,7 @@
 {
   "name": "Bajon Consulting Fullstack Dev",
   "dockerComposeFile": [
-    "../docker-compose.dev.yml"
+    "../Code/docker-compose.dev.yml"
   ],
   "service": "frontend",
   "workspaceFolder": "/workspace",
@@ -18,7 +18,7 @@
       }
     }
   },
-  "postStartCommand": "bash /workspace/Code/.devcontainer/init-git.sh || bash /workspace/.devcontainer/init-git.sh || true",
+  "postStartCommand": "bash /workspace/.devcontainer/init-git.sh || true",
   "forwardPorts": [5173, 8080, 5432],
   "remoteUser": "vscode"
 }

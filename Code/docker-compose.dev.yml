@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build:
@@ -5,8 +7,12 @@ services:
       dockerfile: Dockerfile.dev
     container_name: bajon_backend_dev
     volumes:
-      - ./Back/Bajon_audit_App:/workspace/Back:cached
-      - backend_target:/workspace/Back/target
+      # Mount the Bajon-Consulting repository root as /workspace inside the container
+      - ../:/workspace:cached
+      # Ensure the repo .git is visible so commits inside the container affect the host repo
+      - ../.git:/workspace/.git
+      # Use a named volume for the backend target directory so the container can write build artifacts
+      - backend_target:/workspace/Code/Back/Bajon_audit_App/target
     ports:
       - "8080:8080"
     environment:
@@ -15,20 +21,24 @@ services:
       SPRING_DATASOURCE_PASSWORD: bajon
     depends_on:
       - db
+
   frontend:
     build:
       context: ./Front/Bajon_Consulting_Audit_App
       dockerfile: Dockerfile.dev
     container_name: bajon_frontend_dev
     volumes:
-      - ./Front/Bajon_Consulting_Audit_App:/workspace/Front:cached
-      - ../.git:/workspace/Front/Bajon_Consulting_Audit_App/.git
+      # Mount the Bajon-Consulting repository root as /workspace
+      - ../:/workspace:cached
+      # Mount the parent repo's .git so the container uses Bajon-Consulting's git
+      - ../.git:/workspace/.git
     ports:
       - "5173:5173"
     environment:
       VITE_API_URL: http://localhost:8080
     depends_on:
       - backend
+
   db:
     image: postgres:15-alpine
     container_name: bajon_db_dev
