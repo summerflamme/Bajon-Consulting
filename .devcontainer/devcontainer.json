@@ -11,14 +11,15 @@
       "extensions": [
         "vscjava.vscode-java-pack",
         "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "GitHub.copilot"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
   },
-  "postStartCommand": "bash /workspace/.devcontainer/init-git.sh || true",
+  "postStartCommand": "sh /workspace/.devcontainer/init-git.sh || true",
   "forwardPorts": [5173, 8080, 5432],
   "remoteUser": "vscode"
 }
