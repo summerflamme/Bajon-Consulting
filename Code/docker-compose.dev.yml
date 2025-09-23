@@ -7,12 +7,10 @@ services:
       dockerfile: Dockerfile.dev
     container_name: bajon_backend_dev
     volumes:
-      # Mount the Bajon-Consulting repository root as /workspace inside the container
+      # Mount le code source pour le hot reload (compatible Windows/Linux)
       - ../:/workspace:cached
-      # Ensure the repo .git is visible so commits inside the container affect the host repo
+      - /workspace/Code/Back/Bajon_audit_App/target
       - ../.git:/workspace/.git
-      # Use a named volume for the backend target directory so the container can write build artifacts
-      - backend_target:/workspace/Code/Back/Bajon_audit_App/target
     env_file: ../.env
     ports:
       - "8080:8080"
@@ -29,9 +27,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: bajon_frontend_dev
     volumes:
-      # Mount the Bajon-Consulting repository root as /workspace
       - ../:/workspace:cached
-      # Mount the parent repo's .git so the container uses Bajon-Consulting's git
       - ../.git:/workspace/.git
     env_file: ../.env
     ports:
@@ -55,4 +51,3 @@ services:
 
 volumes:
   db_data:
-  backend_target:
