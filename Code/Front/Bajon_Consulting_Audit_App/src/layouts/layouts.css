@@ -1,0 +1,56 @@
+/*______________ICI CSS DU MENUBUTTON________________*/
+
+.menu-button-container {
+  position: relative;
+}
+
+.menu-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-list li a {
+  text-decoration: none;
+  color: #333;
+  padding: 8px;
+  display: block;
+}
+
+/*______________ICI CSS DU HEADER________________*/
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.header-logo {
+  height: 40px;
+  width: auto;
+}
+
+.header-spacer {
+  flex-grow: 1;
+}
+

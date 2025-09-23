@@ -1,12 +1,11 @@
 import './App.css'
-import Accueil from './accueil/accueil'
-import NavBar from './components/NavBar'
+//import MenuButton from './layouts/MenuButton'
+import Header from './layouts/header'
 
 function App() {
   return (
     <>
-      <NavBar />
-      <Accueil />
+      <Header />
 
     </>
   )
