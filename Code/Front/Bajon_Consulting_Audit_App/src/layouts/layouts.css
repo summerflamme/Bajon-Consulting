@@ -14,12 +14,14 @@
 }
 
 .menu-list {
+  position: absolute;
+  top: 100%; 
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 10px;
+  border-radius: 4px;
   list-style: none;
-  padding: 0;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 
 .menu-list li a {
@@ -36,21 +38,46 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  height: 80px;
   background-color: #f8f9fa;
   display: flex;
   align-items: center;
   padding: 0 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
 }
 
 .header-logo {
-  height: 40px;
+  height: 60px;
   width: auto;
 }
 
 .header-spacer {
   flex-grow: 1;
+}
+
+/*______________ICI CSS DU FOOTER________________*/
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.footer-content span {
+  white-space: nowrap;
 }
 
