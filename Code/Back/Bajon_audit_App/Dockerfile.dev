@@ -1,32 +1,22 @@
-# Image Maven + JDK pour Spring Boot
 FROM maven:3.9.6-eclipse-temurin-21
 
-# Créer un utilisateur non-root
+# Crée un utilisateur non-root
 RUN useradd -m -s /bin/bash vscode
 
-# Set MAVEN config to the non-root home so the maven entrypoint won't try to write to /root
+# Configure Maven pour vscode
 ENV MAVEN_CONFIG=/home/vscode/.m2
+ENV PATH="/usr/share/maven/bin:${PATH}"
 
-## At runtime the whole repository is mounted at /workspace by docker-compose
-## The backend code lives at /workspace/Code/Back/Bajon_audit_App so use that as WORKDIR
 WORKDIR /workspace/Code/Back/Bajon_audit_App
 
-# Copier uniquement le pom et les fichiers nécessaires pour cache des dépendances
-COPY pom.xml ./ 
+COPY pom.xml ./
 COPY .mvn/ .mvn
-COPY mvnw ./
 
-# Ensure the non-root maven home exists and is owned by the vscode user
-RUN mkdir -p /home/vscode/.m2 /home/vscode/target && chown -R vscode:vscode /home/vscode
-
-# Try to resolve dependencies at build time using the image's mvn (fallback if mvnw isn't available at runtime)
 RUN mvn -B -DskipTests dependency:resolve || true
 
-# Pas de COPY src -> le code vient du volume at runtime
 EXPOSE 8080
 
-# Use the non-root user for running the container
-USER vscode
+# Passe en utilisateur vscode (pas root)
+#USER vscode
 
-## to avoid permission errors when the repo is mounted from the host.
-CMD ["mvn", "-Dproject.build.directory=/home/vscode/target", "spring-boot:run"]
+CMD ["mvn", "spring-boot:run"]
