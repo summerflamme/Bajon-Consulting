@@ -3,7 +3,14 @@
 .menu-button-container {
   position: relative;
 }
-
+.navigation {
+  display: flex;
+}
+.navigation li {
+  display: inline-block;
+  text-decoration: none;
+  padding: 0 20px;
+}
 .menu-button {
   background-color: #007bff;
   color: white;
@@ -39,6 +46,7 @@
   left: 0;
   right: 0;
   height: 80px;
+  height: 80px;
   background-color: #f8f9fa;
   display: flex;
   align-items: center;
@@ -48,7 +56,7 @@
 }
 
 .header-logo {
-  height: 60px;
+  height: 50px;
   width: auto;
 }
 
@@ -56,31 +64,36 @@
   flex-grow: 1;
 }
 
-/*______________ICI CSS DU FOOTER________________*/
+/* adaptation telephone */
+@media screen and (max-width: 768px) {
+  .navigation {
+    transition: all 0.5s ease-in-out;
 
-.footer {
-  height: 60;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #1a1a1a;
-  color: #f0f0f0;
-  padding: 20px 0;
-  text-align: center;
-  font-size: 14px;
-  width: 100%;
-  z-index: 1000;
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    right: -100%;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(96, 96, 96, 0.947);
+    padding: 0px 0px 0px 0px;
+  }
+
+  .navigation a {
+    font-size: larger;
+    padding: 32px 0;
+    margin: 15px 0;
+    display: block;
+    transition: all 0.5s ease;
+    text-decoration: none;
+    color: white;
+  }
+
+  .navigation.open {
+    right: 0px;
+    transition: all 0.5s ease-in-out;
+  }
 }
-
-.footer-content {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.footer-content span {
-  white-space: nowrap;
-}
-
