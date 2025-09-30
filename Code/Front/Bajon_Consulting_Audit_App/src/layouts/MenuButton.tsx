@@ -3,6 +3,7 @@ import './layouts.css';
 
 function MenuButton() {
   const [menuVisible, setMenuVisible] = useState(false);
+  
 
   const toggleMenu = () => {
     setMenuVisible(prev => !prev);
@@ -14,11 +15,10 @@ function MenuButton() {
 
       {menuVisible && (
         <ul className="menu-list">
-          <li><a href="#accueil">Accueil</a></li>
-          <li><a href="#presentation">Audits</a></li>
-          <li><a href="#services">Templates</a></li>
-          <li><a href="#valeurs">liste utilisateurs</a></li>
-          <li><a href="#partenaires">infoUtilisateur</a></li>
+          <li><a href="#accueil">Audits</a></li>
+          <li><a href="#Audits">Templates</a></li>
+          <li><a href="#Client">Client</a></li>
+          <li><a href="#compte">Compte</a></li>
         </ul>
       )}
     </div>
