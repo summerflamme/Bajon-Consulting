@@ -6,7 +6,12 @@ function Header() {
     <header className="header">
       <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
       <div className="header-spacer" />
-      <MenuButton />
+      <ul className='navigation'>
+        <li>Audits</li>
+        <li>Templates</li>
+        <li>Client</li>
+        <li>Compte</li>
+      </ul>
     </header>
   );
 }
