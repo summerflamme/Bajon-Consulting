@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS Modify CASCADE;
 DROP TABLE IF EXISTS Contain CASCADE;
 DROP TABLE IF EXISTS Own CASCADE;
 DROP TABLE IF EXISTS Participate CASCADE;
-DROP TABLE IF EXISTS ClientResponse CASCADE;
-DROP TABLE IF EXISTS OptionResponse CASCADE;
+DROP TABLE IF EXISTS ClientAnswer CASCADE;
+DROP TABLE IF EXISTS OptionAnswer CASCADE;
 DROP TABLE IF EXISTS Question CASCADE;
 
 -- Drop independent tables
@@ -73,22 +73,22 @@ CREATE TABLE Question (
     FOREIGN KEY (idTheme) REFERENCES Theme(idTheme)
 );
 
--- Table OptionResponse
-CREATE TABLE OptionResponse (
-    idOptResponse SERIAL PRIMARY KEY,
+-- Table OptionAnswer
+CREATE TABLE OptionAnswer (
+    idOptAnswer SERIAL PRIMARY KEY,
     optionLabel VARCHAR(255),
     optionPoints INT,
     idType INT NOT NULL,
     FOREIGN KEY (idType) REFERENCES Type(idType)
 );
 
--- Table ClientResponse
-CREATE TABLE ClientResponse (
-    idClientResponse SERIAL PRIMARY KEY,
-    clientResponse TEXT,
-    clientResponsePoints INT,
+-- Table ClientAnswer
+CREATE TABLE ClientAnswer (
+    idClientAnswer SERIAL PRIMARY KEY,
+    clientAnswer TEXT,
+    clientAnswerPoints INT,
     idQuestion INT NOT NULL,
-    FOREIGN KEY (idQuestion) REFERENCES OptionResponse(idQuestion)
+    FOREIGN KEY (idQuestion) REFERENCES Question(idQuestion)
 );
 
 -- Table Participate (relation Client - Audit)
@@ -110,13 +110,13 @@ CREATE TABLE Own (
     FOREIGN KEY (idTheme) REFERENCES Theme(idTheme)
 );
 
--- Table Contain (relation Question - OptionResponse)
+-- Table Contain (relation Question - OptionAnswer)
 CREATE TABLE Contain (
     idQuestion INT NOT NULL,
-    idOptResponse INT NOT NULL,
-    PRIMARY KEY (idQuestion, idOptResponse),
+    idOptAnswer INT NOT NULL,
+    PRIMARY KEY (idQuestion, idOptAnswer),
     FOREIGN KEY (idQuestion) REFERENCES Question(idQuestion),
-    FOREIGN KEY (idOptResponse) REFERENCES Type(idOptResponse)
+    FOREIGN KEY (idOptAnswer) REFERENCES OptionAnswer(idOptAnswer)
 );
 
 -- Table Modify (relation User - Audit)
