@@ -43,14 +43,22 @@ CREATE TABLE Audit (
     status VARCHAR(50)
 );
 
+CREATE TABLE Role  (
+    idRole SERIAL PRIMARY KEY,
+    roleName VARCHAR(150)
+)
+
 -- Table User
 CREATE TABLE "User" (
     idUser SERIAL PRIMARY KEY,
     lastName VARCHAR(100),
     firstName VARCHAR(100),
-    role VARCHAR(50),
+    idRole VARCHAR(50),
     -- pour test
-    password VARCHAR(255) NOT NULL
+    login VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    -- fin test
+    FOREIGN KEY (idRole) REFERENCES Role(idRole)
 );
 
 -- Table Theme
