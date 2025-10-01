@@ -1,0 +1,109 @@
+@startuml
+top to bottom direction
+skinparam linetype ortho
+
+Object Client {
+    +idClient : int <<PK>>
+    clientLastName : varchar(100)
+    clientFirstName : varchar(100)
+    clientEmail : varchar(255)
+    clientPhone : varchar(20)
+    companyName : varchar(150)
+    clientAddress : varchar(255)
+    clientCountry : varchar(100)
+    siren : varchar(20)
+    vatNumber : varchar(20)
+    businessActivity : varchar(100)
+    rcsNumber : varchar(50)
+    shareCapital : numeric
+    socialNetworks : varchar(255)
+    legalForm : varchar(100)
+    logo : bytea
+}
+
+Object Audit {
+    +idAudit : int <<PK>>
+    auditName : varchar(150)
+    creationDate : date
+    status : varchar(50)
+}
+
+Object "User" as User {
+    +idUser : int <<PK>>
+    lastName : varchar(100)
+    firstName : varchar(100)
+    role : varchar(50)
+}
+
+Object Theme {
+    +idTheme : int <<PK>>
+    themeName : varchar(150)
+    status : varchar(50)
+}
+
+Object Type {
+    +idType : int <<PK>>
+    typeName : varchar(100)
+}
+
+Object Question {
+    +idQuestion : int <<PK>>
+    label : varchar(255)
+    status : varchar(50)
+    idTheme : int <<FK>>
+}
+
+Object OptionResponse {
+    +idOptResponse : int <<PK>>
+    optionLabel : varchar(255)
+    optionPoints : int
+    idType : int <<FK>>
+    idQuestion : int <<FK>>
+}
+
+Object ClientResponse {
+    +idClientResponse : int <<PK>>
+    clientResponse : text
+    clientResponsePoints : int
+    idOptResponse : int <<FK>>
+}
+
+Object Participate {
+    +idClient : int <<FK>>
+    +idAudit : int <<FK>>
+    participationDate : date
+}
+
+Object Own {
+    +idAudit : int <<FK>>
+    +idTheme : int <<FK>>
+}
+
+Object Contain {
+    +idQuestion : int <<FK>>
+    +idOptResponse : int <<FK>>
+}
+
+Object Modify {
+    +idUser : int <<FK>>
+    +idAudit : int <<FK>>
+    modificationDate : date
+    modificationTime : time
+}
+Question "1"-up-"0..*" ClientResponse  
+OptionResponse "0..*"--"1" Type
+Theme "0..*"-right-"1" Question
+
+Question "0..*"-down-"0..*" OptionResponse
+(Question, OptionResponse) . Contain
+
+Audit "0..*"-right-"0..*" Theme
+(Theme, Audit) . Own
+
+Client "0..*"-left-"0..*" Audit
+(Client, Audit) . Participate
+
+Audit "0..*"-down-"0..*" User
+(Audit, User) . Modify
+
+@enduml

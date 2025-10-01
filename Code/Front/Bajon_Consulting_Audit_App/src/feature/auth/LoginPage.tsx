@@ -1,6 +1,20 @@
+import { useEffect } from 'react';
 import './auth.css';
+import { fetchUsers } from './authService';
 
 function LoginPage() {
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const users = await fetchUsers();
+        console.log('Données utilisateurs récupérées:', users);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
+      }
+    };
+
+    loadUsers();
+  }, []);
   return (
     <div className="background-zone">
       {
