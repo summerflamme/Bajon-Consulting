@@ -1,0 +1,103 @@
+ALTER TABLE "User"
+ADD COLUMN password VARCHAR(255) NOT NULL;
+
+-- ========================
+-- Remplissage des tables
+-- ========================
+
+-- Table Client
+INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
+VALUES
+('Dupont', 'Jean', 'jean.dupont@email.com', '0601020304', 'Dupont SARL', '10 rue de Paris', 'France', '123456789', 'FR123456789', 'Informatique', 'RCS12345', 5000.00, '@dupont', 'SARL', NULL),
+('Martin', 'Sophie', 'sophie.martin@email.com', '0605060708', 'Martin SAS', '25 avenue de Lyon', 'France', '987654321', 'FR987654321', 'Conseil', 'RCS54321', 15000.00, '@martin', 'SAS', NULL),
+('Durand', 'Paul', 'paul.durand@email.com', '0611223344', 'Durand & Co', '5 place Victor Hugo', 'Belgique', '654321987', 'BE654321987', 'Comptabilité', 'RCS65432', 2000.00, '@durand', 'EURL', NULL),
+('Lefevre', 'Julie', 'julie.lefevre@email.com', '0622334455', 'JL Consulting', '12 boulevard St-Michel', 'France', '112233445', 'FR112233445', 'Consulting', 'RCS11223', 10000.00, '@jlconsult', 'SASU', NULL),
+('Petit', 'Luc', 'luc.petit@email.com', '0677889900', 'Petit Entreprise', '50 chemin des Fleurs', 'Suisse', '998877665', 'CH998877665', 'Commerce', 'RCS99887', 8000.00, '@petit', 'SA', NULL);
+
+-- Table Audit
+INSERT INTO Audit (auditName, creationDate, status) VALUES
+('Audit Sécurité', '2024-01-15', 'En cours'),
+('Audit Financier', '2023-11-20', 'Terminé'),
+('Audit Qualité', '2024-05-10', 'En cours'),
+('Audit RH', '2023-09-01', 'Annulé'),
+('Audit IT', '2024-02-28', 'Prévu');
+
+-- Table User
+INSERT INTO "User" (lastName, firstName, role, password) VALUES
+('Admin', 'Super', 'Administrateur', '1234'),
+('Dupuis', 'Marc', 'Auditeur', '5678'),
+('Bernard', 'Claire', 'Auditeur', '1278'),
+('Roux', 'Emma', 'Manager', '9812'),
+('Noel', 'Pierre', 'Analyste', '6577');
+
+-- Table Theme
+INSERT INTO Theme (themeName, status) VALUES
+('Sécurité informatique', 'Actif'),
+('Conformité légale', 'Actif'),
+('Gestion financière', 'Inactif'),
+('Ressources humaines', 'Actif'),
+('Développement durable', 'Actif');
+
+-- Table Type
+INSERT INTO Type (typeName) VALUES
+('Oui/Non'),
+('Échelle 1-5'),
+('Texte libre'),
+('Choix multiple'),
+('Nombre');
+
+-- Table Question
+INSERT INTO Question (label, status, idTheme) VALUES
+('Le système est-il protégé par un pare-feu ?', 'Actif', 1),
+('Toutes les factures sont-elles archivées ?', 'Actif', 2),
+('Quelle est la satisfaction des employés ?', 'Actif', 4),
+('L’entreprise respecte-t-elle la norme ISO ?', 'Inactif', 2),
+('Y a-t-il un plan de réduction des déchets ?', 'Actif', 5);
+
+-- Table OptionAnswer
+INSERT INTO OptionAnswer (optionLabel, optionPoints, idType) VALUES
+('Oui', 10, 1),
+('Non', 0, 1),
+('1 - Très faible', 1, 2),
+('5 - Excellent', 5, 2),
+('Texte libre', 0, 3);
+
+-- Table ClientAnswer
+INSERT INTO ClientAnswer (clientAnswer, clientAnswerPoints, idQuestion) VALUES
+('Oui', 10, 1),
+('Non', 0, 1),
+('Toutes archivées', 5, 2),
+('3 - Moyen', 3, 3),
+('Réduction en cours', 4, 5);
+
+-- Table Participate
+INSERT INTO Participate (idClient, idAudit, participationDate) VALUES
+(1, 1, '2024-01-16'),
+(2, 2, '2023-11-21'),
+(3, 3, '2024-05-11'),
+(4, 4, '2023-09-02'),
+(5, 5, '2024-02-29');
+
+-- Table Own
+INSERT INTO Own (idAudit, idTheme) VALUES
+(1, 1),
+(2, 3),
+(3, 4),
+(4, 2),
+(5, 5);
+
+-- Table Contain
+INSERT INTO Contain (idQuestion, idOptAnswer) VALUES
+(1, 1),
+(1, 2),
+(3, 3),
+(3, 4),
+(5, 5);
+
+-- Table Modify
+INSERT INTO Modify (idUser, idAudit, modificationDate, modificationTime) VALUES
+(1, 1, '2024-01-20', '10:30'),
+(2, 2, '2023-11-25', '14:15'),
+(3, 3, '2024-05-12', '09:00'),
+(4, 4, '2023-09-03', '16:45'),
+(5, 5, '2024-03-01', '11:20');

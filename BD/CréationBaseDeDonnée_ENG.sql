@@ -48,7 +48,9 @@ CREATE TABLE "User" (
     idUser SERIAL PRIMARY KEY,
     lastName VARCHAR(100),
     firstName VARCHAR(100),
-    role VARCHAR(50)
+    role VARCHAR(50),
+    -- pour test
+    password VARCHAR(255) NOT NULL
 );
 
 -- Table Theme
