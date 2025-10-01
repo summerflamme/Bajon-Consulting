@@ -46,6 +46,13 @@ INSERT INTO Type (typeName) VALUES
 ('Choix multiple'),
 ('Nombre');
 
+-- Table role
+INSERT INTO Role (roleName) VALUES
+('Administrateur'),
+('Auditeur'),
+('Manager'),
+('Analyste');
+
 -- Table Question
 INSERT INTO Question (label, status, idTheme) VALUES
 ('Le système est-il protégé par un pare-feu ?', 'Actif', 1),
