@@ -1,4 +1,4 @@
-ALTER TABLE "User"
+ALTER TABLE Staff
 ADD COLUMN password VARCHAR(255) NOT NULL;
 
 -- =======================
@@ -22,14 +22,6 @@ INSERT INTO Audit (auditName, creationDate, status) VALUES
 ('Audit RH', '2023-09-01', 'Annulé'),
 ('Audit IT', '2024-02-28', 'Prévu');
 
--- Table User
-INSERT INTO "User" (lastName, firstName, role, password) VALUES
-('Admin', 'Super', 'Administrateur', '1234'),
-('Dupuis', 'Marc', 'Auditeur', '5678'),
-('Bernard', 'Claire', 'Auditeur', '1278'),
-('Roux', 'Emma', 'Manager', '9812'),
-('Noel', 'Pierre', 'Analyste', '6577');
-
 -- Table Theme
 INSERT INTO Theme (themeName, status) VALUES
 ('Sécurité informatique', 'Actif'),
@@ -52,6 +44,14 @@ INSERT INTO Role (roleName) VALUES
 ('Auditeur'),
 ('Manager'),
 ('Analyste');
+
+-- Table User
+INSERT INTO Staff (lastName, firstName, login, password, idRole) VALUES
+('Admin', 'Super', 'test', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',1),
+('Dupuis', 'Marc', 'Dmarc', 'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',2),
+('Bernard', 'Claire',  'Bclaire' ,'fa9b1cc5d156de5b6ebd583ff1fe2c178fb1bacba5af7bf929cf51654a44e394' ,2),
+('Roux', 'Emma', 'Remma','9812',3),
+('Noel', 'Pierre', 'Npierre', '6577',4);
 
 -- Table Question
 INSERT INTO Question (label, status, idTheme) VALUES
@@ -169,7 +169,7 @@ JOIN Question q ON ca.idQuestion = q.idQuestion;
 ----------------------------------------------------
 
 SELECT u.firstName, u.lastName, a.auditName, m.modificationDate, m.modificationTime
-FROM "User" u
+FROM Staff u
 JOIN Modify m ON u.idUser = m.idUser
 JOIN Audit a ON m.idAudit = a.idAudit;
 

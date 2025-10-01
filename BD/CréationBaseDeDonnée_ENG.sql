@@ -10,9 +10,11 @@ DROP TABLE IF EXISTS Question CASCADE;
 -- Drop independent tables
 DROP TABLE IF EXISTS Type CASCADE;
 DROP TABLE IF EXISTS Theme CASCADE;
-DROP TABLE IF EXISTS "User" CASCADE;
+DROP TABLE IF EXISTS Staff CASCADE;
+DROP TABLE IF EXISTS Role CASCADE;
 DROP TABLE IF EXISTS Audit CASCADE;
 DROP TABLE IF EXISTS Client CASCADE;
+
 
 
 -- Table Client
@@ -46,14 +48,14 @@ CREATE TABLE Audit (
 CREATE TABLE Role  (
     idRole SERIAL PRIMARY KEY,
     roleName VARCHAR(150)
-)
+);
 
 -- Table User
-CREATE TABLE "User" (
+CREATE TABLE Staff (
     idUser SERIAL PRIMARY KEY,
     lastName VARCHAR(100),
     firstName VARCHAR(100),
-    idRole VARCHAR(50),
+    idRole INT NOT NULL,
     -- pour test
     login VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -136,6 +138,6 @@ CREATE TABLE Modify (
     modificationDate DATE,
     modificationTime TIME,
     PRIMARY KEY (idUser, idAudit),
-    FOREIGN KEY (idUser) REFERENCES "User"(idUser),
+    FOREIGN KEY (idUser) REFERENCES Staff(idUser),
     FOREIGN KEY (idAudit) REFERENCES Audit(idAudit)
 );
