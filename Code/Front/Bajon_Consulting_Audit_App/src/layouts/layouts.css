@@ -97,3 +97,53 @@
     transition: all 0.5s ease-in-out;
   }
 }
+
+
+/*______________ICI CSS DU FOOTER________________*/
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #236084;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 500;
+  font-size: 14px;
+}
+
+.footer-content {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.footer a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .footer {
+    padding: 5px 10px; 
+    text-align: center;
+  }
+
+  .footer-content {
+    gap: 2px; 
+    font-size: 12px; 
+  }
+}
