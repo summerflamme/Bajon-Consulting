@@ -53,7 +53,6 @@ INSERT INTO Role (roleName) VALUES
 ('Manager'),
 ('Analyste');
 
-
 -- Table Question
 INSERT INTO Question (label, status, idTheme) VALUES
 ('Le système est-il protégé par un pare-feu ?', 'Actif', 1),
