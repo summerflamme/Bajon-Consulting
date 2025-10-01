@@ -1,9 +1,9 @@
 ALTER TABLE "User"
 ADD COLUMN password VARCHAR(255) NOT NULL;
 
--- ========================
+-- =======================
 -- Remplissage des tables
--- ========================
+-- =======================
 
 -- Table Client
 INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
@@ -101,3 +101,77 @@ INSERT INTO Modify (idUser, idAudit, modificationDate, modificationTime) VALUES
 (3, 3, '2024-05-12', '09:00'),
 (4, 4, '2023-09-03', '16:45'),
 (5, 5, '2024-03-01', '11:20');
+
+-- =======================
+--Partie commande de test
+-- =======================
+
+----------------------------------------------------------
+-- Vérifier que les clients participent bien à des audits
+----------------------------------------------------------
+
+SELECT c.clientFirstName, c.clientLastName, a.auditName, p.participationDate
+FROM Client c
+JOIN Participate p ON c.idClient = p.idClient
+JOIN Audit a ON p.idAudit = a.idAudit;
+
+
+------------------------------------------------
+-- Voir quels thèmes appartiennent à quel audit
+------------------------------------------------
+
+SELECT a.auditName, t.themeName
+FROM Audit a
+JOIN Own o ON a.idAudit = o.idAudit
+JOIN Theme t ON o.idTheme = t.idTheme;
+
+
+---------------------------------------------------------
+-- Vérifier quelles questions appartiennent à quel thème
+---------------------------------------------------------
+
+SELECT q.label, t.themeName
+FROM Question q
+JOIN Theme t ON q.idTheme = t.idTheme;
+
+
+---------------------------------------------------------------
+-- Vérifier les options de réponse possibles pour une question
+---------------------------------------------------------------
+
+SELECT q.label, oa.optionLabel, oa.optionPoints
+FROM Question q
+JOIN Contain c ON q.idQuestion = c.idQuestion
+JOIN OptionAnswer oa ON c.idOptAnswer = oa.idOptAnswer
+WHERE q.idQuestion = 1;
+
+
+
+-------------------------------------------------
+-- Vérifier les réponses données par les clients
+-------------------------------------------------
+
+SELECT q.label, ca.clientAnswer, ca.clientAnswerPoints
+FROM ClientAnswer ca
+JOIN Question q ON ca.idQuestion = q.idQuestion;
+
+
+
+----------------------------------------------------
+-- Voir quels utilisateurs ont modifié quels audits
+----------------------------------------------------
+
+SELECT u.firstName, u.lastName, a.auditName, m.modificationDate, m.modificationTime
+FROM "User" u
+JOIN Modify m ON u.idUser = m.idUser
+JOIN Audit a ON m.idAudit = a.idAudit;
+
+
+
+---------------------------------------------------
+-- Vérifier le type de réponses possibles par type
+---------------------------------------------------
+
+SELECT t.typeName, oa.optionLabel
+FROM Type t
+JOIN OptionAnswer oa ON t.idType = oa.idType;
