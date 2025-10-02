@@ -1,43 +1,79 @@
-import { useEffect } from 'react';
-import './auth.css';
-import { fetchUsers } from './authService';
+import { useState } from "react";
+import { supabase } from "../../supabaseClient";
+import "./auth.css";
 
 function LoginPage() {
-  useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        const users = await fetchUsers();
-        console.log('Données utilisateurs récupérées:', users);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des utilisateurs:', error);
-      }
-    };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-    loadUsers();
-  }, []);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error("Erreur de connexion:", error.message);
+      setErrorMessage("Identifiants incorrects");
+    } else {
+      console.log("Connexion réussie:", data);
+      sessionStorage.setItem("user", JSON.stringify(data.user));
+      setErrorMessage(""); 
+    }
+  };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Erreur lors de la déconnexion:", error.message);
+    } else {
+      console.log("Déconnexion réussie");
+      sessionStorage.removeItem("user");
+    }
+  };
+
   return (
     <div className="background-zone">
-      {
-        <div className="login-box">
-            <h2>Connexion</h2>
-            <form>
-            <label htmlFor="username">Identifiant</label>
-            <input type="text" id="username" name="username" />
+      <div className="login-box">
+        <h2>Connexion</h2>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-            <label htmlFor="password">Mot de passe</label>
-            <input type="password" id="password" name="password" />
+          <label htmlFor="password">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-            <button type="submit">Valider</button>
+          <button type="submit">Valider</button>
 
-            <div className="forgot-password">
-                <a href="#">Mot de passe oublié ?</a>
-            </div>
-            </form>
-        </div>
-      }
+          {errorMessage && (
+            <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>
+          )}
+
+          <div className="forgot-password">
+            <a href="#">Mot de passe oublié ?</a>
+          </div>
+          <button type="button" onClick={handleLogout}>
+            Se déconnecter
+          </button>
+        </form>
+      </div>
     </div>
   );
-
 }
 
 export default LoginPage;
