@@ -1,9 +1,9 @@
-ALTER TABLE "User"
+ALTER TABLE Staff
 ADD COLUMN password VARCHAR(255) NOT NULL;
 
--- ========================
+-- =======================
 -- Remplissage des tables
--- ========================
+-- =======================
 
 -- Table Client
 INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
@@ -22,14 +22,6 @@ INSERT INTO Audit (auditName, creationDate, status) VALUES
 ('Audit RH', '2023-09-01', 'Annulé'),
 ('Audit IT', '2024-02-28', 'Prévu');
 
--- Table User
-INSERT INTO "User" (lastName, firstName, role, password) VALUES
-('Admin', 'Super', 'Administrateur', '1234'),
-('Dupuis', 'Marc', 'Auditeur', '5678'),
-('Bernard', 'Claire', 'Auditeur', '1278'),
-('Roux', 'Emma', 'Manager', '9812'),
-('Noel', 'Pierre', 'Analyste', '6577');
-
 -- Table Theme
 INSERT INTO Theme (themeName, status) VALUES
 ('Sécurité informatique', 'Actif'),
@@ -45,6 +37,21 @@ INSERT INTO Type (typeName) VALUES
 ('Texte libre'),
 ('Choix multiple'),
 ('Nombre');
+
+-- Table role
+INSERT INTO Role (roleName) VALUES
+('Administrateur'),
+('Auditeur'),
+('Manager'),
+('Analyste');
+
+-- Table User
+INSERT INTO Staff (lastName, firstName, login, password, idRole) VALUES
+('Admin', 'Super', 'test', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',1),
+('Dupuis', 'Marc', 'Dmarc', 'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',2),
+('Bernard', 'Claire',  'Bclaire' ,'fa9b1cc5d156de5b6ebd583ff1fe2c178fb1bacba5af7bf929cf51654a44e394' ,2),
+('Roux', 'Emma', 'Remma','9812',3),
+('Noel', 'Pierre', 'Npierre', '6577',4);
 
 -- Table Question
 INSERT INTO Question (label, status, idTheme) VALUES
@@ -101,3 +108,77 @@ INSERT INTO Modify (idUser, idAudit, modificationDate, modificationTime) VALUES
 (3, 3, '2024-05-12', '09:00'),
 (4, 4, '2023-09-03', '16:45'),
 (5, 5, '2024-03-01', '11:20');
+
+-- =======================
+--Partie commande de test
+-- =======================
+
+----------------------------------------------------------
+-- Vérifier que les clients participent bien à des audits
+----------------------------------------------------------
+
+SELECT c.clientFirstName, c.clientLastName, a.auditName, p.participationDate
+FROM Client c
+JOIN Participate p ON c.idClient = p.idClient
+JOIN Audit a ON p.idAudit = a.idAudit;
+
+
+------------------------------------------------
+-- Voir quels thèmes appartiennent à quel audit
+------------------------------------------------
+
+SELECT a.auditName, t.themeName
+FROM Audit a
+JOIN Own o ON a.idAudit = o.idAudit
+JOIN Theme t ON o.idTheme = t.idTheme;
+
+
+---------------------------------------------------------
+-- Vérifier quelles questions appartiennent à quel thème
+---------------------------------------------------------
+
+SELECT q.label, t.themeName
+FROM Question q
+JOIN Theme t ON q.idTheme = t.idTheme;
+
+
+---------------------------------------------------------------
+-- Vérifier les options de réponse possibles pour une question
+---------------------------------------------------------------
+
+SELECT q.label, oa.optionLabel, oa.optionPoints
+FROM Question q
+JOIN Contain c ON q.idQuestion = c.idQuestion
+JOIN OptionAnswer oa ON c.idOptAnswer = oa.idOptAnswer
+WHERE q.idQuestion = 1;
+
+
+
+-------------------------------------------------
+-- Vérifier les réponses données par les clients
+-------------------------------------------------
+
+SELECT q.label, ca.clientAnswer, ca.clientAnswerPoints
+FROM ClientAnswer ca
+JOIN Question q ON ca.idQuestion = q.idQuestion;
+
+
+
+----------------------------------------------------
+-- Voir quels utilisateurs ont modifié quels audits
+----------------------------------------------------
+
+SELECT u.firstName, u.lastName, a.auditName, m.modificationDate, m.modificationTime
+FROM Staff u
+JOIN Modify m ON u.idUser = m.idUser
+JOIN Audit a ON m.idAudit = a.idAudit;
+
+
+
+---------------------------------------------------
+-- Vérifier le type de réponses possibles par type
+---------------------------------------------------
+
+SELECT t.typeName, oa.optionLabel
+FROM Type t
+JOIN OptionAnswer oa ON t.idType = oa.idType;
