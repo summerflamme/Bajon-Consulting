@@ -3,15 +3,14 @@ import './App.css'
 import Header from './layouts/header'
 import Footer from './layouts/Footer'
 //import Sidebar from './layouts/Sidebar'
-import LoginPage from './feature/auth/LoginPage'
-import AuditForm from './components/AuditForm'
-
+//import LoginPage from './feature/auth/LoginPage'
+import SearchBar from './components/SearchBar'
 
 function App() {
   return (
     <>
       <Header />
-      <AuditForm />
+      <SearchBar/>
       <Footer />
     </>
   )
