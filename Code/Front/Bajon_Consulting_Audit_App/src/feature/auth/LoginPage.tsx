@@ -25,15 +25,7 @@ function LoginPage() {
     }
   };
 
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error("Erreur lors de la déconnexion:", error.message);
-    } else {
-      console.log("Déconnexion réussie");
-      sessionStorage.removeItem("user");
-    }
-  };
+  
 
   return (
     <div className="background-zone">
@@ -67,9 +59,6 @@ function LoginPage() {
           <div className="forgot-password">
             <a href="#">Mot de passe oublié ?</a>
           </div>
-          <button type="button" onClick={handleLogout}>
-            Se déconnecter
-          </button>
         </form>
       </div>
     </div>
