@@ -3,11 +3,10 @@ import './App.css'
 import Header from './layouts/header'
 import Footer from './layouts/Footer'
 //import Sidebar from './layouts/Sidebar'
-//import LoginPage from './feature/auth/LoginPage'
 //import SearchBar from './components/SearchBar'
 import LoginPage from './feature/auth/LoginPage'
 import { supabase } from './supabaseClient';
-//import AuditCard from './components/AuditCard'
+//import AuditList from './components/AuditList';
 
 function App() {
 
@@ -19,7 +18,7 @@ supabase.auth.onAuthStateChange((event, session) => {
   return (
     <>
       <Header />
-      <LoginPage/>
+      <LoginPage />
       <Footer />
     </>
   )
