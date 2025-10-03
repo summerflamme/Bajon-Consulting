@@ -4,9 +4,10 @@ import Header from './layouts/header'
 import Footer from './layouts/Footer'
 //import Sidebar from './layouts/Sidebar'
 //import LoginPage from './feature/auth/LoginPage'
-// import SearchBar from './components/SearchBar'
+//import SearchBar from './components/SearchBar'
 import LoginPage from './feature/auth/LoginPage'
 import { supabase } from './supabaseClient';
+//import AuditCard from './components/AuditCard'
 
 function App() {
 
