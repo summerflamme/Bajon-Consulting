@@ -39,6 +39,7 @@ const handleLogout = async () => {
   return (
     <header className="header">
       <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
+      
       <ul className={`menu ${open ? 'open' : ''}`}>
         
         {/* AUDITS */}
@@ -79,12 +80,15 @@ const handleLogout = async () => {
 
         <li><a href="#services">Client</a></li>
         <li><a href="#valeurs">Compte</a></li>
-      </ul>
-
+        <li>
 
       <button type="button" onClick={handleLogout}>
             Se déconnecter
           </button>
+      </li>
+      </ul>
+
+
       {isMobile && (
         <div className="main">
           <button
