@@ -1,67 +1,227 @@
-/*______________ICI CSS DU MENUBUTTON________________*/
+/* ==========================
+   Layouts CSS
+========================== */
+@import url("https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css");
 
-.menu-button-container {
-  position: relative;
-}
-.navigation {
-  display: flex;
-}
-.navigation li {
-  display: inline-block;
-  text-decoration: none;
-  padding: 0 20px;
-}
-.menu-button {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.menu-list {
-  position: absolute;
-  top: 100%; 
-  right: 0;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 10px;
-  border-radius: 4px;
-  list-style: none;
-}
-
-.menu-list li a {
-  text-decoration: none;
-  color: #333;
-  padding: 8px;
-  display: block;
-}
 
 /*______________ICI CSS DU HEADER________________*/
 
+
+
+
+/* ==========================
+   HEADER
+========================== */
 .header {
+  flex-grow: 1;
+  height: 80px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 80px;
-  height: 80px;
-  background-color: #f8f9fa;
   display: flex;
   align-items: center;
   padding: 0 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  font-size: larger;
+  background: rgba(255, 255, 255, 0.9);
+  /* Ensure header sits above other fixed elements (search bar, menus, etc.) */
+  z-index: 10000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 .header-logo {
-  height: 50px;
+  height: 60px;
   width: auto;
 }
 
-.header-spacer {
-  flex-grow: 1;
+/* ==========================
+MENU PRINCIPAL
+========================== */
+
+.menu {
+  display: flex;
+  list-style: none;
+  margin-left: auto;
+  align-items: center;
+}
+.menu > li > a {
+  display: flex;              /* Flex pour centrer le contenu */
+  align-items: center;        /* Centre verticalement le texte */
+  height: 80px;               /* Même hauteur que .header */
+  padding: 0 20px;            /* Espace gauche/droite */
+  text-decoration: none;
+  color: black;
+  border-bottom: 2px solid transparent;
+  transition: max-height 360ms ease-in-out, opacity 320ms ease-in-out;
+  justify-content: center;
+}
+
+.menu li {
+  position: relative;
+  display: block;
+}
+.menu > li > a:hover {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
+
+.menu li:hover > .sub-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.menu-item{
+  padding: 27px;
+}
+.menu li:hover > .sub-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+
+/* ==========================
+SOUS-MENU
+========================== */
+
+/* remplace ta logique desktop d’affichage */
+.sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: #000;
+  padding: 10px 0;
+  border-radius: 4px;
+
+  /* états initial + animables */
+  opacity: 0;
+  transform: translateY(8px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+
+.sub-menu li a {
+  display: block;
+  padding: 8px 15px;
+  color: #fff;
+  text-decoration: none;
+}
+  
+  /* ==========================
+  MOBILE 
+  ========================== */
+@media (max-width: 768px) {
+  .header {
+    font-size: medium;
+  }
+  
+  /* Bouton  */
+  .main {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  .menu li:hover > .sub-menu {
+    opacity: 1 !important;
+    transform: translateY(8px) !important;
+    pointer-events: auto !important;
+  }
+  /* Menu par défaut (caché) */
+  .menu {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: rgb(87, 87, 87);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    max-height: 0;           /* caché par défaut */
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .36s ease, opacity .32s ease;
+  }
+  .menu > li > a {
+    height: auto;          /* laisse la hauteur s’adapter au contenu */
+    padding: 12px 0;       /* réduit le padding vertical */
+    text-align: center;
+    color: #fff;
+  }
+  /* Menu ouvert */
+  .menu.open {
+    max-height: calc(100vh - 80px);  /* prend toute la hauteur disponible */
+    opacity: 1;
+  }
+
+  .arrow {
+    margin-left: 8px;
+  font-size: 40px;
+  cursor: pointer;
+  /*icon a droite */
+
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.menu-item a {
+    flex: 1;                   /* prend tout l’espace disponible */
+    text-align: center;        /* texte centré */
+    color: #fff;
+    padding: 12px 0;
+    font-size: 16px;
+  }
+.menu-item {
+  display: flex;
+  padding: 5px;
+  justify-content: space-between; /* texte à gauche, flèche à droite */
+  align-items: center;
+  width: 100%;
+}
+ .menu-item .arrow {
+    position: absolute;
+    right: -50px;               /* espace depuis le bord droit */
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.3s ease;
+  }
+
+
+
+
+ /* Sous-menu mobile fermé par défaut */
+ .sub-menu {
+   visibility: visible;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    border-radius: 0;
+    background: #f9f9f9;
+    transition: max-height .4s ease, opacity .3s ease;
+  }
+
+  .menu li.open > .sub-menu {
+    max-height: 500px; /* adapter selon le contenu */
+    opacity: 1;
+  }
+
+  .sub-menu li a {
+    padding: 12px;
+    text-align: center;
+    color: #000;
+  }
+
+
+
+
 }
 
 /*______________ICI CSS DU FOOTER________________*/
@@ -71,55 +231,44 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #1a1a1a;
-  color: #f0f0f0;
-  padding: 20px 0;
-  text-align: center;
+  height: 60px;
+  background-color: #236084;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 500;
   font-size: 14px;
-  width: 100%;
 }
 
 .footer-content {
   display: flex;
-  justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
-.footer-content span {
-  white-space: nowrap;
+.footer a {
+  text-decoration: none;
+  color: white;
 }
 
-/* adaptation telephone */
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
 @media screen and (max-width: 768px) {
-  .navigation {
-    transition: all 0.5s ease-in-out;
-
-    position: absolute;
-    top: 60px;
-    width: 100%;
-    right: -100%;
-    height: 100vh;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: center;
-    background: rgba(96, 96, 96, 0.947);
-    padding: 0px 0px 0px 0px;
+  .footer {
+    padding: 5px 10px; 
+    text-align: center;
   }
 
-  .navigation a {
-    font-size: larger;
-    padding: 32px 0;
-    margin: 15px 0;
-    display: block;
-    transition: all 0.5s ease;
-    text-decoration: none;
-    color: white;
-  }
-
-  .navigation.open {
-    right: 0px;
-    transition: all 0.5s ease-in-out;
+  .footer-content {
+    gap: 2px; 
+    font-size: 12px; 
   }
 }

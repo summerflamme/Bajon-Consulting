@@ -4,13 +4,22 @@ import Header from './layouts/header'
 import Footer from './layouts/Footer'
 //import Sidebar from './layouts/Sidebar'
 //import LoginPage from './feature/auth/LoginPage'
-import AuditCard from './components/AuditCard'
+//import SearchBar from './components/SearchBar'
+import LoginPage from './feature/auth/LoginPage'
+import { supabase } from './supabaseClient';
+//import AuditCard from './components/AuditCard'
 
 function App() {
+
+supabase.auth.onAuthStateChange((event, session) => {
+  console.log("Auth event:", event);
+  console.log("Nouvelle session:", session);
+});
+
   return (
     <>
       <Header />
-      <AuditCard />
+      <LoginPage/>
       <Footer />
     </>
   )
