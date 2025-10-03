@@ -64,6 +64,32 @@
   flex-grow: 1;
 }
 
+/*______________ICI CSS DU FOOTER________________*/
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.footer-content span {
+  white-space: nowrap;
+}
+
 /* adaptation telephone */
 @media screen and (max-width: 768px) {
   .navigation {

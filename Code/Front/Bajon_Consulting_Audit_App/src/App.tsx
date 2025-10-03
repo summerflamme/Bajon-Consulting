@@ -3,14 +3,14 @@ import './App.css'
 import Header from './layouts/header'
 import Footer from './layouts/Footer'
 //import Sidebar from './layouts/Sidebar'
-import LoginPage from './feature/auth/LoginPage'
-
+//import LoginPage from './feature/auth/LoginPage'
+import AuditCard from './components/AuditCard'
 
 function App() {
   return (
     <>
       <Header />
-      <LoginPage />
+      <AuditCard />
       <Footer />
     </>
   )
