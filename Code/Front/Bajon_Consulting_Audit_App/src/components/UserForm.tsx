@@ -45,7 +45,6 @@ function UserForm() {
         });
 
        
-
         console.log(data);
         if (error) {
             console.error("Erreur lors de la création du compte:", error.message);

@@ -1,5 +1,4 @@
 import { supabase } from '../supabaseClient';
-import MenuButton from './MenuButton';
 import './layouts.css';
 
 function Header() {
@@ -14,10 +13,6 @@ const handleLogout = async () => {
     }
   };
   
-import React, { useEffect, useState } from 'react';
-import './layoutsHeader.css';
-
-function Header() {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
