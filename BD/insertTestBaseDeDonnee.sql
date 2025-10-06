@@ -46,12 +46,9 @@ INSERT INTO Role (roleName) VALUES
 ('Analyste');
 
 -- Table User
-INSERT INTO Staff (lastName, firstName, login, password, idRole) VALUES
-('Admin', 'Super', 'test', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',1),
-('Dupuis', 'Marc', 'Dmarc', 'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',2),
-('Bernard', 'Claire',  'Bclaire' ,'fa9b1cc5d156de5b6ebd583ff1fe2c178fb1bacba5af7bf929cf51654a44e394' ,2),
-('Roux', 'Emma', 'Remma','9812',3),
-('Noel', 'Pierre', 'Npierre', '6577',4);
+INSERT INTO Staff (idUser, lastName, firstName, idRole)VALUES 
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 'summer', 'flamme', 1),
+('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 'test', 'test', 2);
 
 -- Table Question
 INSERT INTO Question (label, status, idTheme) VALUES
@@ -103,11 +100,11 @@ INSERT INTO Contain (idQuestion, idOptAnswer) VALUES
 
 -- Table Modify
 INSERT INTO Modify (idUser, idAudit, modificationDate, modificationTime) VALUES
-(1, 1, '2024-01-20', '10:30'),
-(2, 2, '2023-11-25', '14:15'),
-(3, 3, '2024-05-12', '09:00'),
-(4, 4, '2023-09-03', '16:45'),
-(5, 5, '2024-03-01', '11:20');
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 1, '2024-01-20', '10:30'),
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 2, '2023-11-25', '14:15'),
+('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 3, '2024-05-12', '09:00'),
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 4, '2023-09-03', '16:45'),
+('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 5, '2024-03-01', '11:20');
 
 -- =======================
 --Partie commande de test

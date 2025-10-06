@@ -6,9 +6,9 @@ import Footer from './layouts/Footer'
 //import LoginPage from './feature/auth/LoginPage'
 // import SearchBar from './components/SearchBar'
 // import LoginPage from './feature/auth/LoginPage'
-import UserForm from './components/UserForm'
+// import UserForm from './components/UserForm'
 import { supabase } from './supabaseClient';
-//import AuditList from './components/AuditList';
+import AuditList from './components/AuditList';
 
 function App() {
 
@@ -20,7 +20,7 @@ supabase.auth.onAuthStateChange((event, session) => {
   return (
     <>
       <Header />
-      <UserForm/>
+      <AuditList/>
       <Footer />
     </>
   )

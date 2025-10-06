@@ -1,8 +1,10 @@
 import { supabase } from '../supabaseClient';
 import './layouts.css';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
+
 const handleLogout = async () => {
     console.log("Déconnexion en cours de l'utilisateur", sessionStorage.getItem("user"));
     const { error } = await supabase.auth.signOut();
@@ -38,7 +40,13 @@ const handleLogout = async () => {
 
   return (
     <header className="header">
-      <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
+      <a href='/'>
+        <img
+          src="../../public/logo-bajon-consulting.png"
+          alt="Logo"
+          className="header-logo"
+        />
+      </a>
       
       <ul className={`menu ${open ? 'open' : ''}`}>
         

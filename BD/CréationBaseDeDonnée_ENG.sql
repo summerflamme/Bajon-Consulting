@@ -52,14 +52,10 @@ CREATE TABLE Role  (
 
 -- Table User
 CREATE TABLE Staff (
-    idUser SERIAL PRIMARY KEY,
+    idUser UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     lastName VARCHAR(100),
     firstName VARCHAR(100),
     idRole INT NOT NULL,
-    -- pour test
-    login VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    -- fin test
     FOREIGN KEY (idRole) REFERENCES Role(idRole)
 );
 
@@ -133,7 +129,7 @@ CREATE TABLE Contain (
 
 -- Table Modify (relation User - Audit)
 CREATE TABLE Modify (
-    idUser INT NOT NULL,
+    idUser UUID,
     idAudit INT NOT NULL,
     modificationDate DATE,
     modificationTime TIME,
