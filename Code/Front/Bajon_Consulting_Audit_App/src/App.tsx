@@ -4,11 +4,11 @@ import Header from './layouts/header'
 import Footer from './layouts/Footer'
 //import Sidebar from './layouts/Sidebar'
 //import LoginPage from './feature/auth/LoginPage'
-// import SearchBar from './components/SearchBar'
-// import LoginPage from './feature/auth/LoginPage'
-import UserForm from './components/UserForm'
+//import SearchBar from './components/SearchBar'
+//import LoginPage from './feature/auth/LoginPage'
+//import UserForm from './components/UserForm'
 import { supabase } from './supabaseClient';
-//import AuditList from './components/AuditList';
+import AuditList from './feature/audits/AuditListPage';
 
 function App() {
 
@@ -20,7 +20,7 @@ supabase.auth.onAuthStateChange((event, session) => {
   return (
     <>
       <Header />
-      <UserForm/>
+      <AuditList/>
       <Footer />
     </>
   )
