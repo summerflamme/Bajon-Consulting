@@ -4,6 +4,10 @@
 @import url("https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css");
 
 
+/*______________ICI CSS DU HEADER________________*/
+
+
+
 
 /* ==========================
    HEADER
@@ -20,6 +24,8 @@
   padding: 0 20px;
   font-size: larger;
   background: rgba(255, 255, 255, 0.9);
+  /* Ensure header sits above other fixed elements (search bar, menus, etc.) */
+  z-index: 10000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .header-logo {
@@ -217,7 +223,6 @@ SOUS-MENU
 
 
 }
-
 
 /*______________ICI CSS DU FOOTER________________*/
 

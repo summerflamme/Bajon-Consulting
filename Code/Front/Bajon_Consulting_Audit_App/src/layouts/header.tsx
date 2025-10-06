@@ -1,6 +1,6 @@
 import { supabase } from '../supabaseClient';
-import MenuButton from './MenuButton';
 import './layouts.css';
+import React, { useEffect, useState } from 'react';
 
 function Header() {
 const handleLogout = async () => {
@@ -14,10 +14,7 @@ const handleLogout = async () => {
     }
   };
   
-import React, { useEffect, useState } from 'react';
-import './layoutsHeader.css';
 
-function Header() {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
@@ -42,6 +39,7 @@ function Header() {
   return (
     <header className="header">
       <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
+      
       <ul className={`menu ${open ? 'open' : ''}`}>
         
         {/* AUDITS */}
@@ -82,12 +80,15 @@ function Header() {
 
         <li><a href="#services">Client</a></li>
         <li><a href="#valeurs">Compte</a></li>
-      </ul>
-
+        <li>
 
       <button type="button" onClick={handleLogout}>
             Se déconnecter
           </button>
+      </li>
+      </ul>
+
+
       {isMobile && (
         <div className="main">
           <button
