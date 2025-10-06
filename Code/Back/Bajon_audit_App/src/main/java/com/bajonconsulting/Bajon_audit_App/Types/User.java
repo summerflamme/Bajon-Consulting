@@ -1,8 +1,7 @@
-package com.bajonconsulting.Bajon_audit_App.User;
+package com.bajonconsulting.Bajon_audit_App.Types;
 
 import java.rmi.server.UID;
 import java.security.Timestamp;
-import java.sql.Time;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
