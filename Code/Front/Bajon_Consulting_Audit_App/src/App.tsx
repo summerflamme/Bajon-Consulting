@@ -1,25 +1,15 @@
-import './App.css'
-//import MenuButton from './layouts/MenuButton'
-import Header from './layouts/header'
-//import Footer from './layouts/Footer'
-//import Sidebar from './layouts/Sidebar'
-//import LoginPage from './feature/auth/LoginPage'
-// import SearchBar from './components/SearchBar'
+import './App.css';
 import { supabase } from './supabaseClient';
-import AuditEditorPage from './components/AuditEditorPage'
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
+  // Écoute des événements d'authentification Supabase
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log("Auth event:", event);
+    console.log("Nouvelle session:", session);
+  });
 
-supabase.auth.onAuthStateChange((event, session) => {
-  console.log("Auth event:", event);
-  console.log("Nouvelle session:", session);
-});
-
-  return (
-    <>
-      <Header />
-      <AuditEditorPage />
-    </>
-  )
+  return <AppRoutes />; // On ne met plus Header/Footer ici
 }
-export default App
+
+export default App;

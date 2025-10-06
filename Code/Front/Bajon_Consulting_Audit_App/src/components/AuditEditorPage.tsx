@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AuditForm from './AuditForm';
 import type { Section } from '../types/audit';
+import './AuditStyle.css';
 
 function AuditEditorPage() {
     const [data, setData] = useState<Section[]>([
@@ -93,7 +94,7 @@ function AuditEditorPage() {
         console.log("Data updated:", newData);
     };
     return (
-        <div>
+        <div className="audit-editor-page">
             <h1>Audit Editor Page</h1>
             {/* Contenu de la page d'édition d'audit */}
             <p>Bienvenue sur la page d'édition d'audit.</p>
@@ -101,7 +102,7 @@ function AuditEditorPage() {
             <button onClick={clearData}>Vider</button>
             <button onClick={toggleMode}>{mode === "edit" ? "Passer en mode vue" : "Passer en mode édition"}</button>
 
-            <AuditForm data={data} mode={mode} onUpdate={handleUpdate} />
+            <AuditForm  data={data} mode={mode} onUpdate={handleUpdate} />
 
 
         </div>
