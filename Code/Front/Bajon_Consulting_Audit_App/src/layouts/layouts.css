@@ -227,8 +227,7 @@ SOUS-MENU
 /*______________ICI CSS DU FOOTER________________*/
 
 .footer {
-  position: fixed;
-  bottom: 0;
+  position: absolute;
   left: 0;
   right: 0;
   height: 60px;
