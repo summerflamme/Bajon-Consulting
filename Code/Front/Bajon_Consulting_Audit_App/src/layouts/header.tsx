@@ -1,5 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import './layouts.css';
+import './layouts.css'; 
 
 function Header() {
 const handleLogout = async () => {

@@ -44,7 +44,7 @@ function UserForm() {
             }
         });
 
-       
+
         console.log(data);
         if (error) {
             console.error("Erreur lors de la création du compte:", error.message);
@@ -69,15 +69,33 @@ function UserForm() {
         <h2>Créer un compte</h2>
         <div className="login-box">
         <form onSubmit={handleSubmit}>
+            <label htmlFor="displayName">Nom Prénom</label>
+            <input
+                placeholder='Christophe Bajon'
+                type="text"
+                id="displayName"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+            />
             <label htmlFor="email">Email</label>
             <input
+                placeholder='BajonConsulting@gmail.com'
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
+            <label htmlFor="phoneNumber">Numéro de téléphone</label>
+            <input
+                placeholder='0606060606'
+                type="text"
+                id="phoneNumber"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+            />
             <label htmlFor="password">Mot de passe</label>
             <input
+                placeholder='************'
                 type="password"
                 id="password"
                 value={password}
@@ -85,24 +103,11 @@ function UserForm() {
             />
             <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
             <input
+                placeholder='************'
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <label htmlFor="displayName">Nom d'utilisateur</label>
-            <input
-                type="text"
-                id="displayName"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-            />
-            <label htmlFor="phoneNumber">Numéro de téléphone</label>
-            <input
-                type="text"
-                id="phoneNumber"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
             />
             <button type="submit">Créer un compte</button>
         </form>
