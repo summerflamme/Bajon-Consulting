@@ -2,7 +2,7 @@ import './components.css';
 
 function AuditCard() {
   return (
-    <><div className="card mb-4">
+    <><div>
       <div className="card-header">
         <h5 className="card-title"> TITRE_AUDIT </h5>
       </div>

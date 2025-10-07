@@ -1,14 +1,63 @@
 import SectionBox from "./sectionBox";
-function AuditForm() {
+import type { Audit, Section } from "../types/audit";
+
+type Props = {
+    data: Section[];
+    mode: Audit["mode"];
+
+    onUpdate: (newData: Section[]) => void;
+};
+
+function AuditForm({ data, mode, onUpdate }: Props) {
+    // Fonction pour mettre à jour UNE section
+    const updateSection = (sectionId: number, updatedSection: Section) => {
+        const newData = data.map((s) =>
+            s.id === sectionId ? updatedSection : s
+        );
+        onUpdate(newData);
+    };
+    const handleAddSection = () => {
+        const newSection: Section = {
+            id: Date.now(),
+            title: "New Section",
+            questions: [
+                { id: 1, text: "New Question", type: "single-choice", answers: [
+                    { id: 1, text: "New Answer", score: 0 }
+                ] },
+            ],
+        };
+        onUpdate([...data, newSection]);
+    };
+    const handleRemoveSection = (sectionId: number) => {
+        const newData = data.filter((s) => s.id !== sectionId);
+        onUpdate(newData);
+    }
+
     return (
-        <>
-        <form action="Post">
-            <div>Audit Form Component</div>
-            <SectionBox />
+        <form>
+            <div className="audit-form">Audit Form Component</div>
+
+            {data.map((section) => (
+                <SectionBox
+                    key={section.id}
+                    id={section.id}               
+                    title={section.title}
+                    questions={section.questions}
+                    mode={mode}
+                    onUpdate={(updatedSection) =>
+                        updateSection(section.id, updatedSection)
+                    }
+                    handleRemoveSection={() => handleRemoveSection(section.id)}
+                />
+            ))}
+            {mode === "edit" && (
+                <>
+                    <button type="button" onClick={handleAddSection}>Ajouter une section</button>
+                </>
+            )}
         </form>
-        </>
+
     );
 }
 
 export default AuditForm;
-
