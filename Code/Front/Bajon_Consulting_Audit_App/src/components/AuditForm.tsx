@@ -9,7 +9,7 @@ type Props = {
 };
 
 function AuditForm({ data, mode, onUpdate }: Props) {
-    // Fonction pour mettre à jour UNE section
+    // Fonction pour mettre à jour une section
     const updateSection = (sectionId: number, updatedSection: Section) => {
         const newData = data.map((s) =>
             s.id === sectionId ? updatedSection : s

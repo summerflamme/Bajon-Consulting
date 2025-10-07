@@ -35,7 +35,6 @@ function Header() {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
-  // 🔥 Liste des menus et sous-menus
   const menus = [
     {
       title: "Audits",

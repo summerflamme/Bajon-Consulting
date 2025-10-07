@@ -1,23 +1,23 @@
 .background-zone {
   position: fixed;
-  top: 80px;         /* hauteur du header */
-  bottom: 60px;      /* hauteur du footer */
+  top: 80px;        
+  bottom: 60px;   
   left: 0;
   right: 0;
-  background-image: url('/fond-auth.jpeg'); /* image dans /public */
+  background-image: url('/fond-auth.jpeg'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
-  justify-content: center; /* centre horizontalement */
-  align-items: center;     /* centre verticalement */
+  justify-content: center; 
+  align-items: center; 
 }
 
 
 
 
 .login-box {
-  background-color: rgba(255, 255, 255, 0.8); /* semi-transparent blanc */
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);

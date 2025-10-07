@@ -9,7 +9,7 @@ type Question = {
     id: number;
     text: string;
     descriptions?: string;
-    type: "single-choice" | "multiple-choice"; // tu peux étendre selon tes besoins
+    type: "single-choice" | "multiple-choice";
     answers: Answer[];
 };
 
