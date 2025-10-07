@@ -1,5 +1,5 @@
 .background-zone {
-  position: absolute;
+  position: fixed;
   top: 80px;         /* hauteur du header */
   bottom: 60px;      /* hauteur du footer */
   left: 0;
@@ -8,7 +8,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 0;
   display: flex;
   justify-content: center; /* centre horizontalement */
   align-items: center;     /* centre verticalement */
@@ -42,9 +41,9 @@
   width: 100%;
   padding: 8px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   border-radius: 5px;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .login-box button {
