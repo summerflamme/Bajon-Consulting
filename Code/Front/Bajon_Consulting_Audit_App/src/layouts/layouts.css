@@ -33,6 +33,19 @@
   width: auto;
 }
 
+/* Ensure the layout reserves space for the fixed header/footer
+   so page content isn't covered */
+.app-layout {
+  box-sizing: border-box;
+  /* Use flex column so footer is pushed to the bottom when content is short
+     and stays after content when page is long. Keep top padding to avoid
+     being covered by the fixed header. */
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px; /* reserve space for fixed header */
+  min-height: 100vh;
+}
+
 /* ==========================
 MENU PRINCIPAL
 ========================== */
@@ -227,8 +240,9 @@ SOUS-MENU
 /*______________ICI CSS DU FOOTER________________*/
 
 .footer {
-  position: fixed;
-  bottom: 0;
+  /* Make footer participate in document flow (not fixed). It will sit
+     at the bottom because .app-layout is a column flex and main uses flex:1 */
+  position: relative;
   left: 0;
   right: 0;
   height: 60px;
@@ -238,7 +252,8 @@ SOUS-MENU
   justify-content: center;
   padding: 0 20px;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 500;
+  /* Footer below header but above page content */
+  z-index: 10;
   font-size: 14px;
 }
 
