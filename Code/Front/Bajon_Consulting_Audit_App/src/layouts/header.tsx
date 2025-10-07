@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Header() {
-
-const handleLogout = async () => {
+  const handleLogout = async () => {
     console.log("Déconnexion en cours de l'utilisateur", sessionStorage.getItem("user"));
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -15,7 +14,6 @@ const handleLogout = async () => {
       sessionStorage.removeItem("user");
     }
   };
-  
 
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -33,69 +31,66 @@ const handleLogout = async () => {
   }, [open]);
 
   const toggleMenu = () => setOpen(prev => !prev);
-
   const toggleSubMenu = (index: number) => {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
+  // 🔥 Liste des menus et sous-menus
+  const menus = [
+    {
+      title: "Audits",
+      link: "#accueil",
+      subMenus: [
+        { title: "Audit SEO", link: "#audit-seo" },
+        { title: "Audit Technique", link: "#audit-technique" },
+        { title: "Audit Contenu", link: "#audit-contenu" }
+      ]
+    },
+    {
+      title: "Templates",
+      link: "#presentation",
+      subMenus: [
+        { title: "Template SEO", link: "#template-seo" },
+        { title: "Template Technique", link: "#template-technique" },
+        { title: "Template Contenu", link: "#template-contenu" }
+      ]
+    },
+    { title: "Client", link: "#services" ,},
+    { title: "Compte", link: "#valeurs" }
+  ];
+
   return (
     <header className="header">
-      <a href='/'>
-        <img
-          src="../../public/logo-bajon-consulting.png"
-          alt="Logo"
-          className="header-logo"
-        />
-      </a>
-      
+      <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
+
       <ul className={`menu ${open ? 'open' : ''}`}>
-        
-        {/* AUDITS */}
-        <li className={openSubMenu === 0 ? "open" : ""}>
-          <div className="menu-item">
-            <a href="#accueil">Audits</a>
-            {isMobile && (
-              <i 
-              className={`bx ${openSubMenu === 0 ? "bx-chevron-up" : "bx-chevron-down"} arrow`}
-              onClick={() => toggleSubMenu(0)}
-              />
-            )}
+        {menus.map((menu, index) => (
+          <li key={index} className={openSubMenu === index ? "open" : ""}>
+            <div className="menu-item">
+              <a href={menu.link}>{menu.title}</a>
+              {menu.subMenus && isMobile && (
+                <i
+                  className={`bx ${openSubMenu === index ? "bx-chevron-up" : "bx-chevron-down"} arrow`}
+                  onClick={() => toggleSubMenu(index)}
+                />
+              )}
             </div>
-          <ul className="sub-menu">
-            <li><a href="#audit-seo">Audit SEO</a></li>
-            <li><a href="#audit-technique">Audit Technique</a></li>
-            <li><a href="#audit-contenu">Audit Contenu</a></li>
-          </ul>
-        </li>
-
-        {/* TEMPLATES */}
-        <li className={openSubMenu === 1 ? "open" : ""}>
-          <div className="menu-item">
-            <a href="#presentation">Templates</a>
-            {isMobile && (
-              <i 
-              className={`bx ${openSubMenu === 1 ? "bx-chevron-up" : "bx-chevron-down"} arrow`}
-              onClick={() => toggleSubMenu(1)}
-              />
+            {menu.subMenus && (
+              <ul className="sub-menu">
+                {menu.subMenus.map((sub, subIndex) => (
+                  <li key={subIndex}><a href={sub.link}>{sub.title}</a></li>
+                ))}
+              </ul>
             )}
-            </div>
-          <ul className="sub-menu">
-            <li><a href="#template-seo">Template SEO</a></li>
-            <li><a href="#template-technique">Template Technique</a></li>
-            <li><a href="#template-contenu">Template Contenu</a></li>
-          </ul>
-        </li>
+          </li>
+        ))}
 
-        <li><a href="#services">Client</a></li>
-        <li><a href="#valeurs">Compte</a></li>
         <li>
-
-      <button type="button" onClick={handleLogout}>
+          <button type="button" onClick={handleLogout}>
             Se déconnecter
           </button>
-      </li>
+        </li>
       </ul>
-
 
       {isMobile && (
         <div className="main">

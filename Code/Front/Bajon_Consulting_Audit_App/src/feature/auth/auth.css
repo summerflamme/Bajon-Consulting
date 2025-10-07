@@ -1,5 +1,5 @@
 .background-zone {
-  position: absolute;
+  position: fixed;
   top: 80px;         /* hauteur du header */
   bottom: 60px;      /* hauteur du footer */
   left: 0;
@@ -8,7 +8,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 0;
   display: flex;
   justify-content: center; /* centre horizontalement */
   align-items: center;     /* centre verticalement */
