@@ -9,7 +9,6 @@ type Props = Question & {
 };
 
 function QuestionBox({ id, text, type, answers, descriptions, mode, onUpdate, handleRemoveQuestion }: Props) {
-    // 🔹 Mise à jour du texte de la question
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,
