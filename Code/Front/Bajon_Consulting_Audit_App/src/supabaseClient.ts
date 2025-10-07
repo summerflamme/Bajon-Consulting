@@ -1,4 +1,3 @@
-// supabaseClient.js
 import { createClient } from '@supabase/supabase-js';
 
 // Récupère ces infos dans ton tableau de bord Supabase : Project Settings -> API
