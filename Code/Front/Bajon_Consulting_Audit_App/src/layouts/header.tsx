@@ -1,6 +1,7 @@
 import { supabase } from '../supabaseClient';
 import './layouts.css';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
   const handleLogout = async () => {
