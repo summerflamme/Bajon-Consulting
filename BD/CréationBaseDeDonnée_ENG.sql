@@ -42,7 +42,8 @@ CREATE TABLE Audit (
     idAudit SERIAL PRIMARY KEY,
     auditName VARCHAR(150),
     creationDate DATE,
-    status VARCHAR(50)
+    status VARCHAR(50),
+    template BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE TABLE Role  (

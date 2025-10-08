@@ -1,7 +1,7 @@
 import UserCard from "./UserCard";
 import './components.css';
 
-const users = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]; // Remplacer par de vraies données
+const users = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 function UserList() {
     return (

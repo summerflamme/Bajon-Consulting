@@ -14,7 +14,7 @@
 }
 main {
   flex: 1;
-  position: relative; /* pour contenir la background-zone */
+  position: relative;
 }
 a {
   font-weight: 500;
