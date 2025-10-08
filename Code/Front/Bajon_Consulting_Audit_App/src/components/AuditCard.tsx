@@ -50,26 +50,26 @@ function AuditCard({ audit }) {
   useEffect(() => {
   const fetchCreation = async () => {
     const { data, error } = await supabase
-                .from('modify')
-                .select(`
-                  idaudit,
-                  modificationdate,
-                  modificationtime,
-                  audit (
-                    idaudit,
-                    auditname,
-                    status
-                  ),
-                  staff (
-                    iduser,
-                    firstname,
-                    lastname
-                  )
-                `)
-                .eq('idaudit', audit.idaudit)
-                .order('modificationdate', { ascending: true })
-                .order('modificationtime', { ascending: true })
-                .limit(1);
+    .from('modify')
+    .select(`
+      idaudit,
+      modificationdate,
+      modificationtime,
+      audit (
+        idaudit,
+        auditname,
+        status
+      ),
+      staff (
+        iduser,
+        firstname,
+        lastname
+      )
+    `)
+    .eq('idaudit', audit.idaudit)
+    .order('modificationdate', { ascending: true })
+    .order('modificationtime', { ascending: true })
+    .limit(1);
 
     if (error) {
       console.error("Erreur de récupération :", error);
@@ -85,26 +85,26 @@ function AuditCard({ audit }) {
   useEffect(() => {
   const fetchLastModif = async () => {
     const { data, error } = await supabase
-                .from('modify')
-                .select(`
-                  idaudit,
-                  modificationdate,
-                  modificationtime,
-                  audit (
-                    idaudit,
-                    auditname,
-                    status
-                  ),
-                  staff (
-                    iduser,
-                    firstname,
-                    lastname
-                  )
-                `)
-                .eq('idaudit', audit.idaudit)
-                .order('modificationdate', { ascending: false })
-                .order('modificationtime', { ascending: false })
-                .limit(1);
+    .from('modify')
+    .select(`
+      idaudit,
+      modificationdate,
+      modificationtime,
+      audit (
+        idaudit,
+        auditname,
+        status
+      ),
+      staff (
+        iduser,
+        firstname,
+        lastname
+      )
+    `)
+    .eq('idaudit', audit.idaudit)
+    .order('modificationdate', { ascending: false })
+    .order('modificationtime', { ascending: false })
+    .limit(1);
 
     if (error) {
       console.error("Erreur de récupération :", error);
