@@ -37,18 +37,35 @@ CREATE TABLE Client (
     logo BYTEA
 );
 
+-- Table AuditType
+CREATE TABLE AuditType (
+    idAuditType SERIAL PRIMARY KEY,
+    nameAuditType VARCHAR(100) NOT NULL
+);
+
+-- Table AuditOffer
+CREATE TABLE AuditOffer (
+    idAuditOffer SERIAL PRIMARY KEY,
+    nameAuditOffer VARCHAR(100) NOT NULL
+);
+
 -- Table Audit
 CREATE TABLE Audit (
     idAudit SERIAL PRIMARY KEY,
-    auditName VARCHAR(150),
+    idAuditType INT NOT NULL,
+    idAuditOffer INT NOT NULL,
+    auditName VARCHAR(150) NOT NULL,
     creationDate DATE,
     status VARCHAR(50),
-    template BOOLEAN NOT NULL DEFAULT false
+    template BOOLEAN NOT NULL DEFAULT false,
+    FOREIGN KEY (idAuditType) REFERENCES AuditType(idAuditType),
+    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(idAuditOffer)
 );
 
+-- Table role
 CREATE TABLE Role  (
     idRole SERIAL PRIMARY KEY,
-    roleName VARCHAR(150)
+    roleName VARCHAR(150) NOT NULL
 );
 
 -- Table User
