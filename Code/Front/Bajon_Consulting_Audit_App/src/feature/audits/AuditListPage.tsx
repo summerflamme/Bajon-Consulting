@@ -1,19 +1,42 @@
+import { useEffect, useState } from 'react';
 import AuditCard from '../../components/AuditCard';
 import SearchBar from '../../components/SearchBar';
+import type { Audit } from '../../types/audit';
 import './AuditListPage.css';
-
-const audits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]; // Remplace par tes données réelles
+import { supabase } from '../../supabaseClient';
 
 function AuditList() {
-    return (
-        <><SearchBar /><div className="audit-list">
-            <div className="audit-grid">
-                {audits.map((_audit, idx) => (
-                    <AuditCard key={idx} />
-                ))}
-            </div>
-        </div></>
-    );
+    const [audits, setAudits] = useState<Audit[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+    const fetchAudits = async () => {
+      const { data, error } = await supabase
+        .from("audit")
+        .select("*")
+
+      if (error) {
+        console.error("Erreur de récupération :", error);
+      } else {
+        setAudits(data || []);
+      }
+      setLoading(false);
+    };
+
+    fetchAudits();
+  }, []);
+
+  if (loading) return <p>Chargement...</p>;
+
+  return (
+      <><SearchBar /><div className="audit-list">
+          <div className="audit-grid">
+              {audits.map(audit => (
+                  <AuditCard key={audit.idaudit} audit={audit} />
+              ))}
+          </div>
+      </div></>
+  );
 }
 
 export default AuditList;
