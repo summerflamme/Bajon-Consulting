@@ -18,7 +18,6 @@ function UserInfo() {
             <div className="user-info-row"><strong>Nom :  </strong> Alice Dupont</div>
             <div className="user-info-row"><strong>Email :  </strong> alice.dupont@example.com</div>
             <div className="user-info-row"><strong>Téléphone :  </strong> +33 6 12 34 56 78</div>
-            <div className="user-info-row"><strong>UID :  </strong> UID001</div>
           </div>
 
           <div className="user-settings-section">

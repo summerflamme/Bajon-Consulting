@@ -13,7 +13,6 @@ function UserList() {
                 <div className="user-header-row">
                     <div className="user-cell">Nom</div>
                     <div className="user-cell">Email</div>
-                    <div className="user-cell">UID</div>
                     <div className="user-cell">Téléphone</div>
                     <div className="user-cell">Créé le</div>
                     <div className="user-cell">Dernière connexion</div>
