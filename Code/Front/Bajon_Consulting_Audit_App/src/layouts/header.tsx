@@ -42,10 +42,9 @@ function Header() {
     { title: "Clients", link: "#services" ,},
     {
       title: "Utilisateurs",
-      link: "#users",
       subMenus: [
-        { title: "Mes informations", link: "info" },
-        { title: "Liste des utilisateurs", link: "list" },
+        { title: "Mes informations", link: "/users/info" },
+        { title: "Liste des utilisateurs", link: "/users/list" },
       ]
     }
   ];
