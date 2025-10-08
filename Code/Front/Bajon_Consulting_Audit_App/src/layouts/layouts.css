@@ -240,8 +240,6 @@ SOUS-MENU
 /*______________ICI CSS DU FOOTER________________*/
 
 .footer {
-  /* Make footer participate in document flow (not fixed). It will sit
-     at the bottom because .app-layout is a column flex and main uses flex:1 */
   position: relative;
   left: 0;
   right: 0;
@@ -252,7 +250,6 @@ SOUS-MENU
   justify-content: center;
   padding: 0 20px;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  /* Footer below header but above page content */
   z-index: 10;
   font-size: 14px;
 }
