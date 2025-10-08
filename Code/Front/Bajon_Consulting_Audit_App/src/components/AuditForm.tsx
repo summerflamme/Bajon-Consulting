@@ -21,7 +21,7 @@ function AuditForm({ data, mode, onUpdate }: Props) {
             id: Date.now(),
             title: "New Section",
             questions: [
-                { id: 1, text: "New Question", type: "single-choice", answers: [
+                { id: 1, text: "New Question", choices: "single-choice", descriptions: "", answers: [
                     { id: 1, text: "New Answer", score: 0 }
                 ] },
             ],

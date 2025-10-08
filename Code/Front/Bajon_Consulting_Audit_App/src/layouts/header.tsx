@@ -38,7 +38,7 @@ function Header() {
   const menus = [
     {
       title: "Audits",
-      link: "#accueil",
+      link: "audit",
       subMenus: [
         { title: "Audit SEO", link: "#audit-seo" },
         { title: "Audit Technique", link: "#audit-technique" },
@@ -93,6 +93,7 @@ function Header() {
 
       {isMobile && (
         <div className="main">
+          
           <button
             id="menu-icon"
             aria-controls="main-navigation"

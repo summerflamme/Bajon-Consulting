@@ -43,7 +43,7 @@ function SectionBox({ id, title, questions, mode, onUpdate, handleRemoveSection 
         const newQuestion: Question = {
             id: Date.now(),
             text: "New Question",
-            type: "single-choice",
+            choices: "single-choice",
             answers: [
                 { id: 1, text: "New Answer", score: 0 }
             ]

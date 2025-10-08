@@ -7,7 +7,7 @@ export default function BaseLayout() {
         <div className="app-layout flex flex-col min-h-screen">
             <Header />
             <main className="flex-1 p-4">
-                <Outlet /> {/* Les pages s’affichent ici */}
+                <Outlet /> 
             </main>
             <Footer />
         </div>

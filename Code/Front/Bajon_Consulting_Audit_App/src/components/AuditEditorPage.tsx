@@ -11,8 +11,8 @@ function AuditEditorPage() {
                 questions: [
                     {
                         id: 1,
-                        text: "Question 1.1 texte long pour tester le retour à la ligne dans le composant",
-                        type: "single-choice",
+                        text: "Question 1.1 ",
+                        choices: "single-choice",
                         descriptions: "description de la question 1.1",
                         answers: [
                             { id: 1, text: "Réponse 1.1", score: -10 },
@@ -23,7 +23,7 @@ function AuditEditorPage() {
                     {
                         id: 2,
                         text: "Question 1.2",
-                        type: "single-choice",
+                        choices: "single-choice",
                         descriptions: "description de la question 1.2",
                         answers: [
                             { id: 1, text: "Réponse 1.1", score: -10 },
@@ -34,7 +34,7 @@ function AuditEditorPage() {
                     {
                         id: 3,
                         text: "Question 1.3",
-                        type: "single-choice",
+                        choices: "single-choice",
                         descriptions: "description de la question 1.3",
                         answers: [
                             { id: 1, text: "Réponse 1.1", score: 0 },
@@ -50,7 +50,7 @@ function AuditEditorPage() {
                     {
                         id: 1,
                         text: "Question 2.1",
-                        type: "single-choice",
+                        choices: "single-choice",
                         descriptions: "description de la question 2.1",
                         answers: [
                             { id: 1, text: "Réponse 2.1", score: -10 },
@@ -61,7 +61,7 @@ function AuditEditorPage() {
                     {
                         id: 2,
                         text: "Question 2.2",
-                        type: "single-choice",
+                        choices: "single-choice",
                         descriptions: "description de la question 2.2",
                         answers: [
                             { id: 1, text: "Réponse 2.1", score: -10 },
@@ -72,7 +72,7 @@ function AuditEditorPage() {
                     {
                         id: 3,
                         text: "Question 2.3",
-                        type: "single-choice",
+                        choices: "single-choice",
                         descriptions: "description de la question 2.3",
                         answers: [
                             { id: 1, text: "Réponse 2.1", score: 0 },

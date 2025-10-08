@@ -8,12 +8,13 @@ type Props = Question & {
     onUpdate: (updatedQuestion: Question) => void;
 };
 
-function QuestionBox({ id, text, type, answers, descriptions, mode, onUpdate, handleRemoveQuestion }: Props) {
+function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate, handleRemoveQuestion }: Props) {
+    // Mise à jour du texte de la question
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,
             text: e.target.value,
-            type,
+            choices,
             answers,
             descriptions,
         });
@@ -29,25 +30,26 @@ function QuestionBox({ id, text, type, answers, descriptions, mode, onUpdate, ha
         onUpdate({
             id,
             text,
-            type,
+            choices,
             answers: [...answers, newAnswer]
         });
     };
+    //suppression de réponse
     const handleRemoveAnswer = (answerId: number) => {
         onUpdate({
             id,
             text,
-            type,
+            choices,
             answers: answers.filter((a) => a.id !== answerId)
         });
     };
 
-    // 🔹 Mise à jour d’une réponse
+    // Mise à jour d’une réponse
     const updateAnswer = (answerId: number, updated: Answer) => {
         const updatedQuestion: Question = {
             id,
             text,
-            type,
+            choices,
             descriptions,
             answers: answers.map((a) =>
                 a.id === answerId ? updated : a
@@ -60,37 +62,70 @@ function QuestionBox({ id, text, type, answers, descriptions, mode, onUpdate, ha
         <div className="audit-form-question">
             {mode === "edit" ? (
                 <>
+                <div className="audit-form-question">
                     <input type="text" defaultValue={text} onChange={handleTextChange} />
-                <input type="text" defaultValue={descriptions} onChange={(e) => onUpdate({
-                    id,
-                    text,
-                    type,
-                    answers,
-                    descriptions: e.target.value,
-                })} />
-                    
-                </>
+                </div>
+                    <div className="audit-form-descriptions">
+
+                        <textarea
+                            defaultValue={descriptions}
+                            onChange={(e) =>
+                                onUpdate({
+                                    id,
+                                    text,
+                                    choices,
+                                    answers,
+                                    descriptions: e.target.value,
+                                })
+                            }
+                            rows={4} // nombre de lignes visibles par défaut
+                            className="w-full p-2 border rounded-md resize-y"
+                        />
+
+                    </div>
+                    <div className="audit-form-choices">
+                        <input
+                            type="checkbox"
+                            defaultChecked={choices === "multiple-choice"}
+                            onChange={(e) =>
+                                onUpdate({
+                                    id,
+                                    text,
+                                    choices: e.target.checked ? "multiple-choice" : "single-choice",
+                                    answers,
+                                    descriptions,
+                                    
+                                })
+                            }
+                        />
+                        <span>Choix multiple</span>
+                    </div>
+
+            </>
             ) : (
                 <>
-                    <div>{text}</div>
-                    <div>{descriptions}</div>
+                    <div >{text}</div>
+                        <div className="whitespace-pre-line bg-gray-50 border rounded-md p-3 text-gray-800">
+                            {descriptions || ""}
+                        </div>
                 </>
             )}
 
             {answers.map((answer) => (
                 <AnswerBox
+                    questionId={`question-${id}`}
                     key={answer.id}
                     {...answer}
                     mode={mode}
-                    type={type}
+                    choices={choices}
                     onUpdate={(updated) => updateAnswer(answer.id, updated)}
                     handleRemoveAnswer={() => handleRemoveAnswer(answer.id)}
                 />
             ))}
             {mode === "edit" && (
                 <>
-                <button type="button" onClick={handleRemoveQuestion}>suppression question</button>
-                    <button type="button" onClick={handleAddAnswer}>Ajouter une réponse</button>
+                <button type="button" onClick={handleRemoveQuestion} className="btn-remove">suppression question</button>
+                <button type="button" onClick={handleAddAnswer} className="btn-add">Ajouter une réponse</button>
                 </>
             )}
         </div>
