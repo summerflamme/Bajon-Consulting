@@ -35,28 +35,19 @@ function Header() {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
-  // 🔥 Liste des menus et sous-menus
+  // Liste des menus et sous-menus
   const menus = [
+    { title: "Audits", link: "#services" ,},
+    { title: "Templates", link: "#services" ,},
+    { title: "Clients", link: "#services" ,},
     {
-      title: "Audits",
-      link: "#accueil",
+      title: "Utilisateurs",
+      link: "#users",
       subMenus: [
-        { title: "Audit SEO", link: "#audit-seo" },
-        { title: "Audit Technique", link: "#audit-technique" },
-        { title: "Audit Contenu", link: "#audit-contenu" }
+        { title: "Mes informations", link: "info" },
+        { title: "Liste des utilisateurs", link: "list" },
       ]
-    },
-    {
-      title: "Templates",
-      link: "#presentation",
-      subMenus: [
-        { title: "Template SEO", link: "#template-seo" },
-        { title: "Template Technique", link: "#template-technique" },
-        { title: "Template Contenu", link: "#template-contenu" }
-      ]
-    },
-    { title: "Client", link: "#services" ,},
-    { title: "Compte", link: "#valeurs" }
+    }
   ];
 
   return (
