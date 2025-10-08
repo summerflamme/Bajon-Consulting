@@ -14,7 +14,8 @@ function UserForm( {mode, user} : UserFormProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [displayName, setDisplayName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
     const [message, setMessage] = useState('');
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
@@ -36,7 +37,8 @@ function UserForm( {mode, user} : UserFormProps) {
     useEffect(() => {
         if (mode === 'edition' && currentUser) {
             setEmail(currentUser.email ?? '');
-            setDisplayName(currentUser.user_metadata?.displayName ?? '');
+            setLastName(currentUser.user_metadata.displayName?.split(' ')[0] ?? '');
+            setFirstName(currentUser.user_metadata.displayName?.split(' ')[1] ?? '');
             setPhone(currentUser.user_metadata?.phone ?? '');
         }
     }, [mode, currentUser]);
@@ -44,15 +46,18 @@ function UserForm( {mode, user} : UserFormProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-    if (!validEmail.test(email)) {
+        
+            if (!validEmail.test(email)) {
             setMessage("Email invalide");
             return;
         }
-        if (password.length < 6) {
+        if (mode === 'creation' ){
+            if (password.length < 6) {
             setMessage("Le mot de passe doit contenir au moins 6 caractères");
             return;
         }
-
+        }
+        
         if (password !== confirmPassword) {
             setMessage("Les mots de passe ne correspondent pas");
             return;
@@ -62,14 +67,15 @@ function UserForm( {mode, user} : UserFormProps) {
             setMessage("Numéro de téléphone invalide");
             return;
         }
-        
+
+        console.log("display name:", lastName + ' ' + firstName);
         if( mode === 'creation'){
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 data: {
-                    displayName: displayName,
+                    displayName: lastName + ' ' + firstName,
                     phone: phone
                 }
             }
@@ -84,7 +90,8 @@ function UserForm( {mode, user} : UserFormProps) {
             setEmail('');
             setPassword('');
             setConfirmPassword('');
-            setDisplayName('');
+            setFirstName('');
+            setLastName('');
             setPhone('');
         }   
     }
@@ -92,10 +99,9 @@ function UserForm( {mode, user} : UserFormProps) {
     if( mode === 'edition' && currentUser){
         const { data, error } = await supabase.auth.updateUser({
             email,
-            password,
             data: {
-                displayName: displayName,
-                phone: phone
+                displayName: lastName + ' ' + firstName,
+                phone: phone,
         }
     });
     console.log(data);
@@ -108,7 +114,8 @@ function UserForm( {mode, user} : UserFormProps) {
             setEmail('');
             setPassword('');
             setConfirmPassword('');
-            setDisplayName('');
+            setFirstName('');
+            setLastName('');
             setPhone('');
         }   
     }
@@ -121,13 +128,21 @@ function UserForm( {mode, user} : UserFormProps) {
         <h2>{mode === 'edition' ? 'Modifier un compte' : 'Créer un compte'}</h2>
         <div className="login-box">
         <form onSubmit={handleSubmit}>
-            <label htmlFor="displayName">Nom Prénom</label>
+            <label htmlFor="lastName">Nom</label>
             <input
-                placeholder='Christophe Bajon'
+                placeholder='Bajon'
                 type="text"
-                id="displayName"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+            />
+            <label htmlFor='firstName'> Prénom </label>
+            <input
+                placeholder='Christophe'
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
             />
             <label htmlFor="email">Email</label>
             <input
@@ -140,7 +155,7 @@ function UserForm( {mode, user} : UserFormProps) {
             <label htmlFor="phoneNumber">Numéro de téléphone</label>
             <input
                 placeholder='0606060606'
-                type="text"
+                type="tel"
                 id="phoneNumber"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
