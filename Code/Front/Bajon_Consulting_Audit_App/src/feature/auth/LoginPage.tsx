@@ -22,6 +22,10 @@ function LoginPage() {
     } else {
       console.log("Connexion réussie:", data);
       sessionStorage.setItem("user", JSON.stringify(data.user));
+      const { user } = data;
+      console.log("information de l'utilsateur connecter ", user);
+      console.log("information data ", data)
+      sessionStorage.setItem("userObject", JSON.stringify(user));
       setErrorMessage(""); 
     }
   };

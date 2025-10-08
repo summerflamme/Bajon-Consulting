@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './layouts.css';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 function Header() {
   const handleLogout = async () => {
     console.log("Déconnexion en cours de l'utilisateur", sessionStorage.getItem("user"));
@@ -36,7 +33,6 @@ function Header() {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
-  // 🔥 Liste des menus et sous-menus
   const menus = [
     {
       title: "Audits",
