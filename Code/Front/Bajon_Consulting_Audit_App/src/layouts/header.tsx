@@ -58,7 +58,7 @@ function Header() {
 
   return (
     <header className="header">
-      <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
+      <img src="../../src/assets/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
 
       <ul className={`menu ${open ? 'open' : ''}`}>
         {menus.map((menu, index) => (

@@ -56,12 +56,14 @@ function UserForm( {mode, user} : UserFormProps) {
             setMessage("Le mot de passe doit contenir au moins 6 caractères");
             return;
         }
-        }
+        
         
         if (password !== confirmPassword) {
             setMessage("Les mots de passe ne correspondent pas");
             return;
         }
+
+    }
 
         if (!validPhone.test(phone)) {
             setMessage("Numéro de téléphone invalide");
