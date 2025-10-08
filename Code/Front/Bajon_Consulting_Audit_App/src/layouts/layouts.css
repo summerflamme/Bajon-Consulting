@@ -1,17 +1,6 @@
-/* ==========================
-   Layouts CSS
-========================== */
 @import url("https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css");
 
 
-/*______________ICI CSS DU HEADER________________*/
-
-
-
-
-/* ==========================
-   HEADER
-========================== */
 .header {
   flex-grow: 1;
   height: 80px;
@@ -24,7 +13,6 @@
   padding: 0 20px;
   font-size: larger;
   background: rgba(255, 255, 255, 0.9);
-  /* Ensure header sits above other fixed elements (search bar, menus, etc.) */
   z-index: 10000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -33,22 +21,13 @@
   width: auto;
 }
 
-/* Ensure the layout reserves space for the fixed header/footer
-   so page content isn't covered */
 .app-layout {
   box-sizing: border-box;
-  /* Use flex column so footer is pushed to the bottom when content is short
-     and stays after content when page is long. Keep top padding to avoid
-     being covered by the fixed header. */
   display: flex;
   flex-direction: column;
-  padding-top: 80px; /* reserve space for fixed header */
+  padding-top: 80px; 
   min-height: 100vh;
 }
-
-/* ==========================
-MENU PRINCIPAL
-========================== */
 
 .menu {
   display: flex;
@@ -57,10 +36,10 @@ MENU PRINCIPAL
   align-items: center;
 }
 .menu > li > a {
-  display: flex;              /* Flex pour centrer le contenu */
-  align-items: center;        /* Centre verticalement le texte */
-  height: 80px;               /* Même hauteur que .header */
-  padding: 0 20px;            /* Espace gauche/droite */
+  display: flex;            
+  align-items: center;        
+  height: 80px;         
+  padding: 0 20px;          
   text-decoration: none;
   color: black;
   border-bottom: 2px solid transparent;
@@ -94,12 +73,6 @@ MENU PRINCIPAL
   pointer-events: auto;
 }
 
-
-/* ==========================
-SOUS-MENU
-========================== */
-
-/* remplace ta logique desktop d’affichage */
 .sub-menu {
   position: absolute;
   top: 100%;
@@ -109,7 +82,6 @@ SOUS-MENU
   padding: 10px 0;
   border-radius: 4px;
 
-  /* états initial + animables */
   opacity: 0;
   transform: translateY(8px);
   visibility: hidden;
@@ -124,16 +96,12 @@ SOUS-MENU
   color: #fff;
   text-decoration: none;
 }
-  
-  /* ==========================
-  MOBILE 
-  ========================== */
+
 @media (max-width: 768px) {
   .header {
     font-size: medium;
   }
-  
-  /* Bouton  */
+
   .main {
     margin-left: auto;
     display: flex;
@@ -144,7 +112,7 @@ SOUS-MENU
     transform: translateY(8px) !important;
     pointer-events: auto !important;
   }
-  /* Menu par défaut (caché) */
+
   .menu {
     position: fixed;
     top: 80px;
@@ -155,20 +123,20 @@ SOUS-MENU
     margin: 0;
     padding: 0;
     flex-direction: column;
-    max-height: 0;           /* caché par défaut */
+    max-height: 0;         
     overflow: hidden;
     opacity: 0;
     transition: max-height .36s ease, opacity .32s ease;
   }
   .menu > li > a {
-    height: auto;          /* laisse la hauteur s’adapter au contenu */
-    padding: 12px 0;       /* réduit le padding vertical */
+    height: auto;         
+    padding: 12px 0;    
     text-align: center;
     color: #fff;
   }
-  /* Menu ouvert */
+
   .menu.open {
-    max-height: calc(100vh - 80px);  /* prend toute la hauteur disponible */
+    max-height: calc(100vh - 80px); 
     opacity: 1;
   }
 
@@ -176,15 +144,14 @@ SOUS-MENU
     margin-left: 8px;
   font-size: 40px;
   cursor: pointer;
-  /*icon a droite */
 
   color: white;
   transition: transform 0.3s ease;
 }
 
 .menu-item a {
-    flex: 1;                   /* prend tout l’espace disponible */
-    text-align: center;        /* texte centré */
+    flex: 1;                
+    text-align: center;       
     color: #fff;
     padding: 12px 0;
     font-size: 16px;
@@ -192,22 +159,18 @@ SOUS-MENU
 .menu-item {
   display: flex;
   padding: 5px;
-  justify-content: space-between; /* texte à gauche, flèche à droite */
+  justify-content: space-between; 
   align-items: center;
   width: 100%;
 }
  .menu-item .arrow {
     position: absolute;
-    right: -50px;               /* espace depuis le bord droit */
+    right: -50px;            
     cursor: pointer;
     color: #fff;
     transition: transform 0.3s ease;
   }
 
-
-
-
- /* Sous-menu mobile fermé par défaut */
  .sub-menu {
    visibility: visible;
     padding: 0;
@@ -222,7 +185,7 @@ SOUS-MENU
   }
 
   .menu li.open > .sub-menu {
-    max-height: 500px; /* adapter selon le contenu */
+    max-height: 500px;
     opacity: 1;
   }
 
@@ -231,13 +194,8 @@ SOUS-MENU
     text-align: center;
     color: #000;
   }
-
-
-
-
 }
 
-/*______________ICI CSS DU FOOTER________________*/
 
 .footer {
   position: relative;
@@ -252,6 +210,7 @@ SOUS-MENU
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
   font-size: 14px;
+  margin-top: 1rem;
 }
 
 .footer-content {

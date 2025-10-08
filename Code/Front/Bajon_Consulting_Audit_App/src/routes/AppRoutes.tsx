@@ -4,6 +4,7 @@ import LoginPage from "../feature/auth/LoginPage";
 import AuditEditorPage from "../components/AuditEditorPage";
 import UserList from "../feature/users/UserListPage";
 import UserInfo from "../feature/users/UserInfo";
+import NewAuditPage from "../components/NewAudit";
 
 
 export default function AppRoutes() {
@@ -15,6 +16,7 @@ export default function AppRoutes() {
                     <Route path="/users/list" element={<UserList />} />
                     <Route path="/users/info" element={<UserInfo />} />
                     <Route path="/audit" element={<AuditEditorPage />} />
+                    <Route path="/newaudit" element={<NewAuditPage />} />
                 </Route>
             </Routes>
         </Router>

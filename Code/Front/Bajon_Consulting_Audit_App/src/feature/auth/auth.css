@@ -6,26 +6,42 @@
 
 .background-zone {
   position: fixed;
+<<<<<<< HEAD
+  top: 80px;        
+  bottom: 60px;   
+  left: 0;
+  right: 0;
+  background-image: url('/fond-auth.jpeg'); 
+=======
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   background-image: url('/fond-auth.jpeg');
+>>>>>>> 17e5f337b7680bf824d9135d8a73a797e52341c9
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
+<<<<<<< HEAD
+  justify-content: center; 
+  align-items: center; 
+=======
   justify-content: center;
   align-items: center;
+>>>>>>> 17e5f337b7680bf824d9135d8a73a797e52341c9
 }
 
 .login-box {
+<<<<<<< HEAD
+=======
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 15px;
+>>>>>>> 17e5f337b7680bf824d9135d8a73a797e52341c9
   background-color: rgba(255, 255, 255, 0.8);
   padding: 30px;
   border-radius: 10px;

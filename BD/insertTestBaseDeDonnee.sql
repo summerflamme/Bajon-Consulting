@@ -14,13 +14,27 @@ VALUES
 ('Lefevre', 'Julie', 'julie.lefevre@email.com', '0622334455', 'JL Consulting', '12 boulevard St-Michel', 'France', '112233445', 'FR112233445', 'Consulting', 'RCS11223', 10000.00, '@jlconsult', 'SASU', NULL),
 ('Petit', 'Luc', 'luc.petit@email.com', '0677889900', 'Petit Entreprise', '50 chemin des Fleurs', 'Suisse', '998877665', 'CH998877665', 'Commerce', 'RCS99887', 8000.00, '@petit', 'SA', NULL);
 
+INSERT INTO AuditType (nameAuditType) VALUES
+('Interne'),
+('Externe'),
+('Réglementaire'),
+('Conformité'),
+('Performance');
+
+INSERT INTO AuditOffer (nameAuditOffer) VALUES
+('Standard'),
+('Premium'),
+('Express'),
+('Personnalisé'),
+('Gratuit');
+
 -- Table Audit
-INSERT INTO Audit (auditName, creationDate, status) VALUES
-('Audit Sécurité', '2024-01-15', 'En cours'),
-('Audit Financier', '2023-11-20', 'Terminé'),
-('Audit Qualité', '2024-05-10', 'En cours'),
-('Audit RH', '2023-09-01', 'Annulé'),
-('Audit IT', '2024-02-28', 'Prévu');
+INSERT INTO Audit (auditName, creationDate, status, template) VALUES
+('Audit Sécurité', '2024-01-15', 'En cours', 'True'),
+('Audit Financier', '2023-11-20', 'Terminé', 'False'),
+('Audit Qualité', '2024-05-10', 'En cours', 'False'),
+('Audit RH', '2023-09-01', 'Annulé', 'False'),
+('Audit IT', '2024-02-28', 'Prévu', 'False');
 
 -- Table Theme
 INSERT INTO Theme (themeName, status) VALUES

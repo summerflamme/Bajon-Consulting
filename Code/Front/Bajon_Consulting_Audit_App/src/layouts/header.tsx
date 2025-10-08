@@ -35,7 +35,10 @@ function Header() {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
+<<<<<<< HEAD
+=======
   // Liste des menus et sous-menus
+>>>>>>> 17e5f337b7680bf824d9135d8a73a797e52341c9
   const menus = [
     { title: "Audits", link: "#services" ,},
     { title: "Templates", link: "#services" ,},

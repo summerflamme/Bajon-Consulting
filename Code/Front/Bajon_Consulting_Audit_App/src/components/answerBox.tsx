@@ -8,7 +8,7 @@ type Props = Answer & {
 };
 
 function AnswerBox({ id, text, score, mode, type, onUpdate, handleRemoveAnswer }: Props) {
-    // 🔹 Mise à jour du texte de la réponse
+
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,
@@ -17,7 +17,6 @@ function AnswerBox({ id, text, score, mode, type, onUpdate, handleRemoveAnswer }
         });
     };
 
-    // 🔹 Mise à jour du score (si besoin)
     const handleScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,

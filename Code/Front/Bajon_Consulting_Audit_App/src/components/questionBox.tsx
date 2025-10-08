@@ -18,7 +18,7 @@ function QuestionBox({ id, text, type, answers, descriptions, mode, onUpdate, ha
             descriptions,
         });
     };
-    //suppression de question
+    //suppression question
     
     const handleAddAnswer = () => {
         const newAnswer: Answer = {
@@ -42,7 +42,7 @@ function QuestionBox({ id, text, type, answers, descriptions, mode, onUpdate, ha
         });
     };
 
-    // 🔹 Mise à jour d’une réponse
+    // Mise à jour réponse
     const updateAnswer = (answerId: number, updated: Answer) => {
         const updatedQuestion: Question = {
             id,
