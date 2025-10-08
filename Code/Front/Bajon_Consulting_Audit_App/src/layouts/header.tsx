@@ -35,27 +35,21 @@ function Header() {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
+<<<<<<< HEAD
+=======
+  // Liste des menus et sous-menus
+>>>>>>> 17e5f337b7680bf824d9135d8a73a797e52341c9
   const menus = [
+    { title: "Audits", link: "#services" ,},
+    { title: "Templates", link: "#services" ,},
+    { title: "Clients", link: "#services" ,},
     {
-      title: "Audits",
-      link: "#accueil",
+      title: "Utilisateurs",
       subMenus: [
-        { title: "Audit SEO", link: "#audit-seo" },
-        { title: "Audit Technique", link: "#audit-technique" },
-        { title: "Audit Contenu", link: "#audit-contenu" }
+        { title: "Mes informations", link: "/users/info" },
+        { title: "Liste des utilisateurs", link: "/users/list" },
       ]
-    },
-    {
-      title: "Templates",
-      link: "#presentation",
-      subMenus: [
-        { title: "Template SEO", link: "#template-seo" },
-        { title: "Template Technique", link: "#template-technique" },
-        { title: "Template Contenu", link: "#template-contenu" }
-      ]
-    },
-    { title: "Client", link: "#services" ,},
-    { title: "Compte", link: "#valeurs" }
+    }
   ];
 
   return (
