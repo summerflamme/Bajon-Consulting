@@ -4,15 +4,17 @@ function AuditCard() {
   return (
     <><div>
       <div className="card-header">
-        <h5 className="card-title"> TITRE_AUDIT </h5>
+        <h5 className="card-title"> <strong> TITRE_AUDIT </strong> </h5>
       </div>
       <div className="card-body">
-        <p className='card-text'> Statut : STATUT_AUDIT </p>
+        <p className='card-text'> <strong> Type d'Offre : </strong> TYPE_OFFRE </p>
+        <p className='card-text'> <strong> Type d'Audit : </strong> TYPE_AUDIT </p>
+        <p className='card-text'> <strong> Statut : </strong> STATUT_AUDIT </p>
         <div>
           <a href="#" className="btn btn-primary">Consulter</a>
-          <span className='card-text'> | </span>
+          <span className='card-text'> </span>
           <a href="#" className="btn btn-primary">Modifier</a>
-          <span className='card-text'> | </span>
+          <span className='card-text'> </span>
           <a href="#" className="btn btn-primary">Supprimer</a>
         </div>
       </div>

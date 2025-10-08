@@ -38,7 +38,7 @@ function Header() {
   const menus = [
     {
       title: "Audits",
-      link: "#accueil",
+      link: "audits",
       subMenus: [
         { title: "Audit SEO", link: "#audit-seo" },
         { title: "Audit Technique", link: "#audit-technique" },
