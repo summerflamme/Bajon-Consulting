@@ -1,84 +1,118 @@
-/* UserCard */
+/* ===== Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 .user-list-table {
-  width: auto;
-  min-width: 1200px; 
-  border: 1px solid #ddd;
-  overflow-x: auto;
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal si besoin */
   font-family: "Segoe UI", sans-serif;
-  background: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.user-header-row {
-  display: flex;
-  background: #f5f5f5;
-  padding: 0.7rem 1rem;
-  font-weight: bold;
-  border-bottom: 1px solid #ddd;
-}
-
-.user-header-row .user-cell {
-  flex: 1 0 80px;
-  padding: 0 0.5rem;
-  font-size: 0.9rem;
-  color: #333;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
+/* ===== Header & Row ===== */
+.user-header-row,
 .user-row {
-  display: flex;
+  display: grid;
+  grid-template-columns:
+    auto      /* Nom */
+    auto      /* Email */
+    auto      /* Téléphone */
+    auto      /* Créé le */
+    auto      /* Dernière connexion */
+    max-content; /* Actions prend juste ce qu'il faut */
+  gap: 4px;            /* espace horizontal réduit */
   align-items: center;
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid #eee;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid #e6e6e6;
+  min-width: 700px;    /* permet scroll horizontal si trop petit */
+  background: white;
 }
 
-.user-row:hover {
-  background: #f9f9f9;
-}
-
-.user-cell {
-  flex: 1 0 80px;  
-  padding: 0 0.5rem;
-  font-size: 0.9rem;
+/* header styling */
+.user-header-row {
+  background: #f5f5f5;
+  font-weight: 700;
   color: #333;
-  white-space: nowrap;
+}
+
+/* cellules */
+.user-cell {
+  min-width: 0; /* permet shrink + ellipsis */
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 0.2rem;
+  font-size: 0.95rem;
+  color: #333;
 }
 
-.user-cell:hover {
-  overflow: visible;
-  background: #fff;
-  z-index: 1;
-}
-
+/* actions */
 .user-cell.actions {
-  flex: 4;
+  justify-self: end;
   display: flex;
   gap: 0.4rem;
-  justify-content: flex-start;
+  align-items: center;
 }
 
+/* boutons */
 .btn {
   padding: 0.3rem 0.6rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #fff;
   background: #007bff;
   border-radius: 4px;
   text-decoration: none;
-  transition: background 0.2s;
-  white-space: nowrap;
+}
+.btn:hover { background: #0056b3; }
+
+/* ===== Responsive ===== */
+
+/* 1) Tablette large : on simplifie et masque certaines colonnes */
+@media (max-width: 1024px) {
+  .user-header-row,
+  .user-row {
+    grid-template-columns: auto auto auto max-content; /* Nom | Email | Téléphone | Actions */
+    min-width: 600px;
+  }
+
+  .user-cell:nth-child(4),
+  .user-cell:nth-child(5) { display: none; } /* Créé le / Dernière connexion */
 }
 
-.btn:hover {
-  background: #0056b3;
+/* 2) Mobile standard : on garde Nom | Email | Actions */
+@media (max-width: 768px) {
+  .user-header-row,
+  .user-row {
+    grid-template-columns: 1fr 1.6fr max-content;
+    min-width: 0;
+    padding: 0.3rem 0.4rem;
+    gap: 4px;
+  }
+
+  .user-cell:nth-child(3),
+  .user-cell:nth-child(4),
+  .user-cell:nth-child(5) { display: none; } /* cache Téléphone / Créé le / Dernière connexion */
+
+  .user-cell { font-size: 0.92rem; }
+  .user-cell.actions { justify-self: center; }
+
+  .btn { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+}
+
+/* 3) Très petit écran : Nom + Email seulement */
+@media (max-width: 420px) {
+  .user-header-row,
+  .user-row {
+    grid-template-columns: 1fr 1.3fr; /* Nom | Email */
+  }
+  .user-cell.actions { display: none; }
 }
 
 
-/*ICI USERINFO*/
+
+/*____________________ICI USERINFO____________________*/
 
 .user-info-wrapper {
   max-width: 900px;
