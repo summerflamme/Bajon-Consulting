@@ -12,7 +12,7 @@ type Props = {
 };
 
 function SectionBox({ id, title, questions, mode, onUpdate, handleRemoveSection }: Props) {
-    // Mise à jour du titre de la section
+    // Mise à jour titresection
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,
@@ -28,7 +28,7 @@ function SectionBox({ id, title, questions, mode, onUpdate, handleRemoveSection 
         });
     };
 
-    // Mise à jour d’une question
+    // Mise à jour question
     const updateQuestion = (questionId: number, updatedQuestion: Question) => {
         const updatedSection: Section = {
             id,

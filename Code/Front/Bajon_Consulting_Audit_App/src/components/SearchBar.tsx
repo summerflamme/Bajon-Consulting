@@ -3,7 +3,10 @@ import './components.css';
 
 type SortOrder = 'asc' | 'desc';
 
+type SearchVariant = 'audit' | 'users' | 'template' | 'default';
+
 type SearchBarProps = {
+  variant?: SearchVariant;
   onSearchChange?: (value: string) => void;
   onSortChange?: (value: string) => void;
   onAuditTypeChange?: (value: string) => void;
@@ -12,6 +15,7 @@ type SearchBarProps = {
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
+  variant = 'default',
   onSearchChange,
   onSortChange,
   onAuditTypeChange,
@@ -35,26 +39,61 @@ const SearchBar: React.FC<SearchBarProps> = ({
         onChange={(e) => onSearchChange?.(e.target.value)}
       />
 
-      <select className="search-select" onChange={(e) => onAuditTypeChange?.(e.target.value)}>
-        <option value="">Type d'audit</option>
-        <option value="cloud">Cloud</option>
-        <option value="cybersecurite">Cybersécurité</option>
-        <option value="reseau">Réseau</option>
-        <option value="systeme">Système</option>
-      </select>
+      {/* Filtres spécifiques selon la page */}
+      {variant === 'audit' && (
+        <>
+          <select className="search-select" onChange={(e) => onAuditTypeChange?.(e.target.value)}>
+            <option value="">Type d'audit</option>
+            <option value="cloud">Cloud</option>
+            <option value="cybersecurite">Cybersécurité</option>
+            <option value="reseau">Réseau</option>
+            <option value="systeme">Système</option>
+          </select>
 
-      <select className="search-select" onChange={(e) => onOfferTypeChange?.(e.target.value)}>
-        <option value="">Type d'offre</option>
-        <option value="essentiel">Essentiel</option>
-        <option value="avance">Avancé</option>
-        <option value="flash">Flash</option>
-      </select>
+          <select className="search-select" onChange={(e) => onOfferTypeChange?.(e.target.value)}>
+            <option value="">Type d'offre</option>
+            <option value="essentiel">Essentiel</option>
+            <option value="avance">Avancé</option>
+            <option value="flash">Flash</option>
+          </select>
+        </>
+      )}
 
+      {variant === 'template' && (
+        <>
+          <select className="search-select" onChange={(e) => onAuditTypeChange?.(e.target.value)}>
+            <option value="">Type d'audit</option>
+            <option value="cloud">Cloud</option>
+            <option value="cybersecurite">Cybersécurité</option>
+            <option value="reseau">Réseau</option>
+            <option value="systeme">Système</option>
+          </select>
+
+          <select className="search-select" onChange={(e) => onOfferTypeChange?.(e.target.value)}>
+            <option value="">Type d'offre</option>
+            <option value="essentiel">Essentiel</option>
+            <option value="avance">Avancé</option>
+            <option value="flash">Flash</option>
+          </select>
+        </>
+      )}
+
+      {variant === 'users' && (
+        <>
+          <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
+            <option value="">Filtrer par rôle</option>
+            <option value="admin">Administrateur</option>
+            <option value="user">Utilisateur</option>
+          </select>
+        </>
+      )}
+
+      {/* Commun à tous */}
       <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
         <option value="">Trier par</option>
         <option value="alphabetique">Ordre alphabétique</option>
-        <option value="date">Date</option>
-        <option value="date">Taille</option>
+        <option value="date">Date création</option>
+        <option value="taille">UID</option>
       </select>
 
       <button

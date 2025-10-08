@@ -1,0 +1,40 @@
+.test {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-audit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 640px;
+    align-items: center;
+}
+
+.new-audit-form label {
+    font-weight: 600;
+}
+
+.new-audit-form input,
+.new-audit-form textarea,
+.new-audit-form select {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.new-audit-form .error {
+    color: #b00020;
+    font-size: 12px;
+}
+
+.new-audit-form .form-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.form-message {
+    color: #b00020;
+    margin-top: 10px;
+}
