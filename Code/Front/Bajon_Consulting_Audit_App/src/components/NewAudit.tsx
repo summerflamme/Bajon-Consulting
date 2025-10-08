@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../components/NewAudit.css";
+import { supabase } from "../supabaseClient";
 
 export default function NewAuditPage() {
     // Simpler state: only essential fields for now
@@ -12,6 +13,36 @@ export default function NewAuditPage() {
     const [siren, setSiren] = useState("");
     const [error, setError] = useState("");
 
+    // test de recherche BD ---------------------------------------------
+    const [audits, setAudits] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [fetchError, setFetchError] = useState<string | null>(null);
+    // ------------------------------------------------------------------
+
+    const fetchAudits = async () => {
+        try {
+            const { data, error } = await supabase
+                .from("client")
+                .select("*");
+
+            if (error) {
+                setFetchError(error.message);
+                setAudits([]);
+            } else {
+                setAudits(data ?? []);
+            }
+        } catch (err: any) {
+            setFetchError(err.message ?? "Erreur inconnue");
+            setAudits([]);
+        } 
+        setLoading(false);
+        
+    };
+
+    useEffect(() => {
+        fetchAudits();
+    }, []);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const payload = { name, clientFirstName, clientLastName, clientEmail, clientPhone, companyName, siren };
@@ -21,6 +52,7 @@ export default function NewAuditPage() {
     };
 
     return (
+        
         <div className="test">
             <h2>Test</h2>
             <form onSubmit={handleSubmit} className="new-audit-form">
@@ -52,6 +84,15 @@ export default function NewAuditPage() {
 
                 {error && <p className="form-message">{error}</p>}
             </form>
+            
+            <div style={{ display: 'grid', gap: 8, marginBottom: 20 }}>
+                {audits.map((a: any) => (
+                    <div key={a.id} style={{ border: '1px solid #ddd', padding: 8, borderRadius: 6, textAlign: 'left' }}>
+                        <strong>{a.clientlastname}</strong><br/>
+                        <strong>{a.clientfirstname ?? "Audit sans titre"}</strong>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

@@ -38,31 +38,29 @@ function Header() {
   const menus = [
     {
       title: "Audits",
-      link: "audit",
+      link: "#accueil",
       subMenus: [
-        { title: "Audit SEO", link: "audit-seo" },
-        { title: "Audit Technique", link: "audit-technique" },
-        { title: "Audit Contenu", link: "audit-contenu" }
+        { title: "Audit SEO", link: "#audit-seo" },
+        { title: "Audit Technique", link: "#audit-technique" },
+        { title: "Audit Contenu", link: "#audit-contenu" }
       ]
     },
     {
       title: "Templates",
-      link: "presentation",
+      link: "#presentation",
       subMenus: [
-        { title: "Template SEO", link: "template-seo" },
-        { title: "Template Technique", link: "template-technique" },
-        { title: "Template Contenu", link: "template-contenu" }
+        { title: "Template SEO", link: "#template-seo" },
+        { title: "Template Technique", link: "#template-technique" },
+        { title: "Template Contenu", link: "#template-contenu" }
       ]
     },
-    { title: "Client", link: "services" ,},
-    { title: "Compte", link: "users" }
+    { title: "Client", link: "#services" ,},
+    { title: "Compte", link: "#valeurs" }
   ];
 
   return (
     <header className="header">
-      <a href='/'>
       <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
-      </a>
 
       <ul className={`menu ${open ? 'open' : ''}`}>
         {menus.map((menu, index) => (
