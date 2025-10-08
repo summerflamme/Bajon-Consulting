@@ -8,6 +8,7 @@ export default function NewAuditPage() {
     const [clientFirstName, setClientFirstName] = useState("");
     const [clientLastName, setClientLastName] = useState("");
     const [clientEmail, setClientEmail] = useState("");
+
     const [clientPhone, setClientPhone] = useState("");
     const [companyName, setCompanyName] = useState("");
     const [siren, setSiren] = useState("");
@@ -19,11 +20,19 @@ export default function NewAuditPage() {
     const [fetchError, setFetchError] = useState<string | null>(null);
     // ------------------------------------------------------------------
 
+    //requette pour la BD
     const fetchAudits = async () => {
         try {
             const { data, error } = await supabase
-                .from("client")
-                .select("*");
+                .from('audit')
+                .select(`
+                  idaudit,
+                 auditname,
+                 audittype (
+                      idaudittype,
+                      nameaudittype
+                     )
+                `)
 
             if (error) {
                 setFetchError(error.message);
@@ -51,8 +60,8 @@ export default function NewAuditPage() {
         alert('Audit créé');
     };
 
-    return (
-        
+    //affichage
+    return (        
         <div className="test">
             <h2>Test</h2>
             <form onSubmit={handleSubmit} className="new-audit-form">
@@ -66,10 +75,24 @@ export default function NewAuditPage() {
                 <input id="client-last" value={clientLastName} onChange={(e) => setClientLastName(e.target.value)} placeholder="Ex: Dupont" required />
 
                 <label htmlFor="client-email">Email du client</label>
-                <input id="client-email" type="email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} placeholder="ex@domaine.com" required />
+                <input
+                    id="client-email"
+                    type="email"
+                    value={clientEmail}
+                    onChange={(e) => { setClientEmail(e.target.value); setError(""); }}
+                    placeholder="ex@domaine.com"
+                    required/>
 
                 <label htmlFor="client-phone">Téléphone</label>
-                <input id="client-phone" type="tel" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} placeholder="+33 6 12 34 56 78" pattern="[0-9+()\s\-]{6,20}" />
+                <input
+                    id="client-phone"
+                    type="telphone"
+                    inputMode="tel"
+                    value={clientPhone}
+                    onChange={(e) => { setClientPhone(e.target.value); setError(""); }}
+                    placeholder="+33 6 12 34 56 78"
+                    pattern="[0-9+()\s\-]{6,20}"
+                />
 
                 <label htmlFor="company-name">Nom de l'entreprise</label>
                 <input id="company-name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} placeholder="Ex: ACME SARL" />
@@ -85,14 +108,14 @@ export default function NewAuditPage() {
                 {error && <p className="form-message">{error}</p>}
             </form>
             
-            <div style={{ display: 'grid', gap: 8, marginBottom: 20 }}>
-                {audits.map((a: any) => (
-                    <div key={a.id} style={{ border: '1px solid #ddd', padding: 8, borderRadius: 6, textAlign: 'left' }}>
-                        <strong>{a.clientlastname}</strong><br/>
-                        <strong>{a.clientfirstname ?? "Audit sans titre"}</strong>
+            <div className="audit-list">
+                {audits?.map((a: any) => (
+                    <div key={a.idaudit} className="audit-card">
+                        <strong>{a.auditname}</strong><br/>
+                        <strong>{a.audittype?.nameaudittype ?? "Type non défini"}</strong>
                     </div>
                 ))}
             </div>
-        </div>
-    );
-}
+         </div>
+     );
+ }
