@@ -1,4 +1,4 @@
-import './components.css';
+import './users.css';
 
 function UserRow() {
     return (
