@@ -16,7 +16,7 @@ function AuditCard({ audit }) {
     const { data, error } = await supabase
       .from("auditoffer")
       .select("*")
-      .eq('idauditoffer', audit.idauditoffer)
+      .eq('id', audit.idauditoffer)
 
     if (error) {
       console.error("Erreur de récupération :", error);
@@ -34,7 +34,7 @@ function AuditCard({ audit }) {
     const { data, error } = await supabase
       .from("audittype")
       .select("*")
-      .eq('idaudittype', audit.idaudittype)
+      .eq('id', audit.idaudittype)
 
     if (error) {
       console.error("Erreur de récupération :", error);
@@ -56,17 +56,17 @@ function AuditCard({ audit }) {
       modificationdate,
       modificationtime,
       audit (
-        idaudit,
+        id,
         auditname,
         status
       ),
       staff (
-        iduser,
+        id,
         firstname,
         lastname
       )
     `)
-    .eq('idaudit', audit.idaudit)
+    .eq('idaudit', audit.id)
     .order('modificationdate', { ascending: true })
     .order('modificationtime', { ascending: true })
     .limit(1);
@@ -91,17 +91,17 @@ function AuditCard({ audit }) {
       modificationdate,
       modificationtime,
       audit (
-        idaudit,
+        id,
         auditname,
         status
       ),
       staff (
-        iduser,
+        id,
         firstname,
         lastname
       )
     `)
-    .eq('idaudit', audit.idaudit)
+    .eq('idaudit', audit.id)
     .order('modificationdate', { ascending: false })
     .order('modificationtime', { ascending: false })
     .limit(1);
@@ -140,12 +140,14 @@ function AuditCard({ audit }) {
           <span className='card-text'> </span>
           <a href="#" className="btn btn-primary">Modifier</a>
           <span className='card-text'> </span>
-          <a href="#" className="btn btn-primary">Supprimer</a>
+          <a href="#" className="btn btn-primary">Supprimer</a> 
         </div>
         <div className="card-footer">
           <p className='card-text'> <strong> Dernière modification le : </strong> </p>
           <p className='card-text'> {lastmodif.map(modify => (modify.modificationdate))} à {lastmodif.map(modify => (modify.modificationtime))} </p>
           <p className='card-text'> par {lastmodif.map(modify => (modify.staff.lastname))} {lastmodif.map(modify => (modify.staff.firstname))} </p>
+          <a href="#" className="btn btn-primary">Historique</a>
+          <p> </p>
         </div>
     </div>
     </>
