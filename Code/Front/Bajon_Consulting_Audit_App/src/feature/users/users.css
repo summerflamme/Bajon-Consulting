@@ -1,113 +1,147 @@
-/* ===== Base ===== */
+/*____________________ICI USERLIST____________________*/
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-.user-list-table {
+.user-list-wrapper {
   width: 100%;
-  overflow-x: auto; /* scroll horizontal si besoin */
+  overflow-x: auto;
   font-family: "Segoe UI", sans-serif;
 }
 
-/* ===== Header & Row ===== */
 .user-header-row,
 .user-row {
   display: grid;
   grid-template-columns:
-    auto      /* Nom */
-    auto      /* Email */
-    auto      /* Téléphone */
-    auto      /* Créé le */
-    auto      /* Dernière connexion */
-    max-content; /* Actions prend juste ce qu'il faut */
-  gap: 4px;            /* espace horizontal réduit */
+    1.1fr  
+    1.6fr   
+    1.1fr  
+    0.9fr 
+    1.2fr  
+    1.4fr; 
   align-items: center;
-  padding: 0.4rem 0.6rem;
-  border-bottom: 1px solid #e6e6e6;
-  min-width: 700px;    /* permet scroll horizontal si trop petit */
-  background: white;
+  justify-items: center;
+  text-align: center;
+  padding: 0.6rem 0.8rem;
+  min-width: 900px;
 }
 
-/* header styling */
 .user-header-row {
-  background: #f5f5f5;
+  background: #f3f3f3;
   font-weight: 700;
   color: #333;
+  border-bottom: 2px solid #d8d8d8;
 }
 
-/* cellules */
+.user-row {
+  border-bottom: 1px solid #eee;
+  background: white;
+  transition: background 0.2s ease;
+}
+
+.user-row:hover {
+  background: #f8faff;
+}
+
 .user-cell {
-  min-width: 0; /* permet shrink + ellipsis */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0 0.2rem;
   font-size: 0.95rem;
   color: #333;
-}
-
-/* actions */
-.user-cell.actions {
-  justify-self: end;
+  width: 100%;
   display: flex;
-  gap: 0.4rem;
+  justify-content: center;
   align-items: center;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-/* boutons */
+.user-cell.actions {
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
 .btn {
-  padding: 0.3rem 0.6rem;
-  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
   color: #fff;
   background: #007bff;
   border-radius: 4px;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
 }
+
 .btn:hover { background: #0056b3; }
 
-/* ===== Responsive ===== */
 
-/* 1) Tablette large : on simplifie et masque certaines colonnes */
 @media (max-width: 1024px) {
   .user-header-row,
   .user-row {
-    grid-template-columns: auto auto auto max-content; /* Nom | Email | Téléphone | Actions */
-    min-width: 600px;
+    grid-template-columns:
+      1.2fr  /* Nom */
+      1.3fr  /* Email */
+      1.2fr  /* Téléphone */
+      1.5fr; /* Actions */
+    min-width: 700px;
   }
 
   .user-cell:nth-child(4),
-  .user-cell:nth-child(5) { display: none; } /* Créé le / Dernière connexion */
+  .user-cell:nth-child(5) {
+    display: none;
+  }
 }
 
-/* 2) Mobile standard : on garde Nom | Email | Actions */
+
 @media (max-width: 768px) {
   .user-header-row,
   .user-row {
-    grid-template-columns: 1fr 1.6fr max-content;
+    grid-template-columns:
+      1fr    /* Nom */
+      1.5fr;  /* Email */
     min-width: 0;
-    padding: 0.3rem 0.4rem;
-    gap: 4px;
   }
 
+  .user-cell:nth-child(2),
   .user-cell:nth-child(3),
   .user-cell:nth-child(4),
-  .user-cell:nth-child(5) { display: none; } /* cache Téléphone / Créé le / Dernière connexion */
+  .user-cell:nth-child(5) {
+    display: none;
+  }
 
-  .user-cell { font-size: 0.92rem; }
-  .user-cell.actions { justify-self: center; }
-
-  .btn { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
 }
 
-/* 3) Très petit écran : Nom + Email seulement */
 @media (max-width: 420px) {
   .user-header-row,
   .user-row {
-    grid-template-columns: 1fr 1.3fr; /* Nom | Email */
+    grid-template-columns:
+      0.8fr 
+      1.2fr; 
   }
-  .user-cell.actions { display: none; }
+
+  .user-cell:nth-child(2),
+  .user-cell:nth-child(3),
+  .user-cell:nth-child(4),
+  .user-cell:nth-child(5) {
+    display: none;
+  }
+
+  .user-cell.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 
