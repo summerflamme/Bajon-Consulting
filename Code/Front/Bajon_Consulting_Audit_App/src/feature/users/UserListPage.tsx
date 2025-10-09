@@ -2,14 +2,15 @@ import SearchBar from "../../components/SearchBar";
 import UserCard from "./UserCard";
 import './users.css';
 
-const users = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]; // Remplacer par de vraies données
+const users = [1, 2, 3, 4, 5, 6];
 
 function UserList() {
     return (
         <>
             <SearchBar variant="users"/>
 
-            <div className="user-list-table">
+            <div className="user-list-wrapper">
+                {/* Header */}
                 <div className="user-header-row">
                     <div className="user-cell">Nom</div>
                     <div className="user-cell">Email</div>
@@ -19,7 +20,8 @@ function UserList() {
                     <div className="user-cell actions">Actions</div>
                 </div>
 
-                {users.map((_user, idx) => (
+                {/* Lignes utilisateurs */}
+                {users.map((_, idx) => (
                     <UserCard key={idx} />
                 ))}
             </div>
