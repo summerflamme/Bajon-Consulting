@@ -2,7 +2,7 @@ import SearchBar from "../../components/SearchBar";
 import UserCard from "./UserCard";
 import './users.css';
 
-const users = [1, 2, 3, 4, 5, 6];
+const users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 function UserList() {
     return (
@@ -10,7 +10,6 @@ function UserList() {
             <SearchBar variant="users"/>
 
             <div className="user-list-wrapper">
-                {/* Header */}
                 <div className="user-header-row">
                     <div className="user-cell">Nom</div>
                     <div className="user-cell">Email</div>
@@ -20,7 +19,6 @@ function UserList() {
                     <div className="user-cell actions">Actions</div>
                 </div>
 
-                {/* Lignes utilisateurs */}
                 {users.map((_, idx) => (
                     <UserCard key={idx} />
                 ))}
