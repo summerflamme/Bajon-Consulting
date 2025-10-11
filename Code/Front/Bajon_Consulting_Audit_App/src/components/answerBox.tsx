@@ -1,5 +1,7 @@
-import type { Answer, Question,Audit } from "../types/audit";
-
+import { motion } from "framer-motion";
+import type { Answer, Question, Audit } from "../types/audit";
+import "./AuditStyle.css";
+import { DeleteIcon} from "./ui/delete";
 type Props = Answer & {
     questionId: string;
     mode: Audit["mode"];
@@ -8,7 +10,16 @@ type Props = Answer & {
     handleRemoveAnswer: () => void;
 };
 
-function AnswerBox({ id, text, score, mode, choices, questionId, onUpdate, handleRemoveAnswer }: Props) {
+function AnswerBox({
+    id,
+    text,
+    score,
+    mode,
+    choices,
+    questionId,
+    onUpdate,
+    handleRemoveAnswer,
+}: Props) {
     // Mise à jour du texte de la réponse
     const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
@@ -18,7 +29,7 @@ function AnswerBox({ id, text, score, mode, choices, questionId, onUpdate, handl
         });
     };
 
-    // Mise à jour du score (si besoin)
+    // Mise à jour du score
     const handleScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,
@@ -28,47 +39,76 @@ function AnswerBox({ id, text, score, mode, choices, questionId, onUpdate, handl
     };
 
     return (
-        <div className="audit-form-answer">
+        <motion.div
+            layout
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 10 }}
+            transition={{ duration: 0.25 }}
+            className={`audit-form-answer-${mode} `}
+        >
             {mode === "edit" ? (
                 <>
-                <div className="audit-form-answer">
-                    <label htmlFor={`answer-text-${id}`}>Réponse :</label>
-
-                    <input
-                        type="text"
-                        defaultValue={text}
-                        onChange={handleTextChange}
+                    <div className="audit-form-text-edit">
+                        <label htmlFor={`answer-text-${id}`}>Réponse</label>
+                        <motion.input
+                            id={`answer-text-${id}`}
+                            type="text"
+                            value={text === "" ? "" : text}
+                            placeholder="Entrer la réponse"
+                            onChange={handleTextChange}
+                            whileFocus={{ scale: 1.02 }}
+                            transition={{ duration: 0.2 }}
                         />
-                        </div>
-                        <div className="audit-form-score">
-                    <label htmlFor={`answer-score-${id}`}>Score :</label>
+                    </div>
 
-                    <input
-                        type="number"
-                        defaultValue={score}
-                        onChange={handleScoreChange}
+                    <div className="audit-form-score-edit">
+                        <label htmlFor={`answer-score-${id}`}>Score</label>
+                        <motion.input
+                            id={`answer-score-${id}`}
+                            type="number"
+                            value={score === 0 ? "" : score}
+                            placeholder="0"
+                            onChange={handleScoreChange}
+                            whileFocus={{ scale: 1.02 }}
+                            transition={{ duration: 0.2 }}
                         />
-                        </div>
-                    
+                    </div>
+
+                    <DeleteIcon
+                        className="delete-icon"
+                        onClick={handleRemoveAnswer}
+                    />
                 </>
-            ) : (<>
-            {choices === "multiple-choice" ? (
-                <div>
-                    <label htmlFor={`answer-choice-${id}`}>{text}</label>
-                            <input type="checkbox" name={`checkbox-${questionId}`} />
-                </div>
-            ) : (<div>
+            ) : (
+                <motion.div
+                    layout
+                    className="flex items-center gap-2"
+                    initial={{ opacity: 0.8 }}
+                    animate={{ opacity: 1 }}
+                >
+                    <label htmlFor={`answer-choice-${id}`} className="cursor-pointer">
+                        {text}
+                    </label>
 
-                    <label htmlFor={`answer-choice-${id}`}>{text}</label>
-
-                            <input type="radio" name={`radio-${questionId}`} />
-            </div>
+                    {choices === "multiple-choice" ? (
+                        <motion.input
+                            type="checkbox"
+                            name={`checkbox-${questionId}`}
+                            id={`answer-choice-${id}`}
+                            whileTap={{ scale: 0.9 }}
+                        />
+                    ) : (
+                        <motion.input
+                            type="radio"
+                            name={`radio-${questionId}`}
+                            id={`answer-choice-${id}`}
+                            whileTap={{ scale: 0.9 }}
+                        />
+                    )}
+                </motion.div>
             )}
-                    
-            </>
-            )}
-            {mode === "edit" && ( <button type="button" onClick={handleRemoveAnswer}>Supprimer la réponse</button>)}
-        </div>
+        </motion.div>
     );
 }
 

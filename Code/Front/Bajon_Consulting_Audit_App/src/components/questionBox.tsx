@@ -1,5 +1,8 @@
+import { motion } from "motion/react";
 import type { Question, Answer, Audit } from "../types/audit";
 import AnswerBox from "./answerBox";
+import './AuditStyle.css';
+import { DeleteIcon } from "./ui/delete";
 
 type Props = Question & {
     mode: Audit["mode"];
@@ -20,11 +23,11 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
         });
     };
     //suppression de question
-    
+
     const handleAddAnswer = () => {
         const newAnswer: Answer = {
             id: Date.now(),
-            text: "New Answer",
+            text: "",
             score: 0
         };
         onUpdate({
@@ -59,16 +62,19 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
     };
 
     return (
-        <div className="audit-form-question">
+        <div className={`audit-form-question-${mode}`}>
             {mode === "edit" ? (
                 <>
-                <div className="audit-form-question">
-                    <input type="text" defaultValue={text} onChange={handleTextChange} />
-                </div>
-                    <div className="audit-form-descriptions">
-
+                    <div className={`audit-form-question-text${mode}`}>
+                        <label>Question </label>
+                        <input type="text" 
+                        value={text==="" ? "" : text}
+                        placeholder="Entrer la question" onChange={handleTextChange} />
+                    </div>
+                    <div className={`audit-form-descriptions-${mode}`}>
+                        <label>Description</label>
                         <textarea
-                            defaultValue={descriptions}
+                            placeholder="Entrer la description"
                             onChange={(e) =>
                                 onUpdate({
                                     id,
@@ -83,32 +89,52 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
                         />
 
                     </div>
-                    <div className="audit-form-choices">
-                        <input
-                            type="checkbox"
-                            defaultChecked={choices === "multiple-choice"}
-                            onChange={(e) =>
-                                onUpdate({
-                                    id,
-                                    text,
-                                    choices: e.target.checked ? "multiple-choice" : "single-choice",
-                                    answers,
-                                    descriptions,
-                                    
-                                })
-                            }
-                        />
-                        <span>Choix multiple</span>
-                    </div>
 
-            </>
-            ) : (
-                <>
-                    <div >{text}</div>
-                        <div className="whitespace-pre-line bg-gray-50 border rounded-md p-3 text-gray-800">
-                            {descriptions || ""}
-                        </div>
+                    <motion.div
+                        layout
+                        className="audit-form-switch"
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.25 }}
+                    >
+                        <label className="switch">
+                            <input
+                                type="checkbox"
+                                checked={choices === "multiple-choice"}
+                                onChange={(e) =>
+                                    onUpdate({
+                                        id,
+                                        text,
+                                        choices: e.target.checked ? "multiple-choice" : "single-choice",
+                                        answers,
+                                        descriptions,
+                                    })
+                                }
+                            />
+                            <motion.span
+                                layout
+                                className="slider"
+                                animate={{
+                                    backgroundColor:
+                                        choices === "multiple-choice"
+                                            ? "rgba(72, 100, 255, 0.8)"
+                                            : "rgba(150,150,150,0.6)",
+                                }}
+                                transition={{ duration: 0.25 }}
+                            />
+                        </label>
+                        <span className="switch-label">Choix multiple</span>
+                    </motion.div>
+
                 </>
+
+            ) : (
+                <div className={`audit-form-question-${mode}`}>
+                    <div >{text}</div>
+                    <div className="whitespace-pre-line bg-gray-50 border rounded-md p-3 text-gray-800">
+                        {descriptions || ""}
+                    </div>
+                </div>
             )}
 
             {answers.map((answer) => (
@@ -122,12 +148,23 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
                     handleRemoveAnswer={() => handleRemoveAnswer(answer.id)}
                 />
             ))}
-            {mode === "edit" && (
-                <>
-                <button type="button" onClick={handleRemoveQuestion} className="btn-remove">suppression question</button>
-                <button type="button" onClick={handleAddAnswer} className="btn-add">Ajouter une réponse</button>
-                </>
-            )}
+            <div className="mt-4 flex gap-2">
+                <motion.button
+                    type="button"
+                    onClick={handleAddAnswer}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="btn-add bg-blue-500 text-white px-3 py-1.5 rounded-md shadow-sm hover:bg-blue-600"
+                >
+                    Ajouter une réponse
+                </motion.button>
+                <DeleteIcon
+                    className="delete-icon"
+                    onClick={handleRemoveQuestion}
+                />
+            </div>
+
         </div>
     );
 }
