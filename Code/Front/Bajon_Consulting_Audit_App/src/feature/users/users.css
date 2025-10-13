@@ -1,9 +1,58 @@
 /*____________________ICI USERLIST____________________*/
+.user-page-container {
+  max-width: 1200px;
+  width: 90%;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 2rem;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.user-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.user-list-btn {
+  background: #236084;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-list-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.user-list-btn:active {
+  transform: translateY(0);
+}
+
+.user-list-btn .icon {
+  width: 16px;
+  height: 16px;
+}
 
 .user-list-wrapper {
   width: 100%;
   overflow-x: auto;
-  font-family: "Segoe UI", sans-serif;
 }
 
 .user-header-row,
@@ -61,30 +110,15 @@
   overflow: hidden;
 }
 
-.btn {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  color: #fff;
-  background: #007bff;
-  border-radius: 4px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.2s ease;
-}
-
-.btn:hover { background: #0056b3; }
-
-
+/* ==== RESPONSIVE ==== */
 @media (max-width: 1024px) {
   .user-header-row,
   .user-row {
     grid-template-columns:
-      1.2fr  /* Nom */
-      1.3fr  /* Email */
-      1.2fr  /* Téléphone */
-      1.5fr; /* Actions */
+      1.2fr  
+      1.3fr  
+      1.2fr  
+      1.5fr; 
     min-width: 700px;
   }
 
@@ -94,13 +128,28 @@
   }
 }
 
-
 @media (max-width: 768px) {
+  .user-page-container {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .user-list-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .add-user-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .user-header-row,
   .user-row {
     grid-template-columns:
-      1fr    /* Nom */
-      1.5fr;  /* Email */
+      1fr    
+      1.5fr;  
     min-width: 0;
   }
 
@@ -110,19 +159,12 @@
   .user-cell:nth-child(5) {
     display: none;
   }
-
-  .btn {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.8rem;
-  }
 }
 
 @media (max-width: 420px) {
   .user-header-row,
   .user-row {
-    grid-template-columns:
-      0.8fr 
-      1.2fr; 
+    grid-template-columns: 0.8fr 1.2fr; 
   }
 
   .user-cell:nth-child(2),
@@ -138,7 +180,6 @@
     align-items: center;
   }
 }
-
 
 
 /*____________________ICI USERINFO____________________*/
