@@ -1,13 +1,24 @@
 import SearchBar from "../../components/SearchBar";
 import UserCard from "./UserCard";
 import './users.css';
+import { Plus } from "lucide-react";
 
 const users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 function UserList() {
+    const handleAddUser = () => {
+        console.log("Ajouter un utilisateur");
+    };
+
     return (
-        <>
-            <SearchBar variant="users"/>
+        <div className="user-page-container">
+            <div className="user-list-header">
+                <SearchBar variant="users" />
+                <button onClick={handleAddUser} className="user-list-btn">
+                    <Plus className="icon" />
+                    Ajouter un utilisateur
+                </button>
+            </div>
 
             <div className="user-list-wrapper">
                 <div className="user-header-row">
@@ -23,7 +34,7 @@ function UserList() {
                     <UserCard key={idx} />
                 ))}
             </div>
-        </>
+        </div>
     );
 }
 
