@@ -29,12 +29,12 @@ INSERT INTO AuditOffer (nameAuditOffer) VALUES
 ('Gratuit');
 
 -- Table Audit
-INSERT INTO Audit (auditName, creationDate, status, template) VALUES
-('Audit Sécurité', '2024-01-15', 'En cours', 'True'),
-('Audit Financier', '2023-11-20', 'Terminé', 'False'),
-('Audit Qualité', '2024-05-10', 'En cours', 'False'),
-('Audit RH', '2023-09-01', 'Annulé', 'False'),
-('Audit IT', '2024-02-28', 'Prévu', 'False');
+INSERT INTO Audit (auditName, idAuditType, idAuditOffer, status, template) VALUES
+('Audit Sécurité', 1, 3, 'En cours', true),
+('Audit Financier', 5, 4, 'Terminé', false),
+('Audit Qualité', 3, 2, 'En cours', false),
+('Audit RH', 4, 1, 'Annulé', false),
+('Audit IT', 2, 5, 'Prévu', false);
 
 -- Table Theme
 INSERT INTO Theme (themeName, status) VALUES
@@ -57,10 +57,10 @@ INSERT INTO Role (roleName) VALUES
 ('Administrateur'),
 ('Auditeur'),
 ('Manager'),
-('Analyste');
+('Analyste');   
 
 -- Table User
-INSERT INTO Staff (idUser, lastName, firstName, idRole)VALUES 
+INSERT INTO Staff (id, lastName, firstName, idRole)VALUES 
 ('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 'summer', 'flamme', 1),
 ('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 'test', 'test', 2);
 
