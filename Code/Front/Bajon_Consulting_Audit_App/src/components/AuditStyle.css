@@ -1,3 +1,205 @@
+/* Styles for the Audit Editor Page */
 .audit-editor-page {
-    gap: 20px;
+  gap: 20px;
+  background-color: #3092b6;
+
+}
+.audit-form{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* SectionBox */
+.audit-form-section-edit {
+  width: 50%;
+  flex-direction: column;
+  position: relative;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: #ffffff;
+  transition: all 0.25s ease;
+}
+.audit-form-section-edit * {
+  box-sizing: border-box;
+}
+/* section general label*/
+.audit-form-section-edit label {
+  display: flex;
+  font-weight: 600;
+  color: #888888;
+  margin-bottom: 0.5rem;
+  font-size: 1.5em;
+}
+.audit-form-section-edit input {
+  background-color: #eeeeee;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+
+
+/* QuestionBox */
+
+.audit-form-question-edit {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.148);
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  border-top: 4px solid #000000;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(224, 224, 224, 0.8);
+}
+/* question general label*/
+.audit-form-question-edit label {
+  color: #000000;
+
+  display: flex;
+  font-size: 0.9em;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.audit-form-question-edit input {
+  width: 100%;
+  padding: 8px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.audit-form-question-edit textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* === AnswerBox (mode édition) === */
+.audit-form-answer-edit {
+  display: flex;
+  align-items: center; /* aligne le bas des blocs pour une ligne propre */
+  gap: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+  font-size: 0.9em;
+  box-sizing: border-box;
+}
+
+/* Les deux blocs Réponse et Score sont des colonnes */
+.audit-form-text-edit,
+.audit-form-score-edit {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Le score reste plus petit */
+.audit-form-score-edit {
+  flex: 0 0 100px;
+}
+
+/* Labels */
+.audit-form-answer-edit label {
+  font-weight: 600;
+  margin-bottom: 0.1rem;
+}
+
+/* Inputs */
+.audit-form-answer-edit input {
+  padding: 8px;
+  border: 1px solid #ffffff;
+  background-color: rgba(224, 224, 224, 0.8);
+
+  border-radius: 6px;
+  font-size: 0.9em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Delete icon à droite */
+.delete-icon {
+  margin-left: auto;
+  padding-top: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  width: 24px;
+  justify-content: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.delete-icon:hover {
+  color: #ff4d4d;
+  transform: scale(1.1);
+}
+/* === Bloc général du switch === */
+.audit-form-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1em;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.25s ease;
+}
+
+
+
+/* === Structure du switch === */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+/* Cache le vrai input */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider (fond) */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(150, 150, 150, 0.6);
+  border-radius: 24px;
+  transition: background-color 0.25s ease;
+}
+
+/* Bouton rond */
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+}
+
+/* Quand activé (checked) */
+.switch input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+/* Label texte */
+.switch-label {
+  font-weight: 500;
+  color: #000000;
 }

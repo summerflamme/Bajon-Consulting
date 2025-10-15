@@ -81,14 +81,10 @@ function Header() {
 
       {isMobile && (
         <div className="main">
-          <button
-            id="menu-icon"
-            aria-controls="main-navigation"
-            aria-expanded={open}
+          
+          <MenuIcon
             onClick={toggleMenu}
-            className="bx bx-menu"
-            style={{ color: 'black' }}
-            type="button"
+            open={open}
           />
         </div>
       )}
