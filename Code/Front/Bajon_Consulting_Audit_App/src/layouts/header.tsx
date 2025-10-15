@@ -41,7 +41,8 @@ function Header() {
     { title: "Templates", link: "#services" },
     { title: "Clients", link: "#services" },
     {
-      title: "Utilisateurs",
+      title: "Audits",
+      link: "audits",
       subMenus: [
         { title: "Mes informations", link: "/users/info" },
         { title: "Liste des utilisateurs", link: "/users/list" },
