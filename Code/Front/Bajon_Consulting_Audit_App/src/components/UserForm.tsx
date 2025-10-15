@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { PhoneInput } from 'react-international-phone';
 import '../feature/auth/auth.css';
 import type { EditionMode } from '../types/editionMode';
 import type { User } from "@supabase/supabase-js"
-
+import 'react-international-phone/style.css';
 
 interface UserFormProps {
     mode : EditionMode
@@ -18,9 +19,16 @@ function UserForm( {mode, user} : UserFormProps) {
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
     const [message, setMessage] = useState('');
+    const [role, setRole] = useState<Role[]>([]);
+    const [currentRole, setCurrentRole] = useState('');
+    const [currentUser, setCurrentUser] = useState<User | undefined>(user);
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
     const validPhone = new RegExp('^(\\+33|0)[1-9](\\d{2}){4}$');
-    const [currentUser, setCurrentUser] = useState<User | undefined>(user);
+
+    interface Role {
+        id: number;
+        rolename: string;
+    }
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -34,12 +42,29 @@ function UserForm( {mode, user} : UserFormProps) {
         fetchUser();
     }, [mode]);
 
+
+    useEffect(() => {
+        const fetchRole = async () => {
+            const { data, error } = await supabase
+            .from('role')
+            .select('*')
+            if(error){
+                console.error("Erreur de récupération", error)
+            }else{
+                setRole(data ?? []);
+            }
+        };
+        fetchRole()
+    }, [])
+
+
     useEffect(() => {
         if (mode === 'edition' && currentUser) {
             setEmail(currentUser.email ?? '');
             setLastName(currentUser.user_metadata.displayName?.split(' ')[0] ?? '');
             setFirstName(currentUser.user_metadata.displayName?.split(' ')[1] ?? '');
             setPhone(currentUser.user_metadata?.phone ?? '');
+            setCurrentRole(currentUser.user_metadata?.role ?? '');
         }
     }, [mode, currentUser]);
 
@@ -47,10 +72,16 @@ function UserForm( {mode, user} : UserFormProps) {
         e.preventDefault();
 
         
-            if (!validEmail.test(email)) {
+        if (!validEmail.test(email)) {
             setMessage("Email invalide");
             return;
         }
+
+        if (!currentRole || currentRole === "") {
+            setMessage("Veuillez sélectionner un rôle");
+            return;
+        }
+
         if (mode === 'creation' ){
             if (password.length < 6) {
             setMessage("Le mot de passe doit contenir au moins 6 caractères");
@@ -62,7 +93,6 @@ function UserForm( {mode, user} : UserFormProps) {
             setMessage("Les mots de passe ne correspondent pas");
             return;
         }
-
     }
 
         if (!validPhone.test(phone)) {
@@ -70,7 +100,6 @@ function UserForm( {mode, user} : UserFormProps) {
             return;
         }
 
-        console.log("display name:", lastName + ' ' + firstName);
         if( mode === 'creation'){
         const { data, error } = await supabase.auth.signUp({
             email,
@@ -78,7 +107,8 @@ function UserForm( {mode, user} : UserFormProps) {
             options: {
                 data: {
                     displayName: lastName + ' ' + firstName,
-                    phone: phone
+                    phone: phone,
+                    role: currentRole
                 }
             }
         });
@@ -87,7 +117,6 @@ function UserForm( {mode, user} : UserFormProps) {
             console.error("Erreur lors de la création du compte:", error.message);
             setMessage("Erreur lors de la création du compte: " + error.message);
         } else {
-            console.log("Compte créé avec succès:", data);
             setMessage("");
             setEmail('');
             setPassword('');
@@ -104,6 +133,7 @@ function UserForm( {mode, user} : UserFormProps) {
             data: {
                 displayName: lastName + ' ' + firstName,
                 phone: phone,
+                role: currentRole
         }
     });
     console.log(data);
@@ -111,7 +141,6 @@ function UserForm( {mode, user} : UserFormProps) {
             console.error("Erreur lors de la mise à jour du compte:", error.message);
             setMessage("Erreur lors de la mise à jour du compte: " + error.message);
         } else {
-            console.log("Compte mis à jour avec succès:", data);
             setMessage("");
             setEmail('');
             setPassword('');
@@ -122,7 +151,6 @@ function UserForm( {mode, user} : UserFormProps) {
         }   
     }
 }
-
     
     return (
     <div className="background-zone">
@@ -154,14 +182,18 @@ function UserForm( {mode, user} : UserFormProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
-            <label htmlFor="phoneNumber">Numéro de téléphone</label>
-            <input
-                placeholder='0606060606'
-                type="tel"
-                id="phoneNumber"
+            <label htmlFor='phone'> Numéro de téléphone</label>
+            <PhoneInput
+                defaultCountry='fr'
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-            />
+                onChange={(phone) => setPhone(phone)}></PhoneInput>
+            <label htmlFor='role'> Rôle</label>
+            <select name="role" id="role" value={currentRole} onChange={(e) => setCurrentRole(e.target.value)}>
+                <option value="" > Sélectionner un rôle</option>
+                {role.map(role => (
+                    <option key={role.id} value={role.rolename}>{role.rolename}</option>
+                ))}
+            </select>
             {mode === 'creation' && (
                 <>
                     <label htmlFor="password">Mot de passe</label>

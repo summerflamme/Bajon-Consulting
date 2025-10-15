@@ -3,31 +3,34 @@ package com.bajonconsulting.Bajon_audit_App.Types;
 import java.rmi.server.UID;
 import java.security.Timestamp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "Users")
 public class User {
     
-    @Id
+
     private UID uid;
-    private String displayName;
     private String email;
-    private String phone; 
+
     private Timestamp createdAt; 
     private Timestamp lastSignInAt;
 
+    //metadata
+    private String userRole ;
+    private String phone; 
+    private String displayName;
+    private String firstName; 
+    private String lastName;
+
     User(){}
 
-    User(UID uid, String dispalyName, String email, String phone, Timestamp createdAt, Timestamp LastSignInAt){
-        this.uid = uid;
-        this.displayName = dispalyName;
-        this.email = email;
-        this.phone = phone; 
-        this.createdAt = createdAt;
+    User(UID Uid, String DispalyName, String Email, String Phone, Timestamp CreatedAt, Timestamp LastSignInAt, String UserRole){
+        this.uid = Uid;
+        this.displayName = DispalyName;
+        this.email = Email;
+        this.phone = Phone; 
+        this.createdAt = CreatedAt;
         this.lastSignInAt = LastSignInAt;
+        this.userRole = UserRole; 
+        this.firstName = displayName.split(" ")[1];
+        this.lastName = displayName.split(" ")[0];
     }
     //getter 
 
@@ -55,6 +58,18 @@ public class User {
         return this.lastSignInAt;
     }
 
+    public String getFirstName(){
+        return this.firstName;
+    }
+
+    public String getLastName(){
+        return this.lastName;
+    }
+
+    public String getUserRole(){
+        return this.userRole; 
+    }
+
     //Setter 
 
     public void setUID(UID uid){
@@ -80,5 +95,16 @@ public class User {
     public void setLastSignInAt(Timestamp lastSignInAp){
         this.lastSignInAt = lastSignInAp;
     }
-}
 
+    public void setFirstName(String FirstName){
+        this.firstName = FirstName;
+    }
+
+    public void setLastName(String LastName) {
+        this.lastName = LastName;
+    }
+
+    public void setUserRole(String UserRole) {
+        this.userRole = UserRole;
+    }
+}
