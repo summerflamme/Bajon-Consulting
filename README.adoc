@@ -39,8 +39,12 @@ toc::[]
 |===
 | Date de la réunion | Sujet | Compte rendu
 
-| 03/09/2025 | Lancement du projet | https://github.com/summerflamme/Bajon-Consulting/blob/main/Docs/Comptes%20Rendus%20de%20R%C3%A9union/CR_03-09-2025.pdf[CR_03-09-2025.pdf]
-| 05/09/2025 | 1ère réunion avec le client | https://github.com/summerflamme/Bajon-Consulting/blob/main/Docs/Comptes%20Rendus%20de%20R%C3%A9union/CR_05-09-2025.pdf[CR_05-09-2025.pdf]
+| 03/09/2025 | Lancement du projet | https://github.com/summerflamme/Bajon-Consulting/blob/Dev-Pierre/Docs/CR%20R%C3%A9union/CR-R%C3%A9union-01.pdf[CR-Réunion-01.pdf]
+| 05/09/2025 | Première réunion avec le client | https://github.com/summerflamme/Bajon-Consulting/blob/Dev-Pierre/Docs/CR%20R%C3%A9union/CR-R%C3%A9union-02.pdf[CR-Réunion-02.pdf]
+| 11/09/2025 | Deuxième réunion avec le client et choix des technologies | https://github.com/summerflamme/Bajon-Consulting/blob/Dev-Pierre/Docs/CR%20R%C3%A9union/CR-R%C3%A9union-03.pdf[CR-Réunion-03.pdf]
+| 25/09/2025 | Mise en place du travail d'équipe | https://github.com/summerflamme/Bajon-Consulting/blob/Dev-Pierre/Docs/CR%20R%C3%A9union/CR-R%C3%A9union-04.pdf[CR-Réunion-04.pdf]
+| 26/09/2025 | Troisième réunion avec le client | https://github.com/summerflamme/Bajon-Consulting/blob/Dev-Pierre/Docs/CR%20R%C3%A9union/CR-R%C3%A9union-05.pdf[CR-Réunion-05.pdf]
+| 07/10/2025 | Quatrième réunion avec le client | https://github.com/summerflamme/Bajon-Consulting/blob/Dev-Pierre/Docs/CR%20R%C3%A9union/CR-R%C3%A9union-06.pdf[CR-Réunion-06.pdf]
 |===
 
 ## Livrables attendus
@@ -89,3 +93,4 @@ Ce qui est prévu pour les versions futures :
 - 01/10/2025
 - 02/10/2025
 - 03/10/2025
+
