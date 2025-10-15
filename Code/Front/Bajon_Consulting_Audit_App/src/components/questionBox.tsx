@@ -148,7 +148,8 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
                     handleRemoveAnswer={() => handleRemoveAnswer(answer.id)}
                 />
             ))}
-            <div className="mt-4 flex gap-2">
+            { mode === "edit" && (
+                <div className="mt-4 flex gap-2">
                 <motion.button
                     type="button"
                     onClick={handleAddAnswer}
@@ -162,9 +163,10 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
                 <DeleteIcon
                     className="delete-icon"
                     onClick={handleRemoveQuestion}
-                />
+                    />
             </div>
 
+)}
         </div>
     );
 }

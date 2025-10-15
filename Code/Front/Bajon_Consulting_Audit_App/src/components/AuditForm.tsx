@@ -53,6 +53,7 @@ function AuditForm({ data, mode, onUpdate }: Props) {
             {mode === "edit" && (
                 <>
                     <button type="button" onClick={handleAddSection}>Ajouter une section</button>
+                    <button type="submit">Valider</button>
                 </>
             )}
         </form>
