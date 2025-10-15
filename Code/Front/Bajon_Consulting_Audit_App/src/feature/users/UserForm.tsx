@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
+import '../auth/auth.css';
 import { PhoneInput } from 'react-international-phone';
-import '../feature/auth/auth.css';
 import type { EditionMode } from '../../types/editionMode';
 import type { User } from "@supabase/supabase-js"
 import 'react-international-phone/style.css';

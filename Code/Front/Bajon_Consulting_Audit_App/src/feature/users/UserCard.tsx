@@ -1,5 +1,4 @@
 import './users.css';
-
 function UserCard() {
     const handleCoUser = () => {
         console.log("Consulter un utilisateur");
