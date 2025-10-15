@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './layouts.css';
+import { MenuIcon } from '@/components/ui/menu';
 function Header() {
   const handleLogout = async () => {
     console.log("Déconnexion en cours de l'utilisateur", sessionStorage.getItem("user"));
