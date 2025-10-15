@@ -21,6 +21,8 @@
 .new-audit-form select {
     padding: 8px;
     font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .new-audit-form .error {
@@ -37,4 +39,37 @@
 .form-message {
     color: #b00020;
     margin-top: 10px;
+}
+
+/* Filter row */
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0;
+    max-width: 640px;
+    width: 100%;
+}
+.filter-input {
+    padding: 6px 8px;
+    font-size: 14px;
+    flex: 1;
+}
+
+/* Audit list */
+.audit-list {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 640px;
+}
+.audit-card {
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: left;
+}
+.audit-empty {
+    color: #666;
 }

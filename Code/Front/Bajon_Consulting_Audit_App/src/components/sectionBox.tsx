@@ -1,5 +1,8 @@
+import { motion, AnimatePresence } from "framer-motion";
 import QuestionBox from "./questionBox";
 import type { Audit, Question, Section } from "../types/audit";
+import "./AuditStyle.css";
+import { DeleteIcon } from "./ui/delete";
 
 type Props = {
     id: number;
@@ -7,12 +10,18 @@ type Props = {
     questions: Question[];
     mode: Audit["mode"];
     handleRemoveSection: () => void;
-
     onUpdate: (updatedSection: Section) => void;
 };
 
-function SectionBox({ id, title, questions, mode, onUpdate, handleRemoveSection }: Props) {
-    // Mise à jour titresection
+function SectionBox({
+    id,
+    title,
+    questions,
+    mode,
+    onUpdate,
+    handleRemoveSection,
+}: Props) {
+    // --- Gestion des événements ---
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,
@@ -20,15 +29,15 @@ function SectionBox({ id, title, questions, mode, onUpdate, handleRemoveSection 
             questions,
         });
     };
+
     const handleRemoveQuestion = (questionId: number) => {
         onUpdate({
             id,
             title,
-            questions: questions.filter((q) => q.id !== questionId)
+            questions: questions.filter((q) => q.id !== questionId),
         });
     };
 
-    // Mise à jour question
     const updateQuestion = (questionId: number, updatedQuestion: Question) => {
         const updatedSection: Section = {
             id,
@@ -39,47 +48,100 @@ function SectionBox({ id, title, questions, mode, onUpdate, handleRemoveSection 
         };
         onUpdate(updatedSection);
     };
+
     const handleAddQuestion = () => {
         const newQuestion: Question = {
             id: Date.now(),
-            text: "New Question",
-            type: "single-choice",
-            answers: [
-                { id: 1, text: "New Answer", score: 0 }
-            ]
+            text: "",
+            choices: "single-choice",
+            answers: [{ id: Date.now(), text: "", score: 0 }],
         };
         onUpdate({
             id,
             title,
-            questions: [...questions, newQuestion]
+            questions: [...questions, newQuestion],
         });
     };
 
+    // --- Animation principale du container ---
     return (
-        <div className="audit-form-section">
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className={`audit-form-section-${mode} border rounded-xl shadow-md p-4 mb-5 bg-white`}
+        >
+            {/* En-tête de la section */}
             {mode === "edit" ? (
-                <input type="text" defaultValue={title} onChange={handleTitleChange} />
+                <motion.div
+                    layout
+                    className={`audit-form-section-text-${mode} flex flex-col mb-3`}
+                >
+                    <label className="font-semibold">Titre de la section </label>
+                    <motion.input
+                        type="text"
+                        placeholder="Entrer le titre de la section"
+                        onChange={handleTitleChange}
+                        whileFocus={{ scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
+                        className="border p-2 rounded-md shadow-sm"
+                    />
+                </motion.div>
             ) : (
-                <h2>{title}</h2>
+                <motion.h2
+                    layout
+                    className="text-lg font-bold mb-4 border-b pb-2 text-gray-800"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
+                    {title}
+                </motion.h2>
             )}
 
-            {questions.map((question) => (
-                <QuestionBox
-                    key={question.id}
-                    {...question}
-                    mode={mode}
-                    onUpdate={(updated) => updateQuestion(question.id, updated)}
-                    handleRemoveQuestion={() => handleRemoveQuestion(question.id)}
-                />
-            ))}
+            {/* Liste des questions avec animations */}
+            <AnimatePresence>
+                {questions.map((question) => (
+                    <motion.div
+                        key={question.id}
+                        layout
+                        initial={{ opacity: 0, scale: 0.97 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.25 }}
+                    >
+                        <QuestionBox
+                            {...question}
+                            mode={mode}
+                            onUpdate={(updated) => updateQuestion(question.id, updated)}
+                            handleRemoveQuestion={() => handleRemoveQuestion(question.id)}
+                        />
+                    </motion.div>
+                ))}
+            </AnimatePresence>
+
+            {/* Boutons d’action */}
             {mode === "edit" && (
-                <>
-                <button type="button" onClick={handleAddQuestion}>Ajouter une question</button>
-                <button type="button" onClick={handleRemoveSection}>Supprimer la section</button>
-                </>
+                <div className="mt-4 flex gap-2">
+                    <motion.button
+                        type="button"
+                        onClick={handleAddQuestion}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="btn-add bg-blue-500 text-white px-3 py-1.5 rounded-md shadow-sm hover:bg-blue-600"
+                    >
+                        Ajouter une question
+                    </motion.button>
+
+                    <DeleteIcon
+                        className="delete-icon"
+                        onClick={handleRemoveSection}
+                    />
+                </div>
             )}
-        </div>
+        </motion.div>
     );
 }
-
 export default SectionBox;

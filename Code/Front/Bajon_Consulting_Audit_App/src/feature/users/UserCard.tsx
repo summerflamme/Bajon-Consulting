@@ -1,7 +1,15 @@
 import './users.css';
 
 function UserCard() {
-
+    const handleCoUser = () => {
+        console.log("Consulter un utilisateur");
+    };
+    const handleMoUser = () => {
+        console.log("Consulter un utilisateur");
+    };
+    const handleSuUser = () => {
+        console.log("Consulter un utilisateur");
+    };
     return (
         <div className="user-row">
             <div className="user-cell">Nom Prénom</div>
@@ -10,9 +18,15 @@ function UserCard() {
             <div className="user-cell">01/01/2023</div>
             <div className="user-cell">06/10/2025</div>
             <div className="user-cell actions">
-                <a href="/users/info" className="btn btn-primary">CO</a>
-                <a href="/users/user-form/:id" className="btn btn-primary">MO</a>
-                <a href="#" className="btn btn-primary">SU</a>
+                <button onClick={handleCoUser} className="user-list-btn">
+                    CO
+                </button>
+                <button onClick={handleMoUser} className="user-list-btn">
+                    MO
+                </button>
+                <button onClick={handleSuUser} className="user-list-btn">
+                    SU
+                </button>
             </div>
         </div>
     );
