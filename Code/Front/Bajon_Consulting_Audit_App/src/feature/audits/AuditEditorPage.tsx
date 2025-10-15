@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import AuditForm from './AuditForm';
-import type { Section } from '../types/audit';
+import AuditForm from './AuditForm/AuditForm';
+import type { Section } from '../../types/audit';
 import './AuditStyle.css';
 
 function AuditEditorPage() {

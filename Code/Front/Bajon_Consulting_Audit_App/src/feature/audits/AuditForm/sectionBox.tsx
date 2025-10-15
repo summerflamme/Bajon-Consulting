@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import QuestionBox from "./questionBox";
-import type { Audit, Question, Section } from "../types/audit";
+import type { Audit, Question, Section } from "../../../types/audit";
 import "./AuditStyle.css";
-import { DeleteIcon } from "./ui/delete";
+import { DeleteIcon } from "../../../components/ui/delete";
 
 type Props = {
     id: number;

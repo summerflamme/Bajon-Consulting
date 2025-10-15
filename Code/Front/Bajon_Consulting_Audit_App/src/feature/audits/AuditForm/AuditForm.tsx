@@ -1,5 +1,5 @@
 import SectionBox from "./sectionBox";
-import type { Audit, Section } from "../types/audit";
+import type { Audit, Section } from "../../../types/audit";
 import './AuditStyle.css';
 
 type Props = {

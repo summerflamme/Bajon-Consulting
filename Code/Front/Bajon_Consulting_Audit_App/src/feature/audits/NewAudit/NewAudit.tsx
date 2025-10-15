@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "../components/NewAudit.css";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../../supabaseClient";
 
 export default function NewAuditPage() {
     // ========================================================

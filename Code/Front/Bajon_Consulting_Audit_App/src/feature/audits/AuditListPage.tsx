@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../supabaseClient';
-import AuditCard from '../../components/AuditCard';
+import AuditCard from './AuditCard';
 import SearchBar from '../../components/SearchBar';
 import './AuditListPage.css';
 

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import type { Answer, Question, Audit } from "../types/audit";
+import type { Answer, Question, Audit } from "../../../types/audit";
 import "./AuditStyle.css";
-import { DeleteIcon} from "./ui/delete";
+import { DeleteIcon} from "../../../components/ui/delete";
 type Props = Answer & {
     questionId: string;
     mode: Audit["mode"];

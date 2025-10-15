@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
-import type { Question, Answer, Audit } from "../types/audit";
+import type { Question, Answer, Audit } from "../../../types/audit";
 import AnswerBox from "./answerBox";
 import './AuditStyle.css';
-import { DeleteIcon } from "./ui/delete";
+import { DeleteIcon } from "../../../components/ui/delete";
 
 type Props = Question & {
     mode: Audit["mode"];
