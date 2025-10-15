@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './layouts.css';
-
-
-
+import { MenuIcon } from '@/components/ui/menu';
 function Header() {
   const handleLogout = async () => {
     console.log("Déconnexion en cours de l'utilisateur", sessionStorage.getItem("user"));
@@ -15,7 +13,7 @@ function Header() {
       sessionStorage.removeItem("user");
     }
   };
-
+  
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
@@ -37,9 +35,9 @@ function Header() {
   };
 
   const menus = [
-    { title: "Audits", link: "#services" },
-    { title: "Templates", link: "#services" },
-    { title: "Clients", link: "#services" },
+    { title: "Audits", link: "#services" ,},
+    { title: "Templates", link: "#services" ,},
+    { title: "Clients", link: "#services" ,},
     {
       title: "Utilisateurs",
       subMenus: [
@@ -51,22 +49,13 @@ function Header() {
 
   return (
     <header className="header">
-      <img
-        src="../../src/assets/logo-bajon-consulting.png"
-        alt="Logo"
-        className="header-logo"
-      />
+      <img src="../../src/assets/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
 
       <ul className={`menu ${open ? 'open' : ''}`}>
         {menus.map((menu, index) => (
-          <li
-            key={index}
-            className={`menu-item-container ${openSubMenu === index ? "open" : ""}`}
-          >
+          <li key={index} className={openSubMenu === index ? "open" : ""}>
             <div className="menu-item">
-              <a href={menu.link} className="menu-link">
-                {menu.title}
-              </a>
+              <a href={menu.link}>{menu.title}</a>
               {menu.subMenus && isMobile && (
                 <i
                   className={`bx ${openSubMenu === index ? "bx-chevron-up" : "bx-chevron-down"} arrow`}
@@ -74,33 +63,21 @@ function Header() {
                 />
               )}
             </div>
-
             {menu.subMenus && (
               <ul className="sub-menu">
                 {menu.subMenus.map((sub, subIndex) => (
-                  <li key={subIndex} className="sub-menu-item">
-                    <a href={sub.link} className="sub-menu-link">
-                      {sub.title}
-                    </a>
-                  </li>
+                  <li key={subIndex}><a href={sub.link}>{sub.title}</a></li>
                 ))}
-
-                {/* Bouton de déconnexion en bas du sous-menu utilisateur */}
-                {menu.title === "Utilisateurs" && (
-                  <li className="sub-menu-item logout-item">
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="logout-button logout-in-submenu"
-                    >
-                      Se déconnecter
-                    </button>
-                  </li>
-                )}
               </ul>
             )}
           </li>
         ))}
+
+        <li>
+          <button type="button" onClick={handleLogout}>
+            Se déconnecter
+          </button>
+        </li>
       </ul>
 
       {isMobile && (
@@ -108,19 +85,12 @@ function Header() {
           
           <MenuIcon
             onClick={toggleMenu}
-            className="menu-toggle bx bx-menu"
-            style={{ color: 'black' }}
-            type="button"
+            open={open}
           />
         </div>
       )}
     </header>
   );
-
 }
 
 export default Header;
-
-
-
-
