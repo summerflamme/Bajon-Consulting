@@ -14,13 +14,27 @@ VALUES
 ('Lefevre', 'Julie', 'julie.lefevre@email.com', '0622334455', 'JL Consulting', '12 boulevard St-Michel', 'France', '112233445', 'FR112233445', 'Consulting', 'RCS11223', 10000.00, '@jlconsult', 'SASU', NULL),
 ('Petit', 'Luc', 'luc.petit@email.com', '0677889900', 'Petit Entreprise', '50 chemin des Fleurs', 'Suisse', '998877665', 'CH998877665', 'Commerce', 'RCS99887', 8000.00, '@petit', 'SA', NULL);
 
+INSERT INTO AuditType (nameAuditType) VALUES
+('Interne'),
+('Externe'),
+('Réglementaire'),
+('Conformité'),
+('Performance');
+
+INSERT INTO AuditOffer (nameAuditOffer) VALUES
+('Standard'),
+('Premium'),
+('Express'),
+('Personnalisé'),
+('Gratuit');
+
 -- Table Audit
-INSERT INTO Audit (auditName, creationDate, status) VALUES
-('Audit Sécurité', '2024-01-15', 'En cours'),
-('Audit Financier', '2023-11-20', 'Terminé'),
-('Audit Qualité', '2024-05-10', 'En cours'),
-('Audit RH', '2023-09-01', 'Annulé'),
-('Audit IT', '2024-02-28', 'Prévu');
+INSERT INTO Audit (auditName, idAuditType, idAuditOffer, status, template) VALUES
+('Audit Sécurité', 1, 3, 'En cours', true),
+('Audit Financier', 5, 4, 'Terminé', false),
+('Audit Qualité', 3, 2, 'En cours', false),
+('Audit RH', 4, 1, 'Annulé', false),
+('Audit IT', 2, 5, 'Prévu', false);
 
 -- Table Theme
 INSERT INTO Theme (themeName, status) VALUES
@@ -43,15 +57,12 @@ INSERT INTO Role (roleName) VALUES
 ('Administrateur'),
 ('Auditeur'),
 ('Manager'),
-('Analyste');
+('Analyste');   
 
 -- Table User
-INSERT INTO Staff (lastName, firstName, login, password, idRole) VALUES
-('Admin', 'Super', 'test', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',1),
-('Dupuis', 'Marc', 'Dmarc', 'f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75',2),
-('Bernard', 'Claire',  'Bclaire' ,'fa9b1cc5d156de5b6ebd583ff1fe2c178fb1bacba5af7bf929cf51654a44e394' ,2),
-('Roux', 'Emma', 'Remma','9812',3),
-('Noel', 'Pierre', 'Npierre', '6577',4);
+INSERT INTO Staff (id, lastName, firstName, idRole)VALUES 
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 'summer', 'flamme', 1),
+('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 'test', 'test', 2);
 
 -- Table Question
 INSERT INTO Question (label, status, idTheme) VALUES
@@ -103,11 +114,11 @@ INSERT INTO Contain (idQuestion, idOptAnswer) VALUES
 
 -- Table Modify
 INSERT INTO Modify (idUser, idAudit, modificationDate, modificationTime) VALUES
-(1, 1, '2024-01-20', '10:30'),
-(2, 2, '2023-11-25', '14:15'),
-(3, 3, '2024-05-12', '09:00'),
-(4, 4, '2023-09-03', '16:45'),
-(5, 5, '2024-03-01', '11:20');
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 1, '2024-01-20', '10:30'),
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 2, '2023-11-25', '14:15'),
+('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 3, '2024-05-12', '09:00'),
+('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 4, '2023-09-03', '16:45'),
+('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 5, '2024-03-01', '11:20');
 
 -- =======================
 --Partie commande de test

@@ -4,7 +4,10 @@ import './components.css';
 
 type SortOrder = 'asc' | 'desc';
 
+type SearchVariant = 'audit' | 'users' | 'template' | 'default';
+
 type SearchBarProps = {
+  variant?: SearchVariant;
   onSearchChange?: (value: string) => void;
   onSortChange?: (value: string) => void;
   onAuditTypeChange?: (value: string) => void;
@@ -13,6 +16,7 @@ type SearchBarProps = {
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
+  variant = 'default',
   onSearchChange,
   onSortChange,
   onAuditTypeChange,
@@ -87,6 +91,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         ))}
       </select>
 
+      {/* Commun à tous */}
       <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
         <option value="alphabetique">Ordre alphabétique</option>
         <option value="date">Date</option>

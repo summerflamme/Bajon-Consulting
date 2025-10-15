@@ -1,5 +1,6 @@
 import SectionBox from "./sectionBox";
 import type { Audit, Section } from "../types/audit";
+import './AuditStyle.css';
 
 type Props = {
     data: Section[];
@@ -9,7 +10,7 @@ type Props = {
 };
 
 function AuditForm({ data, mode, onUpdate }: Props) {
-    // Fonction pour mettre à jour UNE section
+    // Fonction mettre à jour section
     const updateSection = (sectionId: number, updatedSection: Section) => {
         const newData = data.map((s) =>
             s.id === sectionId ? updatedSection : s
@@ -21,8 +22,8 @@ function AuditForm({ data, mode, onUpdate }: Props) {
             id: Date.now(),
             title: "New Section",
             questions: [
-                { id: 1, text: "New Question", type: "single-choice", answers: [
-                    { id: 1, text: "New Answer", score: 0 }
+                { id: 1, text: "", choices: "single-choice", descriptions: "", answers: [
+                    { id: 1, text: "", score: 0 }
                 ] },
             ],
         };
@@ -34,8 +35,7 @@ function AuditForm({ data, mode, onUpdate }: Props) {
     }
 
     return (
-        <form>
-            <div className="audit-form">Audit Form Component</div>
+        <form className="audit-form">
 
             {data.map((section) => (
                 <SectionBox
@@ -53,6 +53,7 @@ function AuditForm({ data, mode, onUpdate }: Props) {
             {mode === "edit" && (
                 <>
                     <button type="button" onClick={handleAddSection}>Ajouter une section</button>
+                    <button type="submit">Valider</button>
                 </>
             )}
         </form>

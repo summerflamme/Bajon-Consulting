@@ -1,4 +1,4 @@
-import './App.css';
+import './App.css'
 import { supabase } from './supabaseClient';
 import AppRoutes from './routes/AppRoutes';
 
