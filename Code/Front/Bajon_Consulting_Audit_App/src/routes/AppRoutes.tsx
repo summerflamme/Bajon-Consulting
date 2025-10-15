@@ -5,7 +5,7 @@ import AuditEditorPage from "../components/AuditEditorPage";
 import UserList from "../feature/users/UserListPage";
 import UserInfo from "../feature/users/UserInfo";
 import NewAuditPage from "../components/NewAudit";
-import UserForm from "../components/UserForm";
+import UserForm from "../feature/users/UserForm";
 
 
 export default function AppRoutes() {
