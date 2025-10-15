@@ -1,17 +1,7 @@
-/* ==========================
-   Layouts CSS
-========================== */
 @import url("https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css");
 
+/* ---------- HEADER PRINCIPAL ---------- */
 
-/*______________ICI CSS DU HEADER________________*/
-
-
-
-
-/* ==========================
-   HEADER
-========================== */
 .header {
   flex-grow: 1;
   height: 80px;
@@ -23,32 +13,27 @@
   align-items: center;
   padding: 0 20px;
   font-size: larger;
-  background: rgb(255, 255, 255);
   /* Ensure header sits above other fixed elements (search bar, menus, etc.) */
   z-index: 10000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 .header-logo {
   height: 60px;
   width: auto;
 }
 
-/* Ensure the layout reserves space for the fixed header/footer
-   so page content isn't covered */
+/* ---------- LAYOUT PRINCIPAL ---------- */
+
 .app-layout {
   box-sizing: border-box;
-  /* Use flex column so footer is pushed to the bottom when content is short
-     and stays after content when page is long. Keep top padding to avoid
-     being covered by the fixed header. */
   display: flex;
   flex-direction: column;
-  padding-top: 80px; /* reserve space for fixed header */
+  padding-top: 80px;
   min-height: 100vh;
 }
 
-/* ==========================
-MENU PRINCIPAL
-========================== */
+/* ---------- MENU PRINCIPAL ---------- */
 
 .menu {
   display: flex;
@@ -56,95 +41,122 @@ MENU PRINCIPAL
   margin-left: auto;
   align-items: center;
 }
-.menu > li > a {
-  display: flex;              /* Flex pour centrer le contenu */
-  align-items: center;        /* Centre verticalement le texte */
-  height: 80px;               /* Même hauteur que .header */
-  padding: 0 20px;            /* Espace gauche/droite */
-  text-decoration: none;
-  color: black;
-  border-bottom: 2px solid transparent;
-  transition: max-height 360ms ease-in-out, opacity 320ms ease-in-out;
-  justify-content: center;
-}
 
-.menu li {
+.menu-item-container {
   position: relative;
   display: block;
 }
-.menu > li > a:hover {
+
+/* Liens du menu */
+.menu-link {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 700;
+  color: rgba(36, 97, 132, 1);
+  display: flex;
+  align-items: center;
+  height: 80px;
+  padding: 0 20px;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: max-height 360ms ease-in-out, opacity 320ms ease-in-out, border-bottom 0.3s ease;
+  justify-content: center;
+}
+
+.menu-link:hover {
   color: #007bff;
   border-bottom: 2px solid #007bff;
 }
 
-.menu li:hover > .sub-menu {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.menu-item{
+/* Conteneur d’élément du menu */
+.menu-item {
   padding: 27px;
-}
-.menu li:hover > .sub-menu {
-  opacity: 1;
-  transform: translateY(0);
-  visibility: visible;
-  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
+/* ---------- SOUS-MENU ---------- */
 
-/* ==========================
-SOUS-MENU
-========================== */
-
-/* remplace ta logique desktop d’affichage */
 .sub-menu {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 180px;
+  min-width: 200px;
   background: #000;
   padding: 10px 0;
   border-radius: 4px;
-
-  /* états initial + animables */
   opacity: 0;
   transform: translateY(8px);
   visibility: hidden;
   pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
 }
 
+.menu-item-container:hover > .sub-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
 
-.sub-menu li a {
+/* Liens du sous-menu */
+.sub-menu-item {
+  display: block;
+}
+
+.sub-menu-link {
   display: block;
   padding: 8px 15px;
   color: #fff;
   text-decoration: none;
+  font-size: 16px;
 }
-  
-  /* ==========================
-  MOBILE 
-  ========================== */
+
+.sub-menu-link:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+/* ---------- BOUTON DECONNEXION DANS LE SOUS-MENU ---------- */
+
+.logout-item {
+  margin-top: auto; /* pousse le bouton en bas du sous-menu */
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logout-button {
+  width: 100%;
+  background: #246184;
+  color: white;
+  border: none;
+  padding: 10px 0;
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border-radius: 0 0 4px 4px;
+}
+
+.logout-button:hover {
+  background: #007bff;
+}
+
+/* ---------- MENU MOBILE ---------- */
+
 @media (max-width: 768px) {
   .header {
     font-size: medium;
   }
-  
-  /* Bouton  */
+
   .main {
     margin-left: auto;
     display: flex;
     align-items: center;
   }
-  .menu li:hover > .sub-menu {
-    opacity: 1 !important;
-    transform: translateY(8px) !important;
-    pointer-events: auto !important;
-  }
-  /* Menu par défaut (caché) */
+
   .menu {
     position: fixed;
     top: 80px;
@@ -155,61 +167,47 @@ SOUS-MENU
     margin: 0;
     padding: 0;
     flex-direction: column;
-    max-height: 0;           /* caché par défaut */
+    max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height .36s ease, opacity .32s ease;
+    transition: max-height 0.36s ease, opacity 0.32s ease;
   }
-  .menu > li > a {
-    height: auto;          /* laisse la hauteur s’adapter au contenu */
-    padding: 12px 0;       /* réduit le padding vertical */
+
+  .menu.open {
+    max-height: calc(100vh - 80px);
+    opacity: 1;
+  }
+
+  .menu-item {
+    padding: 5px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .menu-link {
+    flex: 1;
     text-align: center;
     color: #fff;
-  }
-  /* Menu ouvert */
-  .menu.open {
-    max-height: calc(100vh - 80px);  /* prend toute la hauteur disponible */
-    opacity: 1;
+    padding: 12px 0;
+    font-size: 16px;
+    height: auto;
   }
 
   .arrow {
     margin-left: 8px;
-  font-size: 40px;
-  cursor: pointer;
-  /*icon a droite */
-
-  color: white;
-  transition: transform 0.3s ease;
-}
-
-.menu-item a {
-    flex: 1;                   /* prend tout l’espace disponible */
-    text-align: center;        /* texte centré */
-    color: #fff;
-    padding: 12px 0;
-    font-size: 16px;
-  }
-.menu-item {
-  display: flex;
-  padding: 5px;
-  justify-content: space-between; /* texte à gauche, flèche à droite */
-  align-items: center;
-  width: 100%;
-}
- .menu-item .arrow {
-    position: absolute;
-    right: -50px;               /* espace depuis le bord droit */
+    font-size: 40px;
     cursor: pointer;
-    color: #fff;
+    color: white;
     transition: transform 0.3s ease;
   }
 
+  .menu-item .arrow {
+    position: absolute;
+    right: -50px;
+  }
 
-
-
- /* Sous-menu mobile fermé par défaut */
- .sub-menu {
-   visibility: visible;
+  .sub-menu {
+    visibility: visible;
     padding: 0;
     position: relative;
     width: 100%;
@@ -217,31 +215,49 @@ SOUS-MENU
     overflow: hidden;
     opacity: 0;
     border-radius: 0;
-    background: #ffffff;
-    transition: max-height .4s ease, opacity .3s ease;
+    background: #f9f9f9;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
 
-  .menu li.open > .sub-menu {
-    max-height: 500px; /* adapter selon le contenu */
+  .menu-item-container.open > .sub-menu {
+    max-height: 500px;
     opacity: 1;
   }
 
-  .sub-menu li a {
+  .sub-menu-link {
     padding: 12px;
     text-align: center;
     color: #000;
   }
 
+  /* Bouton déconnexion mobile */
+  .logout-button {
+    background: #246184;
+    color: white;
+    border: none;
+    padding: 14px 0;
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    border-radius: 0;
+  }
 
+  .logout-button:hover {
+    background: #007bff;
+  }
 
-
+  .logout-item {
+    margin-top: 5px;
+    border-top: 1px solid #ccc;
+  }
 }
 
-/*______________ICI CSS DU FOOTER________________*/
+
+/*_________________footer___________________*/
 
 .footer {
-  /* Make footer participate in document flow (not fixed). It will sit
-     at the bottom because .app-layout is a column flex and main uses flex:1 */
   position: relative;
   left: 0;
   right: 0;
@@ -252,7 +268,6 @@ SOUS-MENU
   justify-content: center;
   padding: 0 20px;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  /* Footer below header but above page content */
   z-index: 10;
   font-size: 14px;
 }

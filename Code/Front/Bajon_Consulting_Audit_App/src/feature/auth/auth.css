@@ -1,27 +1,35 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .background-zone {
   position: fixed;
-  top: 80px;         /* hauteur du header */
-  bottom: 60px;      /* hauteur du footer */
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  background-image: url('/fond-auth.jpeg'); /* image dans /public */
+  background-image: url('../../assets/fond-auth.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
-  justify-content: center; /* centre horizontalement */
-  align-items: center;     /* centre verticalement */
+  justify-content: center;
+  align-items: center;
 }
 
-
-
-
 .login-box {
-  background-color: rgba(255, 255, 255, 0.8); /* semi-transparent blanc */
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  width: 300px;
 }
 
 .login-box h2 {
@@ -34,30 +42,34 @@
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  color:#236084
+  color: #236084;
+}
+
+.login-box input,
+.login-box button {
+  width: 100%;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
 .login-box input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
   border: 1px solid #000000;
-  border-radius: 5px;
-  color: rgb(0, 0, 0);
+  background-color: #fff;
+  color: black;
 }
 
 .login-box button {
-  width: 100%;
-  padding: 10px;
   background-color: #236084;
   color: white;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .login-box button:hover {
-  background-color: #236084;
+  background-color: #1e5375;
 }
 
 .forgot-password {
@@ -72,4 +84,37 @@
 
 .forgot-password a:hover {
   text-decoration: underline;
+}
+
+/* Responsive */
+
+@media (max-width: 480px) {
+  .login-box {
+    max-width: 90%;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .login-box h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .login-box label {
+    font-size: 0.9rem;
+  }
+
+  .login-box input,
+  .login-box button {
+    padding: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .forgot-password {
+    font-size: 0.85rem;
+    margin-top: 5px;
+  }
 }

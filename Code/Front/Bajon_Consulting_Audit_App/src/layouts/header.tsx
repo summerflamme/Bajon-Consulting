@@ -1,7 +1,8 @@
-import { MenuIcon } from '@/components/ui/menu';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './layouts.css';
-import React, { useEffect, useState } from 'react';
+
+
 
 function Header() {
   const handleLogout = async () => {
@@ -35,39 +36,37 @@ function Header() {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
-  // 🔥 Liste des menus et sous-menus
   const menus = [
+    { title: "Audits", link: "#services" },
+    { title: "Templates", link: "#services" },
+    { title: "Clients", link: "#services" },
     {
-      title: "Audits",
-      link: "audit",
+      title: "Utilisateurs",
       subMenus: [
-        { title: "Audit SEO", link: "#audit-seo" },
-        { title: "Audit Technique", link: "#audit-technique" },
-        { title: "Audit Contenu", link: "#audit-contenu" }
+        { title: "Mes informations", link: "/users/info" },
+        { title: "Liste des utilisateurs", link: "/users/list" },
       ]
-    },
-    {
-      title: "Templates",
-      link: "#presentation",
-      subMenus: [
-        { title: "Template SEO", link: "#template-seo" },
-        { title: "Template Technique", link: "#template-technique" },
-        { title: "Template Contenu", link: "#template-contenu" }
-      ]
-    },
-    { title: "Client", link: "#services" ,},
-    { title: "Compte", link: "#valeurs" }
+    }
   ];
 
   return (
     <header className="header">
-      <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
+      <img
+        src="../../src/assets/logo-bajon-consulting.png"
+        alt="Logo"
+        className="header-logo"
+      />
 
       <ul className={`menu ${open ? 'open' : ''}`}>
         {menus.map((menu, index) => (
-          <li key={index} className={openSubMenu === index ? "open" : ""}>
+          <li
+            key={index}
+            className={`menu-item-container ${openSubMenu === index ? "open" : ""}`}
+          >
             <div className="menu-item">
-              <a href={menu.link}>{menu.title}</a>
+              <a href={menu.link} className="menu-link">
+                {menu.title}
+              </a>
               {menu.subMenus && isMobile && (
                 <i
                   className={`bx ${openSubMenu === index ? "bx-chevron-up" : "bx-chevron-down"} arrow`}
@@ -75,34 +74,56 @@ function Header() {
                 />
               )}
             </div>
+
             {menu.subMenus && (
               <ul className="sub-menu">
                 {menu.subMenus.map((sub, subIndex) => (
-                  <li key={subIndex}><a href={sub.link}>{sub.title}</a></li>
+                  <li key={subIndex} className="sub-menu-item">
+                    <a href={sub.link} className="sub-menu-link">
+                      {sub.title}
+                    </a>
+                  </li>
                 ))}
+
+                {/* Bouton de déconnexion en bas du sous-menu utilisateur */}
+                {menu.title === "Utilisateurs" && (
+                  <li className="sub-menu-item logout-item">
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="logout-button logout-in-submenu"
+                    >
+                      Se déconnecter
+                    </button>
+                  </li>
+                )}
               </ul>
             )}
           </li>
         ))}
-
-        <li>
-          <button type="button" onClick={handleLogout}>
-            Se déconnecter
-          </button>
-        </li>
       </ul>
 
       {isMobile && (
         <div className="main">
-          
-          <MenuIcon
+          <button
+            id="menu-icon"
+            aria-controls="main-navigation"
+            aria-expanded={open}
             onClick={toggleMenu}
-            open={open}
+            className="menu-toggle bx bx-menu"
+            style={{ color: 'black' }}
+            type="button"
           />
         </div>
       )}
     </header>
   );
+
+
 }
 
 export default Header;
+
+
+
+

@@ -14,12 +14,14 @@ DROP TABLE IF EXISTS Staff CASCADE;
 DROP TABLE IF EXISTS Role CASCADE;
 DROP TABLE IF EXISTS Audit CASCADE;
 DROP TABLE IF EXISTS Client CASCADE;
+DROP TABLE IF EXISTS AuditType CASCADE;
+DROP TABLE IF EXISTS AuditOffer CASCADE;
 
 
 
 -- Table Client
 CREATE TABLE Client (
-    idClient SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     clientLastName VARCHAR(100),
     clientFirstName VARCHAR(100),
     clientEmail VARCHAR(255),
@@ -37,70 +39,83 @@ CREATE TABLE Client (
     logo BYTEA
 );
 
+-- Table AuditType
+CREATE TABLE AuditType (
+    id SERIAL PRIMARY KEY,
+    nameAuditType VARCHAR(100) NOT NULL
+);
+
+-- Table AuditOffer
+CREATE TABLE AuditOffer (
+    id SERIAL PRIMARY KEY,
+    nameAuditOffer VARCHAR(100) NOT NULL
+);
+
 -- Table Audit
 CREATE TABLE Audit (
-    idAudit SERIAL PRIMARY KEY,
-    auditName VARCHAR(150),
-    creationDate DATE,
-    status VARCHAR(50)
+    id SERIAL PRIMARY KEY,
+    idAuditType INT NOT NULL,
+    idAuditOffer INT NOT NULL,
+    auditName VARCHAR(150) NOT NULL,
+    status VARCHAR(50),
+    template BOOLEAN NOT NULL DEFAULT false,
+    FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
+    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id)
 );
 
+-- Table role
 CREATE TABLE Role  (
-    idRole SERIAL PRIMARY KEY,
-    roleName VARCHAR(150)
+    id SERIAL PRIMARY KEY,
+    roleName VARCHAR(150) NOT NULL
 );
 
--- Table User
+-- Table User ( pour les test )
 CREATE TABLE Staff (
-    idUser SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     lastName VARCHAR(100),
     firstName VARCHAR(100),
     idRole INT NOT NULL,
-    -- pour test
-    login VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    -- fin test
-    FOREIGN KEY (idRole) REFERENCES Role(idRole)
+    FOREIGN KEY (idRole) REFERENCES Role(id)
 );
 
 -- Table Theme
 CREATE TABLE Theme (
-    idTheme SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     themeName VARCHAR(150),
     status VARCHAR(50)
 );
 
 -- Table Type
 CREATE TABLE Type (
-    idType SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     typeName VARCHAR(100)
 );
 
 -- Table Question
 CREATE TABLE Question (
-    idQuestion SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     label VARCHAR(255),
     status VARCHAR(50),
     idTheme INT NOT NULL,
-    FOREIGN KEY (idTheme) REFERENCES Theme(idTheme)
+    FOREIGN KEY (idTheme) REFERENCES Theme(id)
 );
 
 -- Table OptionAnswer
 CREATE TABLE OptionAnswer (
-    idOptAnswer SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     optionLabel VARCHAR(255),
     optionPoints INT,
     idType INT NOT NULL,
-    FOREIGN KEY (idType) REFERENCES Type(idType)
+    FOREIGN KEY (idType) REFERENCES Type(id)
 );
 
 -- Table ClientAnswer
 CREATE TABLE ClientAnswer (
-    idClientAnswer SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     clientAnswer TEXT,
     clientAnswerPoints INT,
     idQuestion INT NOT NULL,
-    FOREIGN KEY (idQuestion) REFERENCES Question(idQuestion)
+    FOREIGN KEY (idQuestion) REFERENCES Question(id)
 );
 
 -- Table Participate (relation Client - Audit)
@@ -109,8 +124,8 @@ CREATE TABLE Participate (
     idAudit INT NOT NULL,
     participationDate DATE,
     PRIMARY KEY (idClient, idAudit),
-    FOREIGN KEY (idClient) REFERENCES Client(idClient),
-    FOREIGN KEY (idAudit) REFERENCES Audit(idAudit)
+    FOREIGN KEY (idClient) REFERENCES Client(id),
+    FOREIGN KEY (idAudit) REFERENCES Audit(id)
 );
 
 -- Table Own (relation Audit - Theme)
@@ -118,8 +133,8 @@ CREATE TABLE Own (
     idAudit INT NOT NULL,
     idTheme INT NOT NULL,
     PRIMARY KEY (idAudit, idTheme),
-    FOREIGN KEY (idAudit) REFERENCES Audit(idAudit),
-    FOREIGN KEY (idTheme) REFERENCES Theme(idTheme)
+    FOREIGN KEY (idAudit) REFERENCES Audit(id),
+    FOREIGN KEY (idTheme) REFERENCES Theme(id)
 );
 
 -- Table Contain (relation Question - OptionAnswer)
@@ -127,17 +142,21 @@ CREATE TABLE Contain (
     idQuestion INT NOT NULL,
     idOptAnswer INT NOT NULL,
     PRIMARY KEY (idQuestion, idOptAnswer),
-    FOREIGN KEY (idQuestion) REFERENCES Question(idQuestion),
-    FOREIGN KEY (idOptAnswer) REFERENCES OptionAnswer(idOptAnswer)
+    FOREIGN KEY (idQuestion) REFERENCES Question(id),
+    FOREIGN KEY (idOptAnswer) REFERENCES OptionAnswer(id)
 );
 
 -- Table Modify (relation User - Audit)
 CREATE TABLE Modify (
-    idUser INT NOT NULL,
+    idmodify SERIAL,
+    idUser UUID,
+    -- ou quand test fini
+    --id UUID auth.users(id) ON DELETE CASCADE,
     idAudit INT NOT NULL,
     modificationDate DATE,
     modificationTime TIME,
-    PRIMARY KEY (idUser, idAudit),
-    FOREIGN KEY (idUser) REFERENCES Staff(idUser),
-    FOREIGN KEY (idAudit) REFERENCES Audit(idAudit)
+    PRIMARY KEY (idUser, idAudit, idmodify),
+    FOREIGN KEY (idUser) REFERENCES Staff(id),
+    --FOREIGN KEY (UUID) REFERENCES users(uid),
+    FOREIGN KEY (idAudit) REFERENCES Audit(id)
 );
