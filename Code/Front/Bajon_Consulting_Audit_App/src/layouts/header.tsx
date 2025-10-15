@@ -37,12 +37,11 @@ function Header() {
   };
 
   const menus = [
-    { title: "Audits", link: "#services" },
+    { title: "Audits", link: "/audits" },
     { title: "Templates", link: "#services" },
     { title: "Clients", link: "#services" },
     {
-      title: "Audits",
-      link: "audits",
+      title: "Utilisateurs",
       subMenus: [
         { title: "Mes informations", link: "/users/info" },
         { title: "Liste des utilisateurs", link: "/users/list" },
