@@ -13,7 +13,6 @@
   align-items: center;
   padding: 0 20px;
   font-size: larger;
-  background: rgb(255, 255, 255);
   /* Ensure header sits above other fixed elements (search bar, menus, etc.) */
   z-index: 10000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
