@@ -1,0 +1,35 @@
+import './users.css';
+
+function UserCard() {
+    const handleCoUser = () => {
+        console.log("Consulter un utilisateur");
+    };
+    const handleMoUser = () => {
+        console.log("Consulter un utilisateur");
+    };
+    const handleSuUser = () => {
+        console.log("Consulter un utilisateur");
+    };
+    return (
+        <div className="user-row">
+            <div className="user-cell">Nom Prénom</div>
+            <div className="user-cell">email@exemple.com</div>
+            <div className="user-cell">06 12 34 56 78</div>
+            <div className="user-cell">01/01/2023</div>
+            <div className="user-cell">06/10/2025</div>
+            <div className="user-cell actions">
+                <button onClick={handleCoUser} className="user-list-btn">
+                    CO
+                </button>
+                <button onClick={handleMoUser} className="user-list-btn">
+                    MO
+                </button>
+                <button onClick={handleSuUser} className="user-list-btn">
+                    SU
+                </button>
+            </div>
+        </div>
+    );
+}
+
+export default UserCard;

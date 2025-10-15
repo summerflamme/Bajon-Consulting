@@ -21,6 +21,16 @@ Object Client {
     logo : bytea
 }
 
+Object AuditType {
+    +idAuditType : int <<PK>>
+    nameAuditType : varchar(100)
+}
+
+Object AuditOffer {
+    +idAuditOffer : int <<PK>>
+    nameAuditOffer : varchar(100)
+}
+
 Object Audit {
     +idAudit : int <<PK>>
     auditName : varchar(150)
@@ -28,11 +38,16 @@ Object Audit {
     status : varchar(50)
 }
 
-Object "User" as User {
+Object Staff {
     +idUser : int <<PK>>
     lastName : varchar(100)
     firstName : varchar(100)
     role : varchar(50)
+}
+
+Object Role {
+    idRole : int <<PK>>
+    roleName : VARCHAR(150)
 }
 
 Object Theme {
@@ -90,6 +105,7 @@ Object Modify {
     modificationDate : date
     modificationTime : time
 }
+
 Question "1"-up-"0..*" ClientResponse  
 OptionResponse "0..*"--"1" Type
 Theme "0..*"-right-"1" Question
@@ -101,9 +117,12 @@ Audit "0..*"-right-"0..*" Theme
 (Theme, Audit) . Own
 
 Client "0..*"-left-"0..*" Audit
+AuditType "1"-down-"0..*" Audit
+AuditOffer "1"-down-"0..*" Audit
 (Client, Audit) . Participate
 
-Audit "0..*"-down-"0..*" User
-(Audit, User) . Modify
+Role  "1"-up-"0..*" Staff
+Audit "0..*"-down-"0..*" Staff
+(Audit, Staff) . Modify
 
 @enduml

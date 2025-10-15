@@ -1,0 +1,134 @@
+/*ICI SEARCHBAR*/
+.advanced-search-bar {
+  width: 100%;
+  background-color: #236084;
+  padding: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 998;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.search-input {
+  flex: 0 0 160px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.search-select {
+  flex: 0 0 130px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  outline: none;
+  color: black;
+}
+
+.sort-order-button {
+  flex: 0 0 40px;
+  height: 36px;
+  font-size: 18px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 6px 8px;
+  color: #333;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.sort-order-button:hover {
+  background-color: #e2e2e2;
+}
+
+.sort-order-button:active {
+  transform: scale(0.95);
+}
+
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .search-input {
+    flex: 0 0 140px;
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  .search-select {
+    flex: 0 0 110px;
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  .advanced-search-bar {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .sort-order-button{
+    padding: 6px 8px;
+    gap: 8px;
+  }
+}
+
+/* AuditCard */
+.card-header{
+  background-color: rgb(35, 96, 132);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border: 2px solid #236184;
+  padding: 10px 15px;
+  width: 400px;
+  box-sizing: border-box;
+}
+
+.card-title{
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.card-body{
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid #236184;
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.card-text{
+  color: #000000;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.card-footer{
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border: 2px solid #236184;
+  padding: 10px 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}

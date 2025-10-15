@@ -1,0 +1,25 @@
+// Définition des types
+type Answer = {
+    id: number;
+    text: string;
+    score: number;
+};
+
+type Question = {
+    id: number;
+    text: string;
+    descriptions?: string;
+    choices: "single-choice" | "multiple-choice"; // tu peux étendre selon tes besoins
+    answers: Answer[];
+};
+
+type Section = {
+    id: number;
+    title: string;
+    questions: Question[];
+};
+
+type Audit = {
+    mode: "edit" | "view";
+};
+export { Answer, Question, Section, data , Audit };

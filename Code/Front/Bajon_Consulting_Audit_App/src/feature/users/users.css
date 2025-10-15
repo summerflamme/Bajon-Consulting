@@ -1,0 +1,349 @@
+/*____________________ICI USERLIST____________________*/
+.user-page-container {
+  max-width: 1200px;
+  width: 90%;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 2rem;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.user-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.user-list-btn {
+  background: #236084;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-list-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.user-list-btn:active {
+  transform: translateY(0);
+}
+
+.user-list-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.user-list-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.user-header-row,
+.user-row {
+  display: grid;
+  grid-template-columns:
+    1.1fr  
+    1.6fr   
+    1.1fr  
+    0.9fr 
+    1.2fr  
+    1.4fr; 
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  padding: 0.6rem 0.8rem;
+  min-width: 900px;
+}
+
+.user-header-row {
+  background: #f3f3f3;
+  font-weight: 700;
+  color: #333;
+  border-bottom: 2px solid #d8d8d8;
+}
+
+.user-row {
+  border-bottom: 1px solid #eee;
+  background: white;
+  transition: background 0.2s ease;
+}
+
+.user-row:hover {
+  background: #f8faff;
+}
+
+.user-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  color: #333;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.user-cell.actions {
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 1024px) {
+  .user-header-row,
+  .user-row {
+    grid-template-columns:
+      1.2fr  
+      1.3fr  
+      1.2fr  
+      1.5fr; 
+    min-width: 700px;
+  }
+
+  .user-cell:nth-child(4),
+  .user-cell:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-page-container {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .user-list-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .add-user-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-header-row,
+  .user-row {
+    grid-template-columns:
+      1fr    
+      1.5fr;  
+    min-width: 0;
+  }
+
+  .user-cell:nth-child(2),
+  .user-cell:nth-child(3),
+  .user-cell:nth-child(4),
+  .user-cell:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .user-header-row,
+  .user-row {
+    grid-template-columns: 0.8fr 1.2fr; 
+  }
+
+  .user-cell:nth-child(2),
+  .user-cell:nth-child(3),
+  .user-cell:nth-child(4),
+  .user-cell:nth-child(5) {
+    display: none;
+  }
+
+  .user-cell.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+
+/*____________________ICI USERINFO____________________*/
+
+.user-info-wrapper {
+  max-width: 900px;
+  margin: 2rem auto;
+  z-index: 1;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.user-info-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../../../public/testinfoutilisateur.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.user-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #236084;
+  transition: transform 0.3s ease;
+}
+
+.user-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.user-info-section,
+.user-settings-section {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.user-info-section h3,
+.user-settings-section h3 {
+  margin-bottom: 1rem;
+  color: #236084;
+  font-weight: 600;
+}
+
+.user-info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  color: black;
+}
+
+.user-info-row strong {
+  color: #236084;
+  margin-right: 8px;
+}
+
+.user-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #236084;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: #1e5375;
+}
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+  .user-info-wrapper {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  .user-info-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .user-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .user-info-section,
+  .user-settings-section {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-info-wrapper {
+    padding: 1rem;
+  }
+
+  .user-info-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .user-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .user-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .user-info-wrapper {
+    padding: 0.8rem;
+    border-radius: 8px;
+  }
+
+  .user-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .user-info-section h3,
+  .user-settings-section h3 {
+    font-size: 1rem;
+  }
+
+  .user-info-row {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
