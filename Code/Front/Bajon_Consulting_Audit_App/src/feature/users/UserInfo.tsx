@@ -4,13 +4,11 @@ function UserInfo() {
   return (
     <>
       <div className="user-info-wrapper">
-        <div className="user-image-container">
-          <img
-            src= "../../../public/testinfoutilisateur.jpg"
-            alt="Avatar utilisateur"
-            className="user-avatar"
-          />
-        </div>
+        <img
+          src= "../../../public/testinfoutilisateur.jpg"
+          alt="Avatar utilisateur"
+          className="user-avatar"
+        />
 
         <div className="user-info-grid">
           <div className="user-info-section">

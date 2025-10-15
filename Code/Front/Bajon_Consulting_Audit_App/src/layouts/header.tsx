@@ -1,8 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './layouts.css';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 function Header() {
   const handleLogout = async () => {
     console.log("Déconnexion en cours de l'utilisateur", sessionStorage.getItem("user"));
@@ -14,7 +12,7 @@ function Header() {
       sessionStorage.removeItem("user");
     }
   };
-
+  
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
@@ -35,7 +33,6 @@ function Header() {
     setOpenSubMenu(prev => (prev === index ? null : index));
   };
 
-  // Liste des menus et sous-menus
   const menus = [
     { title: "Audits", link: "#services" ,},
     { title: "Templates", link: "#services" ,},
@@ -51,7 +48,7 @@ function Header() {
 
   return (
     <header className="header">
-      <img src="../../public/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
+      <img src="../../src/assets/logo-bajon-consulting.png" alt="Logo" className="header-logo" />
 
       <ul className={`menu ${open ? 'open' : ''}`}>
         {menus.map((menu, index) => (
