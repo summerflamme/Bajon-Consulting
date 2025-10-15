@@ -126,9 +126,9 @@ function AuditCard({ audit }) {
           <h5 className="card-title"> <strong> {audit.auditname} </strong> </h5>
         </div>
         <div className="card-body">
-          <p className='card-text'> <strong> Création le : </strong> </p>
+          <p className='card-text'> <strong> Création : </strong> </p>
           <p className='card-text'> {creation.map(modify => (modify.modificationdate))} à {creation.map(modify => (modify.modificationtime))} </p>
-          <p className='card-text'> par {creation.map(modify => (modify.staff.lastname))} {creation.map(modify => (modify.staff.firstname))} </p>
+          <p className='card-text'> par {creation.map(modify => (modify.staff.firstname))} {creation.map(modify => (modify.staff.lastname))} </p>
         </div>
         <div className="card-body">
           <p className='card-text'> <strong> Type d'Audit : </strong> {typeaudit.map(audittype => (audittype.nameaudittype))} </p>
@@ -143,7 +143,7 @@ function AuditCard({ audit }) {
           <a href="#" className="btn btn-primary">Supprimer</a> 
         </div>
         <div className="card-footer">
-          <p className='card-text'> <strong> Dernière modification le : </strong> </p>
+          <p className='card-text'> <strong> Dernière modification : </strong> </p>
           <p className='card-text'> {lastmodif.map(modify => (modify.modificationdate))} à {lastmodif.map(modify => (modify.modificationtime))} </p>
           <p className='card-text'> par {lastmodif.map(modify => (modify.staff.firstname))} {lastmodif.map(modify => (modify.staff.lastname))} </p>
           <a href="#" className="btn btn-primary">Historique</a>
