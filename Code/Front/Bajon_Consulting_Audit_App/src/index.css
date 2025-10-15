@@ -19,7 +19,7 @@
 }
 main {
   flex: 1;
-  position: relative;
+  position: relative; /* pour contenir la background-zone */
 }
 a {
   font-weight: 500;
@@ -62,7 +62,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-
+    background-color: #ffffff;
   }
   a:hover {
     color: #747bff;
@@ -76,7 +76,6 @@ button:focus-visible {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
