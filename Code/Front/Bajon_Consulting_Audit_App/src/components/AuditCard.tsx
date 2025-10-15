@@ -10,24 +10,6 @@ function AuditCard({ audit }) {
   const [loading, setLoading] = useState(true);
 
   // Récupération des données dans Supabase
-  // Type d'Offre
-  useEffect(() => {
-  const fetchTypeOffer = async () => {
-    const { data, error } = await supabase
-      .from("auditoffer")
-      .select("*")
-      .eq('id', audit.idauditoffer)
-
-    if (error) {
-      console.error("Erreur de récupération :", error);
-    } else {
-      setTypeOffer(data || []);
-    }
-    setLoading(false);
-  };
-  fetchTypeOffer();
-  }, []);
-
   // Type d'Audit
   useEffect(() => {
   const fetchTypeAudit = async () => {
@@ -44,7 +26,25 @@ function AuditCard({ audit }) {
     setLoading(false);
   };
   fetchTypeAudit();
-  }, []);
+  }, [audit.idaudittype]);
+  
+  // Type d'Offre
+  useEffect(() => {
+  const fetchTypeOffer = async () => {
+    const { data, error } = await supabase
+      .from("auditoffer")
+      .select("*")
+      .eq('id', audit.idauditoffer)
+
+    if (error) {
+      console.error("Erreur de récupération :", error);
+    } else {
+      setTypeOffer(data || []);
+    }
+    setLoading(false);
+  };
+  fetchTypeOffer();
+  }, [audit.idauditoffer]);
 
   // Création (Première modification)
   useEffect(() => {
@@ -79,7 +79,7 @@ function AuditCard({ audit }) {
     setLoading(false);
   };
   fetchCreation();
-  }, []);
+  }, [audit.id]);
   
   // Dernière modification
   useEffect(() => {
@@ -114,7 +114,7 @@ function AuditCard({ audit }) {
     setLoading(false);
   };
   fetchLastModif();
-  }, []);
+  }, [audit.id]);
 
   if (loading) return <p>Chargement ...</p>;
 
@@ -131,8 +131,8 @@ function AuditCard({ audit }) {
           <p className='card-text'> par {creation.map(modify => (modify.staff.lastname))} {creation.map(modify => (modify.staff.firstname))} </p>
         </div>
         <div className="card-body">
-          <p className='card-text'> <strong> Type d'Offre : </strong> {typeoffer.map(auditoffer => (auditoffer.nameauditoffer))} </p>
           <p className='card-text'> <strong> Type d'Audit : </strong> {typeaudit.map(audittype => (audittype.nameaudittype))} </p>
+          <p className='card-text'> <strong> Type d'Offre : </strong> {typeoffer.map(auditoffer => (auditoffer.nameauditoffer))} </p>
           <p className='card-text'> <strong> Statut : </strong> {audit.status} </p>
         </div>
         <div className="card-body">
@@ -145,7 +145,7 @@ function AuditCard({ audit }) {
         <div className="card-footer">
           <p className='card-text'> <strong> Dernière modification le : </strong> </p>
           <p className='card-text'> {lastmodif.map(modify => (modify.modificationdate))} à {lastmodif.map(modify => (modify.modificationtime))} </p>
-          <p className='card-text'> par {lastmodif.map(modify => (modify.staff.lastname))} {lastmodif.map(modify => (modify.staff.firstname))} </p>
+          <p className='card-text'> par {lastmodif.map(modify => (modify.staff.firstname))} {lastmodif.map(modify => (modify.staff.lastname))} </p>
           <a href="#" className="btn btn-primary">Historique</a>
           <p> </p>
         </div>
