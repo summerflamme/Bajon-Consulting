@@ -1,4 +1,4 @@
-import AuditCard from "../feature/audits/AuditCard";
+import AuditCard from "./AuditCard";
 import './components.css';
 
 const audits = [1, 2, 3, 4, 5]; // Remplace par tes données réelles
