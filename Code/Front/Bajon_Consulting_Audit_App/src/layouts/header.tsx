@@ -17,13 +17,13 @@ function Header() {
   };
 
   const [open, setOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
   const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
 
   useEffect(() => {
     const onResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768 && open) {
+      setIsMobile(window.innerWidth <= 800);
+      if (window.innerWidth > 800 && open) {
         setOpen(false);
       }
     };
@@ -52,11 +52,13 @@ function Header() {
 
   return (
     <header className="header">
-      <img
-        src="../../src/assets/logo-bajon-consulting.png"
-        alt="Logo"
-        className="header-logo"
-      />
+      <a href="/">
+        <img
+          src="../../src/assets/logo-bajon-consulting.png"
+          alt="Logo"
+          className="header-logo"
+        />
+      </a>
 
       <ul className={`menu ${open ? 'open' : ''}`}>
         {menus.map((menu, index) => (
@@ -86,7 +88,6 @@ function Header() {
                   </li>
                 ))}
 
-                {/* Bouton de déconnexion en bas du sous-menu utilisateur */}
                 {menu.title === "Utilisateurs" && (
                   <li className="sub-menu-item logout-item">
                     <button
@@ -105,14 +106,13 @@ function Header() {
       </ul>
 
       {isMobile && (
-        <div className="main">
+        <div className="mobile-button">
           <button
             id="menu-icon"
             aria-controls="main-navigation"
             aria-expanded={open}
             onClick={toggleMenu}
             className="menu-toggle bx bx-menu"
-            style={{ color: 'black' }}
             type="button"
           />
         </div>

@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BaseLayout from "../layouts/BaseLayout";
 import LoginPage from "../feature/auth/LoginPage";
-import AuditEditorPage from "../components/AuditEditorPage";
+import AuditEditorPage from "../feature/audits/AuditEditorPage";
 import UserList from "../feature/users/UserListPage";
 import UserInfo from "../feature/users/UserInfo";
-import NewAuditPage from "../components/NewAudit";
+import NewAuditPage from "../feature/audits/NewAudit/NewAudit";
 import UserForm from "../components/UserForm";
 import AuditListPage from "../feature/audits/AuditListPage";
 

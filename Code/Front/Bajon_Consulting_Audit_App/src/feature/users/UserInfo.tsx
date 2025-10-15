@@ -4,11 +4,14 @@ function UserInfo() {
   return (
     <>
       <div className="user-info-wrapper">
-        <img
-          src= "../../../public/testinfoutilisateur.jpg"
-          alt="Avatar utilisateur"
-          className="user-avatar"
-        />
+        {/* 👉 Conteneur ajouté ici */}
+        <div className="user-avatar-container">
+          <img
+            src="../../../public/testinfoutilisateur.jpg"
+            alt="Avatar utilisateur"
+            className="user-avatar"
+          />
+        </div>
 
         <div className="user-info-grid">
           <div className="user-info-section">
@@ -25,6 +28,7 @@ function UserInfo() {
             <div className="user-info-row"><strong>Dernière connexion :</strong> 6 octobre 2025</div>
           </div>
         </div>
+
         <div className="user-actions">
           <button className="btn primary">Modifier les informations</button>
           <button className="btn secondary">Mot de passe oublié</button>
