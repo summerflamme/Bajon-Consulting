@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
-import './components.css';
+import './AuditCard.css';
 
 function AuditCard({ audit }) {
   const [typeoffer, setTypeOffer] = useState<any[]>([]);
