@@ -183,7 +183,6 @@
 
 
 /*____________________ICI USERINFO____________________*/
-
 .user-info-wrapper {
   max-width: 900px;
   margin: 2rem auto;
@@ -207,6 +206,15 @@
   z-index: -1;
 }
 
+/* Centrage de l'avatar */
+.user-avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Taille et effet sur l’image */
 .user-avatar {
   width: 120px;
   height: 120px;
@@ -214,6 +222,10 @@
   object-fit: cover;
   border: 3px solid #236084;
   transition: transform 0.3s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
 }
 
 .user-info-grid {

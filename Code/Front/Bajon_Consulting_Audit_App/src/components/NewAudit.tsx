@@ -297,27 +297,6 @@ export default function NewAuditPage() {
 
                 {error && <p className="form-message">{error}</p>}
             </form>
-
-            {/* test*/}
-            <div className="audit-list">
-                {audits?.map((a) => (
-                    <div key={a.id} className="audit-card">
-                        <strong>{a.auditname}</strong>
-                        <br />
-                        <strong>{a.audittype?.nameaudittype ?? "Type non défini"}</strong>
-                    </div>
-                ))}
-            </div>
-
-            <div className="audit-list">
-                {auditsTemplate?.map((b) => (
-                    <div key={b.id} className="audit-card">
-                        <strong>{b.auditname}</strong>
-                        <br />
-                        <strong>{b.audittype?.nameaudittype ?? "Type non défini"}</strong>
-                    </div>
-                ))}
-            </div>
         </div>
     );
 }

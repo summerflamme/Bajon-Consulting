@@ -14,17 +14,15 @@
   background-color: #ffffff;
   padding: 0 20px;
   font-size: larger;
-  /* Ensure header sits above other fixed elements (search bar, menus, etc.) */
   z-index: 10000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
 .header-logo {
   height: 60px;
   width: auto;
 }
-
-/* ---------- LAYOUT PRINCIPAL ---------- */
 
 .app-layout {
   box-sizing: border-box;
@@ -33,8 +31,6 @@
   padding-top: 80px;
   min-height: 100vh;
 }
-
-/* ---------- MENU PRINCIPAL ---------- */
 
 .menu {
   display: flex;
@@ -48,7 +44,6 @@
   display: block;
 }
 
-/* Liens du menu */
 .menu-link {
   font-family: 'Bebas Neue', sans-serif;
   font-weight: 700;
@@ -68,15 +63,12 @@
   border-bottom: 2px solid #007bff;
 }
 
-/* Conteneur d’élément du menu */
 .menu-item {
   padding: 27px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-
-/* ---------- SOUS-MENU ---------- */
 
 .sub-menu {
   position: absolute;
@@ -103,7 +95,6 @@
   pointer-events: auto;
 }
 
-/* Liens du sous-menu */
 .sub-menu-item {
   display: block;
 }
@@ -121,10 +112,8 @@
   color: #fff;
 }
 
-/* ---------- BOUTON DECONNEXION DANS LE SOUS-MENU ---------- */
-
 .logout-item {
-  margin-top: auto; /* pousse le bouton en bas du sous-menu */
+  margin-top: auto; 
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -145,17 +134,35 @@
   background: #007bff;
 }
 
-/* ---------- MENU MOBILE ---------- */
+/* Responsive */
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .header {
     font-size: medium;
   }
 
-  .main {
+  /* ----------- Bouton mobile ----------- */
+  .mobile-button {
     margin-left: auto;
+  }
+
+  .menu-toggle {
+    background-color: #246184; /* Bleu principal */
+    color: white; /* Icône blanche */
+    border: none;
+    padding: 10px 14px;
+    font-size: 28px;
+    border-radius: 8px;
+    cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .menu-toggle:hover {
+    background-color: #1e5375; /* Bleu un peu plus foncé au survol */
+    transform: scale(1.05);
   }
 
   .menu {
