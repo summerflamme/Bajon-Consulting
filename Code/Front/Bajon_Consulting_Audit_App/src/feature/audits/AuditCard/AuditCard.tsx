@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../../../supabaseClient';
 import './AuditCard.css';
+import { DeleteIcon } from '@/components/ui/delete';
+import { HistoryIcon } from '@/components/ui/history';
+import { SquarePenIcon } from '@/components/ui/modify';
+import { SearchIcon } from '@/components/ui/search';
 
 function AuditCard({ audit }) {
   const [typeoffer, setTypeOffer] = useState<any[]>([]);
@@ -136,18 +140,17 @@ function AuditCard({ audit }) {
           <p className='card-text'> <strong> Statut : </strong> {audit.status} </p>
         </div>
         <div className="card-body">
-          <a href="#" className="btn btn-primary">Consulter</a>
+          <button className="audit-card-btn"><SearchIcon></SearchIcon></button>
           <span className='card-text'> </span>
-          <a href="#" className="btn btn-primary">Modifier</a>
+          <button className="audit-card-btn"><SquarePenIcon></SquarePenIcon></button>
           <span className='card-text'> </span>
-          <a href="#" className="btn btn-primary">Supprimer</a> 
+          <button className="audit-card-btn"><DeleteIcon></DeleteIcon></button>
         </div>
         <div className="card-footer">
           <p className='card-text'> <strong> Dernière modification : </strong> </p>
           <p className='card-text'> {lastmodif.map(modify => (modify.modificationdate))} à {lastmodif.map(modify => (modify.modificationtime))} </p>
           <p className='card-text'> par {lastmodif.map(modify => (modify.staff.firstname))} {lastmodif.map(modify => (modify.staff.lastname))} </p>
-          <a href="#" className="btn btn-primary">Historique</a>
-          <p> </p>
+          <button className="audit-card-btn"><HistoryIcon></HistoryIcon></button>
         </div>
     </div>
     </>

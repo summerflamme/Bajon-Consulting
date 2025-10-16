@@ -6,7 +6,7 @@ import UserList from "../feature/users/UserListPage";
 import UserInfo from "../feature/users/UserInfo";
 import NewAuditPage from "../feature/audits/NewAudit/NewAudit";
 import UserForm from "../feature/users/UserForm";
-import AuditListPage from "../feature/audits/AuditListPage";
+import AuditListPage from "../feature/audits/AuditListPage/AuditListPage";
 
 
 export default function AppRoutes() {

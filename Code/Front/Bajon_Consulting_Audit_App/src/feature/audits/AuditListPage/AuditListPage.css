@@ -5,15 +5,14 @@
   justify-content: center;
   min-height: auto;
   margin: 30px;
-  margin-top: 14vh;
 }
 
 .audit-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1.5rem));
   justify-content: center;
-  margin-top: 50px;
   gap: 20px;
+  align-items: stretch;
 }
 
 /* Responsive AuditList */

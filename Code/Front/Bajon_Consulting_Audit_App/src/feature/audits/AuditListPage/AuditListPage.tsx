@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '../../supabaseClient';
-import AuditCard from './AuditCard';
-import SearchBar from '../../components/SearchBar';
+import { supabase } from '../../../supabaseClient';
+import AuditCard from '../AuditCard/AuditCard';
+import SearchBar from '../../../components/SearchBar';
 import './AuditListPage.css';
 
 function AuditList() {
@@ -20,7 +20,8 @@ function AuditList() {
     setLoading(true);
     let query = supabase
       .from(`audit`)
-      .select(`*, audittype ( id, nameaudittype ), auditoffer ( id, nameauditoffer )`);
+      .select(`*, audittype ( id, nameaudittype ), auditoffer ( id, nameauditoffer )`)
+      .eq('template', false);
 
     // Recherche textuelle
     if (searchTerm.trim() !== '') {

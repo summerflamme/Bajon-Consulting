@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './components.css';
+import { ArrowBigUpIcon } from './ui/arrow-up';
+import { ArrowBigDownIcon } from './ui/arrow-down';
+
 
 type SortOrder = 'asc' | 'desc';
 
@@ -103,7 +106,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         aria-label={`Trier en ordre ${sortOrder === 'asc' ? 'croissant' : 'décroissant'}`}
         type="button"
       >
-        {sortOrder === 'asc' ? '⬆️' : '⬇️'}
+        {sortOrder === 'asc' ? <ArrowBigUpIcon></ArrowBigUpIcon> : <ArrowBigDownIcon></ArrowBigDownIcon>}
       </button>
     </div>
   );
