@@ -46,7 +46,8 @@
 }
 
 .login-box input,
-.login-box button {
+.login-box button,
+.login-box select {
   width: 100%;
   display: block;
   padding: 10px;

@@ -1,18 +1,90 @@
-import AuditCard from '../../components/AuditCard';
+import { useEffect, useState, useCallback } from 'react';
+import { supabase } from '../../supabaseClient';
+import AuditCard from './AuditCard';
+import SearchBar from '../../components/SearchBar';
 import './AuditListPage.css';
 
-const audits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-
 function AuditList() {
-    return (
-        <div className="audit-list">    
-            <div className="audit-grid">
-                {audits.map((_audit, idx) => (
-                    <AuditCard key={idx} />
-                ))}
-            </div>
-        </div>
-    );
+  const [audits, setAudits] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // États pour filtres et tri
+  const [searchTerm, setSearchTerm] = useState('');
+  const [auditType, setAuditType] = useState('');
+  const [offerType, setOfferType] = useState('');
+  const [sortField, setSortField] = useState('alphabetique');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  // Récupération des audits depuis Supabase avec filtres et tri
+  const fetchAudits = useCallback(async () => {
+    setLoading(true);
+    let query = supabase
+      .from(`audit`)
+      .select(`*, audittype ( id, nameaudittype ), auditoffer ( id, nameauditoffer )`);
+
+    // Recherche textuelle
+    if (searchTerm.trim() !== '') {
+      query = query.ilike('auditname', `%${searchTerm}%`);
+    }
+
+    // Filtre par type d’audit
+    if (auditType) {
+      query = query.eq('idaudittype', auditType);
+    }
+
+    // Filtre par type d’offre
+    if (offerType) {
+      query = query.eq('idauditoffer', offerType);
+    }
+
+    // Tri
+    if (sortField === 'alphabetique') {
+      query = query.order('auditname', { ascending: sortOrder === 'asc' });
+    } else if (sortField === 'date') {
+      query = query.order('datecreation', { ascending: sortOrder === 'asc' });
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Erreur Supabase :', error);
+    } else {
+      setAudits(data || []);
+    }
+    setLoading(false);
+  }, [searchTerm, auditType, offerType, sortField, sortOrder]);
+
+  useEffect(() => {
+    fetchAudits();
+  }, [fetchAudits]);
+
+  return (
+    <>
+      <SearchBar
+        onSearchChange={(value) => setSearchTerm(value)}
+        onAuditTypeChange={(value) => setAuditType(value)}
+        onOfferTypeChange={(value) => setOfferType(value)}
+        onSortChange={(value) => setSortField(value)}
+        onSortOrderChange={(order) => setSortOrder(order)}
+      />
+      <div className="audit-list">
+        {loading ? (
+          <>
+            <br/><br/><br/><br/><br/><br/><br/><br/>
+            <p>Chargement...</p>
+          </>
+        ) : (
+          <div className="audit-grid">
+            {audits.length > 0 ? (
+              audits.map((audit) => <AuditCard key={audit.idaudit} audit={audit} />)
+            ) : (
+              <p>Aucun audit trouvé.</p>
+            )}
+          </div>
+        )}
+      </div>
+    </>
+  );
 }
 
 export default AuditList;
