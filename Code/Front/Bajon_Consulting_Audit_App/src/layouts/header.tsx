@@ -1,10 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
-import './layouts.css';
+import React, { useEffect, useState } from "react";
+import { supabase } from "../supabaseClient";
+import "./layouts.css";
+import { MenuIcon } from "../components/ui/menu";
+import { LogoutIcon } from "../components/ui/logout";
+import { UserIcon } from "../components/ui/user";
+import { ChevronDownIcon } from "../components/ui/chevron-down";
 
 
+export function MenuToggleButton({
+  onToggle,
+  open,
+}: {
+  onToggle?: () => void;
+  open: boolean;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      aria-label="Toggle menu"
+      className="p-2 rounded-md hover:bg-gray-200"
+    >
+      <MenuIcon open={open} className="menu-icon"/>
+    </button>
+  );
+}
 
-function Header() {
+export default function Header() {
+  const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+  const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
+
   const handleLogout = async () => {
     console.log("Déconnexion en cours de l'utilisateur", sessionStorage.getItem("user"));
     const { error } = await supabase.auth.signOut();
@@ -13,40 +38,35 @@ function Header() {
     } else {
       console.log("Déconnexion réussie");
       sessionStorage.removeItem("user");
+      window.location.href = "/";
     }
   };
-
-  const [open, setOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
-  const [openSubMenu, setOpenSubMenu] = useState<number | null>(null);
 
   useEffect(() => {
     const onResize = () => {
       setIsMobile(window.innerWidth <= 800);
-      if (window.innerWidth > 800 && open) {
-        setOpen(false);
-      }
+      if (window.innerWidth > 800 && open) setOpen(false);
     };
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [open]);
 
-  const toggleMenu = () => setOpen(prev => !prev);
-  const toggleSubMenu = (index: number) => {
-    setOpenSubMenu(prev => (prev === index ? null : index));
-  };
+  const toggleMenu = () => setOpen((prev) => !prev);
+  const toggleSubMenu = (index: number) =>
+    setOpenSubMenu((prev) => (prev === index ? null : index));
 
   const menus = [
-    { title: "Audits", link: "/audits" },
-    { title: "Templates", link: "#services" },
-    { title: "Clients", link: "#services" },
+    { id: "audits", title: "Audits", link: "/audits" },
+    { id: "templates", title: "Templates", link: "#services" },
+    { id: "clients", title: "Clients", link: "#clients" },
     {
-      title: "Utilisateurs",
+      id: "user",
+      title: <UserIcon size={28} />,
       subMenus: [
         { title: "Mes informations", link: "/users/info" },
         { title: "Liste des utilisateurs", link: "/users/list" },
-      ]
-    }
+      ],
+    },
   ];
 
   return (
@@ -59,10 +79,10 @@ function Header() {
         />
       </a>
 
-      <ul className={`menu ${open ? 'open' : ''}`}>
+      <ul className={`menu ${open ? "open" : ""}`}>
         {menus.map((menu, index) => (
           <li
-            key={index}
+            key={menu.id}
             className={`menu-item-container ${openSubMenu === index ? "open" : ""}`}
           >
             <div className="menu-item">
@@ -70,8 +90,8 @@ function Header() {
                 {menu.title}
               </a>
               {menu.subMenus && isMobile && (
-                <i
-                  className={`bx ${openSubMenu === index ? "bx-chevron-up" : "bx-chevron-down"} arrow`}
+                <ChevronDownIcon
+                  className={`arrow ${openSubMenu === index ? "rotate-180" : ""}`}
                   onClick={() => toggleSubMenu(index)}
                 />
               )}
@@ -87,14 +107,14 @@ function Header() {
                   </li>
                 ))}
 
-                {menu.title === "Utilisateurs" && (
+                {menu.id === "user" && (
                   <li className="sub-menu-item logout-item">
                     <button
                       type="button"
                       onClick={handleLogout}
                       className="logout-button logout-in-submenu"
                     >
-                      Se déconnecter
+                      <LogoutIcon size={28}/>
                     </button>
                   </li>
                 )}
@@ -106,24 +126,9 @@ function Header() {
 
       {isMobile && (
         <div className="mobile-button">
-          <button
-            id="menu-icon"
-            aria-controls="main-navigation"
-            aria-expanded={open}
-            onClick={toggleMenu}
-            className="menu-toggle bx bx-menu"
-            type="button"
-          />
+          <MenuToggleButton onToggle={toggleMenu} open={open} />
         </div>
       )}
     </header>
   );
-
-
 }
-
-export default Header;
-
-
-
-
