@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../../supabaseClient';
-import AuditCard from '../AuditCard/AuditCard';
+import AuditCard from '../../audits/AuditCard/AuditCard';
 import SearchBar from '../../../components/SearchBar';
-import './AuditListPage.css';
-import { Plus } from "lucide-react";
+import './TemplateListPage.css';
+import { Plus } from 'lucide-react';
 
-function AuditList() {
-  const [audits, setAudits] = useState<any[]>([]);
+function TemplateList() {
+  const [templates, setTemplates] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   // États pour filtres et tri
@@ -17,12 +17,12 @@ function AuditList() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   // Récupération des audits depuis Supabase avec filtres et tri
-  const fetchAudits = useCallback(async () => {
+  const fetchTemplates = useCallback(async () => {
     setLoading(true);
     let query = supabase
       .from(`audit`)
       .select(`*, audittype ( id, nameaudittype ), auditoffer ( id, nameauditoffer )`)
-      .eq('template', false);
+      .eq('template', true);
 
     // Recherche textuelle
     if (searchTerm.trim() !== '') {
@@ -51,14 +51,14 @@ function AuditList() {
     if (error) {
       console.error('Erreur Supabase :', error);
     } else {
-      setAudits(data || []);
+      setTemplates(data || []);
     }
     setLoading(false);
   }, [searchTerm, auditType, offerType, sortField, sortOrder]);
 
   useEffect(() => {
-    fetchAudits();
-  }, [fetchAudits]);
+    fetchTemplates();
+  }, [fetchTemplates]);
 
   return (
     <>
@@ -68,22 +68,22 @@ function AuditList() {
         onOfferTypeChange={(value) => setOfferType(value)}
         onSortChange={(value) => setSortField(value)}
         onSortOrderChange={(order) => setSortOrder(order)}
-      />  
-      <a href='/newaudit' className="add-audit-btn">
-        <Plus className="icon" /> Ajouter un nouvel audit
+      />
+      <a href='#' className="add-template-btn">
+        <Plus className="icon" /> Ajouter un nouveau template
       </a>
-      <div className="audit-list">
+      <div className="template-list">
         {loading ? (
           <>
             <br/><br/><br/><br/><br/><br/><br/><br/>
             <p>Chargement...</p>
           </>
         ) : (
-          <div className="audit-grid">
-            {audits.length > 0 ? (
-              audits.map((audit) => <AuditCard key={audit.idaudit} audit={audit} />)
+          <div className="template-grid">
+            {templates.length > 0 ? (
+              templates.map((template) => <AuditCard key={template.idaudit} audit={template} />)
             ) : (
-              <p>Aucun audit trouvé.</p>
+              <p>Aucun template trouvé.</p>
             )}
           </div>
         )}
@@ -92,4 +92,4 @@ function AuditList() {
   );
 }
 
-export default AuditList;
+export default TemplateList;

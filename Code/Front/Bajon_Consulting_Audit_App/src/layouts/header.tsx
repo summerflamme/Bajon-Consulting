@@ -38,7 +38,7 @@ function Header() {
 
   const menus = [
     { title: "Audits", link: "/audits" },
-    { title: "Templates", link: "#services" },
+    { title: "Templates", link: "/templates" },
     { title: "Clients", link: "#services" },
     {
       title: "Utilisateurs",

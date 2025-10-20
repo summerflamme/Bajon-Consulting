@@ -1,5 +1,5 @@
 /* AuditCard */
-.card-header {
+.audit-card-header {
   background-color: rgb(35, 96, 132);
   box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.3);
   border-top-left-radius: 16px;
@@ -11,14 +11,14 @@
   align-content: center;
 }
 
-.card-title {
+.audit-card-title {
   color: #ffffff;
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
 }
 
-.card-body {
+.audit-card-body {
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.3);
   border: 2px solid #236184;
@@ -28,14 +28,14 @@
   align-content: center;
 }
 
-.card-text {
+.audit-card-text {
   color: #000000;
   margin-top: 10px;
   margin-bottom: 10px;
   line-height: 1.5;
 }
 
-.card-footer {
+.audit-card-footer {
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 10px 4px 10px rgba(0, 0, 0, 0.3);
   border-bottom-left-radius: 16px;
@@ -48,19 +48,31 @@
   align-content: center;
 }
 
-.cards-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+/* AuditCardButton */
+.audit-card-btn {
+  background: #236084;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.audit-card-btn {
-  background-color: #236084;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.audit-card-btn:hover {
+  color: #ffffff;
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.audit-card-btn:active {
+  transform: translateY(0);
+}
+
+.audit-card-btn .icon {
+  width: 16px;
+  height: 16px;
 }

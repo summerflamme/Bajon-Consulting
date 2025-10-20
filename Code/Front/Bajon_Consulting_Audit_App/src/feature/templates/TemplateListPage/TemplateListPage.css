@@ -1,5 +1,5 @@
-/* AuditList */
-.audit-list{
+/* TemplateList */
+.template-list{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7,7 +7,7 @@
   margin: 30px;
 }
 
-.audit-grid {
+.template-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1.5rem));
   justify-content: center;
@@ -15,8 +15,8 @@
   align-items: stretch;
 }
 
-/* AddAuditButton */
-.add-audit-btn {
+/* AddTemplateButton */
+.add-template-btn {
   background: #236084;
   color: #fff;
   border: none;
@@ -36,17 +36,17 @@
   justify-content: center;
 }
 
-.add-audit-btn:hover {
+.add-template-btn:hover {
   color: #ffffff;
   background: #0056b3;
   transform: translateY(-1px);
 }
 
-.add-audit-btn:active {
+.add-template-btn:active {
   transform: translateY(0);
 }
 
-.add-audit-btn .icon {
+.add-template-btn .icon {
   width: 16px;
   height: 16px;
 }
