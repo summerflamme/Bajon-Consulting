@@ -63,7 +63,7 @@ function TemplateList() {
   return (
     <>
     <div className="template-list-page">
-      <SearchBar
+      <SearchBar variant='audit'
         onSearchChange={(value) => setSearchTerm(value)}
         onAuditTypeChange={(value) => setAuditType(value)}
         onOfferTypeChange={(value) => setOfferType(value)}
