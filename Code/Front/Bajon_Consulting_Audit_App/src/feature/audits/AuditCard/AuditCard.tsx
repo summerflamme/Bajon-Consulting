@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../../../supabaseClient';
 import './AuditCard.css';
+import { DeleteIcon } from '@/components/ui/delete';
+import { HistoryIcon } from '@/components/ui/history';
+import { SquarePenIcon } from '@/components/ui/modify';
+import { SearchIcon } from '@/components/ui/search';
 
 function AuditCard({ audit }) {
   const [typeoffer, setTypeOffer] = useState<any[]>([]);
@@ -122,32 +126,31 @@ function AuditCard({ audit }) {
   return (
     <>
       <div>
-        <div className="card-header">
-          <h5 className="card-title"> <strong> {audit.auditname} </strong> </h5>
+        <div className="audit-card-header">
+          <h5 className="audit-card-title"> <strong> {audit.auditname} </strong> </h5>
         </div>
-        <div className="card-body">
-          <p className='card-text'> <strong> Création : </strong> </p>
-          <p className='card-text'> {creation.map(modify => (modify.modificationdate))} à {creation.map(modify => (modify.modificationtime))} </p>
-          <p className='card-text'> par {creation.map(modify => (modify.staff.firstname))} {creation.map(modify => (modify.staff.lastname))} </p>
+        <div className="audit-card-body">
+          <p className='audit-card-text'> <strong> Création : </strong> </p>
+          <p className='audit-card-text'> {creation.map(modify => (modify.modificationdate))} à {creation.map(modify => (modify.modificationtime))} </p>
+          <p className='audit-card-text'> par {creation.map(modify => (modify.staff.firstname))} {creation.map(modify => (modify.staff.lastname))} </p>
         </div>
-        <div className="card-body">
-          <p className='card-text'> <strong> Type d'Audit : </strong> {typeaudit.map(audittype => (audittype.nameaudittype))} </p>
-          <p className='card-text'> <strong> Type d'Offre : </strong> {typeoffer.map(auditoffer => (auditoffer.nameauditoffer))} </p>
-          <p className='card-text'> <strong> Statut : </strong> {audit.status} </p>
+        <div className="audit-card-body">
+          <p className='audit-card-text'> <strong> Type d'Audit : </strong> {typeaudit.map(audittype => (audittype.nameaudittype))} </p>
+          <p className='audit-card-text'> <strong> Type d'Offre : </strong> {typeoffer.map(auditoffer => (auditoffer.nameauditoffer))} </p>
+          <p className='audit-card-text'> <strong> Statut : </strong> {audit.status} </p>
         </div>
-        <div className="card-body">
-          <a href="#" className="btn btn-primary">Consulter</a>
-          <span className='card-text'> </span>
-          <a href="#" className="btn btn-primary">Modifier</a>
-          <span className='card-text'> </span>
-          <a href="#" className="btn btn-primary">Supprimer</a> 
+        <div className="audit-card-body">
+          <button className="audit-card-btn"><SearchIcon></SearchIcon></button>
+          <span className='audit-card-text'> </span>
+          <button className="audit-card-btn"><SquarePenIcon></SquarePenIcon></button>
+          <span className='audit-card-text'> </span>
+          <button className="audit-card-btn"><DeleteIcon></DeleteIcon></button>
         </div>
-        <div className="card-footer">
-          <p className='card-text'> <strong> Dernière modification : </strong> </p>
-          <p className='card-text'> {lastmodif.map(modify => (modify.modificationdate))} à {lastmodif.map(modify => (modify.modificationtime))} </p>
-          <p className='card-text'> par {lastmodif.map(modify => (modify.staff.firstname))} {lastmodif.map(modify => (modify.staff.lastname))} </p>
-          <a href="#" className="btn btn-primary">Historique</a>
-          <p> </p>
+        <div className="audit-card-footer">
+          <p className='audit-card-text'> <strong> Dernière modification : </strong> </p>
+          <p className='audit-card-text'> {lastmodif.map(modify => (modify.modificationdate))} à {lastmodif.map(modify => (modify.modificationtime))} </p>
+          <p className='audit-card-text'> par {lastmodif.map(modify => (modify.staff.firstname))} {lastmodif.map(modify => (modify.staff.lastname))} </p>
+          <button className="audit-card-btn"><HistoryIcon></HistoryIcon></button>
         </div>
     </div>
     </>

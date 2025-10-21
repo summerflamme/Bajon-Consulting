@@ -207,7 +207,7 @@ export default function NewAuditPage() {
                 <label htmlFor="audit-name">Nom de l'audit</label>
                 <input
                     id="audit-search"
-                    list="audit-list"
+                    list="audits-list"
                     value={auditSearch}
                     onChange={(e) => fetchAuditsTemplate(e.target.value)}
                     placeholder="Ex: Audit sécurité..."
@@ -215,7 +215,7 @@ export default function NewAuditPage() {
                     required
                 />
 
-                <datalist id="audit-list">
+                <datalist id="audits-list">
                     {auditSuggestions.map((a) => (
                         <option key={a.id} value={a.auditname} />
                     ))}

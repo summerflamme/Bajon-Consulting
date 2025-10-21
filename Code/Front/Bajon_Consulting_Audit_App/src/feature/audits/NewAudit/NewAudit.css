@@ -76,19 +76,10 @@
     flex: 1;
 }
 
-.audit-list {
+.audits-list {
     display: grid;
     gap: 8px;
     margin-bottom: 20px;
     width: 100%;
     max-width: 640px;
-}
-.audit-card {
-    border: 1px solid #ddd;
-    padding: 8px;
-    border-radius: 6px;
-    text-align: left;
-}
-.audit-empty {
-    color: #666;
 }

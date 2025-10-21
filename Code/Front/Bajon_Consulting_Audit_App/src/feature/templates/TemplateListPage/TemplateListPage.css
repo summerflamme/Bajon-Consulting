@@ -1,0 +1,67 @@
+/* TemplateList */
+.template-list{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: auto;
+  margin: 30px;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1.5rem));
+  justify-content: center;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* AddTemplateButton */
+.add-template-btn {
+  background: #236084;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  margin-top: 2rem;
+  width:16rem;
+  justify-content: center;
+}
+
+.add-template-btn:hover {
+  color: #ffffff;
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.add-template-btn:active {
+  transform: translateY(0);
+}
+
+.add-template-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Mode sombre et clair */
+@media (prefers-color-scheme: dark) {
+  .template-list-page {
+    background-color: #121212;
+    color: #f5f5f5;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .template-list-page {
+    background-color: white;
+    color: black;
+  }
+}
