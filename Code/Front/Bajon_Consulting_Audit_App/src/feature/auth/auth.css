@@ -49,7 +49,6 @@
 .login-box button,
 .login-box select {
   width: 100%;
-  display: block;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 15px;

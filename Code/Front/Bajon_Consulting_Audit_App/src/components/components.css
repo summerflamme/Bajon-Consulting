@@ -35,16 +35,18 @@
 }
 
 .sort-order-button {
-  flex: 0 0 40px;
-  height: 36px;
-  font-size: 18px;
+  display: flex;
+  justify-content: center;  
+  align-items: center;  
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 6px;
   cursor: pointer;
-  padding: 6px 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  height: 37px;
+  box-sizing: border-box;
   color: #333;
-  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .sort-order-button:hover {
@@ -54,6 +56,7 @@
 .sort-order-button:active {
   transform: scale(0.95);
 }
+
 
 
 /* Responsive */
