@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './components.css';
+import { ArrowUpIcon } from "../components/ui/arrow-up";
+import { ArrowDownIcon } from "../components/ui/arrow-down";
+import { SearchIcon } from "../components/ui/search";
 
 type SortOrder = 'asc' | 'desc';
-
 type SearchVariant = 'audit' | 'users' | 'template' | 'default';
 
 type SearchBarProps = {
@@ -33,77 +35,83 @@ const SearchBar: React.FC<SearchBarProps> = ({
     onSortOrderChange?.(newOrder);
   };
 
-  // Récupération des données dans Supabase
-  // Type d'Offre
+  // Récupération des données avec types d’audit et offre 
   useEffect(() => {
-  const fetchOfferTypes = async () => {
-    const { data, error } = await supabase
-      .from("auditoffer")
-      .select("*")
-    if (error) {
-      console.error("Erreur de récupération :", error);
-    } else {
-      setOfferTypes(data || []);
-    }
-  };
-  fetchOfferTypes();
-  }, []);
+    const fetchOfferTypes = async () => {
+      const { data, error } = await supabase.from("auditoffer").select("*");
+      if (!error) setOfferTypes(data || []);
+      else console.error("Erreur de récupération des offres :", error);
+    };
 
-  // Type d'Audit
-  useEffect(() => {
-  const fetchAuditTypes = async () => {
-    const { data, error } = await supabase
-      .from("audittype")
-      .select("*")
-    if (error) {
-      console.error("Erreur de récupération :", error);
-    } else {
-      setAuditTypes(data || []);
+    const fetchAuditTypes = async () => {
+      const { data, error } = await supabase.from("audittype").select("*");
+      if (!error) setAuditTypes(data || []);
+      else console.error("Erreur de récupération des audits :", error);
+    };
+
+    if (variant === 'audit') {
+      fetchOfferTypes();
+      fetchAuditTypes();
     }
-  };
-  fetchAuditTypes();
-  }, []);
+  }, [variant]);
 
   return (
     <div className="advanced-search-bar">
+      {/* Champ de recherche commun */}
       <input
         type="text"
-        placeholder="Rechercher..."
+        placeholder={
+          variant === 'users'
+            ? "Rechercher un utilisateur..."
+            : "Rechercher un audit..."
+        }
         className="search-input"
         onChange={(e) => onSearchChange?.(e.target.value)}
       />
 
-      <select className="search-select" onChange={(e) => onAuditTypeChange?.(e.target.value)}>
-        <option value="">Tout (Type d'audit)</option>
-        {auditTypes.map((auditType) => (
-          <option key={auditType.id} value={auditType.id}>
-            {auditType.nameaudittype}
-          </option>
-        ))}
-      </select>
+      {/* === Variante AUDITS === */}
+      {variant === 'audit' && (
+        <>
+          <select className="search-select" onChange={(e) => onAuditTypeChange?.(e.target.value)}>
+            <option value="">Tout (Type d'audit)</option>
+            {auditTypes.map((auditType) => (
+              <option key={auditType.id} value={auditType.id}>
+                {auditType.nameaudittype}
+              </option>
+            ))}
+          </select>
 
-      <select className="search-select" onChange={(e) => onOfferTypeChange?.(e.target.value)}>
-        <option value="">Tout (Type d'offre)</option>
-        {offerTypes.map((offerType) => (
-          <option key={offerType.id} value={offerType.id}>
-            {offerType.nameauditoffer}
-          </option>
-        ))}
-      </select>
+          <select className="search-select" onChange={(e) => onOfferTypeChange?.(e.target.value)}>
+            <option value="">Tout (Type d'offre)</option>
+            {offerTypes.map((offerType) => (
+              <option key={offerType.id} value={offerType.id}>
+                {offerType.nameauditoffer}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
 
-      {/* Commun à tous */}
-      <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
-        <option value="alphabetique">Ordre alphabétique</option>
-        <option value="date">Date</option>
-      </select>
+      {/* === Variante USERS === */}
+      {variant === 'users' && (
+        <>
+          <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
+            <option value="alphabetique">Ordre alphabétique</option>
+            <option value="date_inscription">Date d'inscription</option>
+            <option value="role">Dernière connexion</option>
+            <option value="role">Rôle</option>
+          </select>
+        </>
+      )}
 
+      {/* Bouton commun de tri */}
       <button
         className="sort-order-button"
         onClick={toggleSortOrder}
         aria-label={`Trier en ordre ${sortOrder === 'asc' ? 'croissant' : 'décroissant'}`}
         type="button"
       >
-        {sortOrder === 'asc' ? '⬆️' : '⬇️'}
+        {sortOrder === 'asc' ? <ArrowUpIcon className='arrow-icon'/> : <ArrowDownIcon className='arrow-icon' />}
       </button>
     </div>
   );
