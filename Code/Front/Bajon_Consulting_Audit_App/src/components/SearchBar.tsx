@@ -89,6 +89,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
               </option>
             ))}
           </select>
+
+          <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
+            <option value="alphabetique">Ordre alphabétique</option>
+            <option value="date">Date</option>
+          </select>
         </>
       )}
 
