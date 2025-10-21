@@ -6,33 +6,44 @@ import type { HTMLAttributes } from 'react';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
-export interface ArrowBigUpIconHandle {
+export interface ArrowUpIconHandle {
   startAnimation: () => void;
   stopAnimation: () => void;
 }
 
-interface ArrowBigUpIconProps extends HTMLAttributes<HTMLDivElement> {
+interface ArrowUpIconProps extends HTMLAttributes<HTMLDivElement> {
   size?: number;
 }
 
 const pathVariants: Variants = {
-  normal: { d: 'M9 18v-6H5l7-7 7 7h-4v6H9z', translateY: 0 },
+  normal: { d: 'm5 12 7-7 7 7', translateY: 0 },
   animate: {
-    d: 'M9 18v-6H5l7-7 7 7h-4v6H9z',
-    translateY: [0, -3, 0],
+    d: 'm5 12 7-7 7 7',
+    translateY: [0, 3, 0],
     transition: {
       duration: 0.4,
     },
   },
 };
 
-const ArrowBigUpIcon = forwardRef<ArrowBigUpIconHandle, ArrowBigUpIconProps>(
+const secondPathVariants: Variants = {
+  normal: { d: 'M12 19V5' },
+  animate: {
+    d: ['M12 19V5', 'M12 19V10', 'M12 19V5'],
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
+
+const ArrowUpIcon = forwardRef<ArrowUpIconHandle, ArrowUpIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {
     const controls = useAnimation();
     const isControlledRef = useRef(false);
 
     useImperativeHandle(ref, () => {
       isControlledRef.current = true;
+
       return {
         startAnimation: () => controls.start('animate'),
         stopAnimation: () => controls.start('normal'),
@@ -80,8 +91,13 @@ const ArrowBigUpIcon = forwardRef<ArrowBigUpIconHandle, ArrowBigUpIconProps>(
           strokeLinejoin="round"
         >
           <motion.path
-            d="M9 18v-6H5l7-7 7 7h-4v6H9z"
+            d="m5 12 7-7 7 7"
             variants={pathVariants}
+            animate={controls}
+          />
+          <motion.path
+            d="M12 19V5"
+            variants={secondPathVariants}
             animate={controls}
           />
         </svg>
@@ -90,6 +106,6 @@ const ArrowBigUpIcon = forwardRef<ArrowBigUpIconHandle, ArrowBigUpIconProps>(
   }
 );
 
-ArrowBigUpIcon.displayName = 'ArrowBigUpIcon';
+ArrowUpIcon.displayName = 'ArrowUpIcon';
 
-export { ArrowBigUpIcon };
+export { ArrowUpIcon };
