@@ -62,6 +62,7 @@ function TemplateList() {
 
   return (
     <>
+    <div className="template-list-page">
       <SearchBar
         onSearchChange={(value) => setSearchTerm(value)}
         onAuditTypeChange={(value) => setAuditType(value)}
@@ -88,6 +89,7 @@ function TemplateList() {
           </div>
         )}
       </div>
+    </div>
     </>
   );
 }

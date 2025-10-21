@@ -62,6 +62,7 @@ function AuditList() {
 
   return (
     <>
+    <div className="audit-list-page">
       <SearchBar
         onSearchChange={(value) => setSearchTerm(value)}
         onAuditTypeChange={(value) => setAuditType(value)}
@@ -88,6 +89,7 @@ function AuditList() {
           </div>
         )}
       </div>
+    </div>
     </>
   );
 }
