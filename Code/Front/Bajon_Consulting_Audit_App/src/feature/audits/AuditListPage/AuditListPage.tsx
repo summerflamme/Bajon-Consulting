@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '../../supabaseClient';
-import AuditCard from './AuditCard';
-import SearchBar from '../../components/SearchBar';
+import { supabase } from '../../../supabaseClient';
+import AuditCard from '../AuditCard/AuditCard';
+import SearchBar from '../../../components/SearchBar';
 import './AuditListPage.css';
+import { Plus } from "lucide-react";
 
 function AuditList() {
   const [audits, setAudits] = useState<any[]>([]);
@@ -20,7 +21,8 @@ function AuditList() {
     setLoading(true);
     let query = supabase
       .from(`audit`)
-      .select(`*, audittype ( id, nameaudittype ), auditoffer ( id, nameauditoffer )`);
+      .select(`*, audittype ( id, nameaudittype ), auditoffer ( id, nameauditoffer )`)
+      .eq('template', false);
 
     // Recherche textuelle
     if (searchTerm.trim() !== '') {
@@ -60,13 +62,17 @@ function AuditList() {
 
   return (
     <>
-      <SearchBar
+    <div className="audit-list-page">
+      <SearchBar variant='audit'
         onSearchChange={(value) => setSearchTerm(value)}
         onAuditTypeChange={(value) => setAuditType(value)}
         onOfferTypeChange={(value) => setOfferType(value)}
         onSortChange={(value) => setSortField(value)}
         onSortOrderChange={(order) => setSortOrder(order)}
-      />
+      />  
+      <a href='/newaudit' className="add-audit-btn">
+        <Plus className="icon" /> Ajouter un nouvel audit
+      </a>
       <div className="audit-list">
         {loading ? (
           <>
@@ -83,6 +89,7 @@ function AuditList() {
           </div>
         )}
       </div>
+    </div>
     </>
   );
 }
