@@ -1,4 +1,17 @@
 /*____________________ICI USERLIST____________________*/
+.fond-users-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh; 
+  background-image: url("../../assets/fond-users-list.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  background-repeat: no-repeat;
+}
+
 .user-page-container {
   max-width: 1200px;
   width: 90%;
@@ -9,6 +22,7 @@
   padding: 1.5rem 2rem;
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
+  margin-bottom: 6rem;
 }
 
 .user-list-header {
@@ -231,7 +245,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("../../../public/testinfoutilisateur.jpg");
+  background-image: url("../../assets/testinfoutilisateur.jpg");
   background-size: cover;
   background-position: center;
   filter: blur(20px);
