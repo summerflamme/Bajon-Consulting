@@ -61,9 +61,4 @@ public class UsersRestController {
         return "Hello World";
     }
 
-    @GetMapping("/ban")
-    public String helloWorldBan() {
-        return "User was been banned";
-    }
-
 }
