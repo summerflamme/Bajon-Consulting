@@ -67,7 +67,7 @@ INSERT INTO Staff (id, lastName, firstName, idRole)VALUES
 -- Table Question
 INSERT INTO Question (label, status, idTheme) VALUES
 ('Le système est-il protégé par un pare-feu ?', 'Actif', 1),
-('Toutes les factures sont-elles archivées ?', 'Actif', 2),
+('Toutes les factures sont-elles archivées ?', 'Actif', 3),
 ('Quelle est la satisfaction des employés ?', 'Actif', 4),
 ('L’entreprise respecte-t-elle la norme ISO ?', 'Inactif', 2),
 ('Y a-t-il un plan de réduction des déchets ?', 'Actif', 5);

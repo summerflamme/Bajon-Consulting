@@ -65,43 +65,31 @@ Object Question {
     +idQuestion : int <<PK>>
     label : varchar(255)
     status : varchar(50)
-    idTheme : int <<FK>>
 }
 
 Object OptionResponse {
     +idOptResponse : int <<PK>>
     optionLabel : varchar(255)
     optionPoints : int
-    idType : int <<FK>>
-    idQuestion : int <<FK>>
 }
 
 Object ClientResponse {
     +idClientResponse : int <<PK>>
     clientResponse : text
     clientResponsePoints : int
-    idOptResponse : int <<FK>>
 }
 
 Object Participate {
-    +idClient : int <<FK>>
-    +idAudit : int <<FK>>
     participationDate : date
 }
 
 Object Own {
-    +idAudit : int <<FK>>
-    +idTheme : int <<FK>>
 }
 
 Object Contain {
-    +idQuestion : int <<FK>>
-    +idOptResponse : int <<FK>>
 }
 
 Object Modify {
-    +idUser : int <<FK>>
-    +idAudit : int <<FK>>
     modificationDate : date
     modificationTime : time
 }
