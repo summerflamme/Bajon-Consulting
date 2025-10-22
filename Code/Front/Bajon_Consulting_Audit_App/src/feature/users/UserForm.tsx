@@ -24,7 +24,7 @@ function UserForm( {mode, user} : UserFormProps) {
     const [role, setRole] = useState<Role[]>([]);
     const [currentRole, setCurrentRole] = useState('');
     const [currentUser, setCurrentUser] = useState<User | undefined>(user);
-
+    const [APIresp, setAPIrest] = useState([]);
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
     const validPhone = new RegExp('^(\\+33|0)[1-9](\\d{2}){4}$');
 
@@ -32,6 +32,16 @@ function UserForm( {mode, user} : UserFormProps) {
         id: number;
         rolename: string;
     }
+
+    useEffect (() => {
+        axios.get("http://localhost:8080/api/users/listUsers")
+        .then(response => {
+            setAPIrest(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching data: ", error)
+        });
+    },);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -60,6 +70,15 @@ function UserForm( {mode, user} : UserFormProps) {
         fetchRole()
     }, [])
 
+    useEffect (() => {
+        axios.get("http://localhost:8080/api/users/listUsers")
+        .then(response => {
+            setAPIrest(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching data: ", error)
+        });
+    },);
 
     useEffect(() => {
         if (mode === 'edition' && currentUser) {
