@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import { useState, useCallback } from 'react';
 import AuditForm from './AuditForm/AuditForm';
-import type { Section } from '../../types/audit';
+import type { Response, Section } from '../../types/audit';
 import './AuditForm/AuditStyle.css';
 
 function AuditEditorPage() {
+    const [responses, setResponses] = useState<Response[]>([
+
+        {
+            idAnswer: 1,
+            idQuestion: 1
+        },
+        {
+            idAnswer: 2,
+            idQuestion: 2
+        }
+
+    ]);
 
     const [data, setData] = useState<Section[]>([
         {
@@ -84,9 +96,9 @@ function AuditEditorPage() {
             ],
         }
     ]);
-    const clearData = () => setData([]);
-    const [mode, setMode] = useState<"edit" | "view">("edit");
-    const toggleMode = () => setMode(mode === "edit" ? "view" : "edit");
+    const clearData = useCallback(() => setData([]), []);
+    const [mode, setMode] = useState<"edit" | "view">("view");
+    const toggleMode = useCallback(() => setMode((m) => (m === 'edit' ? 'view' : 'edit')), []);
 
 
 
@@ -97,13 +109,9 @@ function AuditEditorPage() {
     return (
         <div className="audit-editor-page">
             <h1>Audit Editor Page</h1>
-            <br />
             <button onClick={clearData}>Vider</button>
             <button onClick={toggleMode}>{mode === "edit" ? "Passer en mode vue" : "Passer en mode édition"}</button>
-            <br />
-            <br />
-            <br />
-            <AuditForm data={data} mode={mode} onUpdate={handleUpdate} />
+            <AuditForm data={data} mode={mode} onUpdate={handleUpdate} responses={responses} setResponses={setResponses} />
 
 
         </div>

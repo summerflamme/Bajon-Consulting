@@ -7,15 +7,32 @@
 .audit-form{
   padding: 20px;
   display: flex;
+  
   flex-direction: column;
   align-items: center;
+}
+.audit-container-edit{
+  display: flex;
+  gap: 5em;
+      padding: 2em;
+}
+
+
+/*view*/
+.audit-container-view{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  padding: 2em;
+  min-height: 55vh;
 }
 
 /* SectionBox */
 .audit-form-section-edit {
-  width: 50%;
   flex-direction: column;
   position: relative;
+  width: 50%;
   padding: 1.25rem 1.5rem;
   border-radius: 12px;
   background: #ffffff;
@@ -39,9 +56,77 @@
   margin-bottom: 10px;
 }
 
+/*SectionBox view*/
+.audit-form-section-view {
+  flex-direction: column;
+  position: relative;
+  width: 50%;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: #ffffff;
+  transition: all 0.25s ease;
+}
+.audit-form-section-edit * {
+  box-sizing: border-box;
+}
+.audit-form-section-view label {
+  display: flex;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 0.5rem;
+  font-size: 1.5em;
+}
 
 
-/* QuestionBox */
+
+/*side barre */
+.sidebar-nav {
+  width: 220px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.sidebar-nav .sections-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.sidebar-nav .sections-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+.sidebar-nav .section-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #374151; /* gray-700 */
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color .12s ease, color .12s ease;
+}
+
+.sidebar-nav .section-button:hover {
+  background: #ebf8ff; /* blue-100 */
+}
+
+.sidebar-nav .section-button.active {
+  background: #3b82f6; /* blue-500 */
+  color: #ffffff;
+}
+
+
+
+/* QuestionBox edit*/
 
 .audit-form-question-edit {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.148);
@@ -78,6 +163,44 @@
   min-height: 60px;
 }
 
+/* QuestionBox view*/
+.audit-form-question-view {
+   /* background-color: #3092b6; */
+  background-color: rgba(224, 224, 224, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.148);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+  
+}
+.audit-form-question-view label {
+  text-align: left;
+  min-height: 3em;
+  color: #000000;
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 0px;
+  font-weight: 600;
+  padding: 10px;
+  border-bottom: 1px solid #cccccc;
+
+}
+.audit-form-descriptions-view {
+  display: block;
+ 
+  padding: 10px;
+  white-space: pre-wrap;
+  text-align: left;
+  min-height: 10em;
+  color: #000000;
+  font-size: 1em;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #cccccc;
+}
+
 /* === AnswerBox (mode édition) === */
 .audit-form-answer-edit {
   display: flex;
@@ -90,6 +213,8 @@
   font-size: 0.9em;
   box-sizing: border-box;
 }
+
+
 
 /* Les deux blocs Réponse et Score sont des colonnes */
 .audit-form-text-edit,
@@ -120,6 +245,39 @@
   font-size: 0.9em;
   width: 100%;
   box-sizing: border-box;
+}
+
+
+/* === AnswerBox (mode vue) === */
+.audit-form-answer-view {
+  justify-content: center;
+  display: inline-block;
+  align-items: center; /* aligne le bas des blocs pour une ligne propre */
+  gap: 1rem;
+  border-radius: 8px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+}
+.answer-choice {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin: 0.5em;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+
+
+.answer-choice:hover {
+  background-color: #ebf8ff;
+}
+
+/* Selected state for answers in view mode */
+.answer-choice.selected {
+  background-color: #3b82f6; /* blue-100 */
+}
+.answer-choice.selected label {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 /* Delete icon à droite */
@@ -202,4 +360,62 @@
 .switch-label {
   font-weight: 500;
   color: #000000;
+}
+
+
+/* === SideBarNav === */
+.sidebar-nav {
+  width: 20%;
+  position: sticky;
+  top: 10em;
+  align-self: flex-start;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+/* Toggle button in the sidebar header */
+.sidebar-toggle {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+  background: #eef2ff;
+}
+
+/* Collapsed state reduces width and hides the list text */
+.sidebar-nav.collapsed {
+  width: 0; /* collapse fully to free space */
+  padding: 0;
+  overflow: visible; /* allow toggle to be visible when positioned */
+}
+.sidebar-nav.collapsed .sections-list {
+  display: none; /* hide section buttons when collapsed */
+}
+.sidebar-nav.collapsed .section-button {
+  display: none; /* fallback: ensure individual buttons are hidden */
+}
+
+/* Keep the toggle visible even when the sidebar is collapsed */
+.sidebar-nav.collapsed .sidebar-toggle {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  display: inline-block;
+}
+
+/* When sidebar is collapsed, center the main form section */
+.audit-container-edit .sidebar-nav.collapsed + .audit-form-section-edit {
+  margin-left: auto;
+  margin-right: auto;
+}
+.sidebar-nav.collapsed .sections-title {
+  display: none;
 }
