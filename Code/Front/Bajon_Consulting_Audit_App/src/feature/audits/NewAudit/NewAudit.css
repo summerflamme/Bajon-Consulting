@@ -1,13 +1,15 @@
-.btn {
+.new-audits-btn {
   display: inline-block;
   padding: 8px 16px;
-  background-color: #ccc;
+  background-color: #236084;
   border-radius: 6px;
   text-decoration: none;
-  color: black;
+  border: 1px solid #676767;
+  color: rgb(255, 255, 255);
 }
-.btn:hover {
-  background-color: #bbb;
+.new-audits-btn:hover {
+  background-color: #4b76b8;
+  box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06);
 }
 
 
@@ -179,11 +181,13 @@
     box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06);
 }
 
-.react-international-phone-input-container {
+/* test phone */
+
+.new-audits .react-international-phone-input-container {
     width: 100%;
 }
 
-.react-international-phone-input {
+.new-audits .react-international-phone-input {
     padding: 10px 12px !important;
     font-size: 15px !important;
     width: 100% !important;
@@ -195,12 +199,12 @@
     background-color: white !important;
 }
 
-.react-international-phone-input:focus {
+.new-audits .react-international-phone-input:focus {
     border-color: #676767 !important;
     box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06) !important;
 }
 
-.react-international-phone-country-selector {
+.new-audits .react-international-phone-country-selector {
     border-radius: 6px 0 0 6px !important;
     border: 1px solid #676767 !important;
     border-right: none !important;

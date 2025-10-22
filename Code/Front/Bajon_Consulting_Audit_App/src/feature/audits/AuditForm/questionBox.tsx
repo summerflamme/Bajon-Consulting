@@ -84,7 +84,7 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
                                     descriptions: e.target.value,
                                 })
                             }
-                            rows={4} // nombre de lignes visibles par défaut
+                            rows={4}
                             className="w-full p-2 border rounded-md resize-y"
                         />
 

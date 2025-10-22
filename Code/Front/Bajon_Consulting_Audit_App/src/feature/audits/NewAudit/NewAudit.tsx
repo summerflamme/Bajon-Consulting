@@ -333,7 +333,7 @@ export default function NewAuditPage() {
                             required
                         />
                     </div>
-                    
+
                     <div className="field">
                         <label htmlFor="client-country">Pays du client</label>
                         <input
@@ -368,6 +368,16 @@ export default function NewAuditPage() {
                             onChange={(value: string) => setClientPhone(value)}
                         />
                     </div>
+
+                    <div className="field">
+                        <label htmlFor="client-social-networks">Réseau social</label>
+                        <input
+                            className="input-style"
+                            value={socialNetworks}
+                            onChange={(e) => setSocialNetworks(e.target.value)}
+                            placeholder="Ex: Linkedin"
+                        />
+                    </div>
                 </div>
 
                 <div className="business-info">
@@ -381,6 +391,18 @@ export default function NewAuditPage() {
                         />
                     </div>
 
+                    <div className="field">
+                        <label htmlFor="business-activity">Domaine d'activité</label>
+                        <input
+                            className="input-style"
+                            value={businessActivity}
+                            onChange={(e) => setBusinessActivity(e.target.value)}
+                            placeholder="Informatique"
+                        />
+                    </div>
+                </div>
+
+                <div className="business-info">
                     <div className="field">
                         <label htmlFor="siren">SIREN</label>
                         <input
@@ -418,8 +440,8 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="form-actions">
-                    <button type="submit">Créer</button>
-                    <a href="/audit" className="btn">Annuler</a>
+                    <a href="/audit" className="new-audits-btn">Créer</a>
+                    <a href="/audits" className="new-audits-btn">Annulé</a> 
                 </div>
 
                 {error && <p className="form-message">{error}</p>}

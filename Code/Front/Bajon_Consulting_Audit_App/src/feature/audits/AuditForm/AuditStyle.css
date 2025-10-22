@@ -1,4 +1,4 @@
-/* Styles for the Audit Editor Page */
+/* Styles Editor Page */
 .audit-editor-page {
   gap: 20px;
   background-color: #3092b6;
@@ -24,7 +24,7 @@
 .audit-form-section-edit * {
   box-sizing: border-box;
 }
-/* section general label*/
+/* general */
 .audit-form-section-edit label {
   display: flex;
   font-weight: 600;
@@ -53,7 +53,8 @@
   margin-bottom: 10px;
   background-color: rgba(224, 224, 224, 0.8);
 }
-/* question general label*/
+
+/* question label*/
 .audit-form-question-edit label {
   color: #000000;
 
@@ -81,7 +82,7 @@
 /* === AnswerBox (mode édition) === */
 .audit-form-answer-edit {
   display: flex;
-  align-items: center; /* aligne le bas des blocs pour une ligne propre */
+  align-items: center;
   gap: 1rem;
   padding: 0.5rem;
   margin-bottom: 10px;

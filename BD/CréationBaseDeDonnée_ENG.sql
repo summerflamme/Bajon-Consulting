@@ -35,7 +35,7 @@ CREATE TABLE Client (
     businessActivity VARCHAR(100), 
     rcsNumber VARCHAR(50), 
     shareCapital NUMERIC(15,2), 
-    socialNetworks VARCHAR(255), 
+    socialNetworks VARCHAR(255), -- implémenté
     legalForm VARCHAR(100),
     logo BYTEA 
 );
