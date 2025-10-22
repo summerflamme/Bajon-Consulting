@@ -1,21 +1,11 @@
 /**
  * AuthProvider.tsx
  *
- * Ce composant React entoure l'application (ou certaines routes) pour fournir
- * le contexte d'authentification à tous les composants enfants.
- *
- * Fonctionnalités :
- * - Vérifie si un utilisateur est connecté au chargement (`supabase.auth.getUser()`).
- * - Écoute les changements de session en temps réel (`onAuthStateChange`).
- * - Fournit les informations `currentUser`, `currentRole` et la fonction `logout` via le contexte.
- * - Redirige automatiquement vers /audits après une connexion réussie.
- * - Permet de masquer l'application tant que la vérification n'est pas terminée (`loading`).
- *
- * Usage :
- * - Envelopper ton App ou tes Routes :
- *   <AuthProvider>
- *     <AppRoutes />
- *   </AuthProvider>
+ * Fournit le contexte d'authentification à l'application.
+ * - Vérifie la session utilisateur via Supabase.
+ * - Redirige vers /audits après connexion.
+ * - Redirige vers / (login) si aucune session.
+ * - Fournit currentUser, currentRole et logout().
  */
 
 import React, { useEffect, useState } from "react";
@@ -38,13 +28,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setCurrentUser(data.user);
         setCurrentRole(data.user.user_metadata?.role ?? null);
 
-        // Si l'utilisateur vient de se connecter, redirige vers /audits
+        // Si l'utilisateur est connecté et se trouve sur la page de login, on le redirige
         if (location.pathname === "/" || location.pathname === "/auth/login") {
-          navigate("/audits");
+          navigate("/audits", { replace: true });
         }
       } else {
         setCurrentUser(null);
         setCurrentRole(null);
+
+        // Si pas d'utilisateur et qu’on essaie d’accéder à une autre page que login → redirige vers /
+        if (location.pathname !== "/" && location.pathname !== "/auth/login") {
+          navigate("/", { replace: true });
+        }
       }
 
       setLoading(false);
@@ -53,31 +48,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      // Si on reçoit une nouvelle session (connexion), redirige aussi
       if (session?.user) {
         setCurrentUser(session.user);
         setCurrentRole(session.user.user_metadata?.role ?? null);
         if (location.pathname === "/" || location.pathname === "/auth/login") {
-          navigate("/audits");
+          navigate("/audits", { replace: true });
         }
       } else {
         setCurrentUser(null);
         setCurrentRole(null);
+        if (location.pathname !== "/" && location.pathname !== "/auth/login") {
+          navigate("/", { replace: true });
+        }
       }
     });
 
     return () => listener.subscription.unsubscribe();
   }, [navigate, location]);
 
+  // Déconnexion
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
       setCurrentUser(null);
       setCurrentRole(null);
-      navigate("/auth/login");
+      navigate("/", { replace: true });
     }
   };
 
+  // Évite le rendu pendant la vérification initiale
   if (loading) return null;
 
   return (

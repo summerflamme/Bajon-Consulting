@@ -11,7 +11,7 @@ function UserList() {
     };
 
     return (
-        <div>
+        <div className="fond-users-list">
             <SearchBar variant="users" />
             <div className="user-page-container">
                 <div className="user-list-header">

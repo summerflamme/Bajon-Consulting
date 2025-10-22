@@ -1,3 +1,16 @@
+.audit-list-page{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh; 
+  background-image: url("../../../assets/img2.JPG");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  background-repeat: no-repeat;
+}
+
 /* AuditList */
 .audit-list{
   display: flex;
@@ -5,6 +18,7 @@
   justify-content: center;
   min-height: auto;
   margin: 30px;
+  margin-bottom: 6rem;
 }
 
 .audit-grid {

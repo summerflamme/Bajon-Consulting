@@ -1,3 +1,16 @@
+.template-list-page{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh; 
+  background-image: url("../../../assets/img3.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  background-repeat: no-repeat;
+}
+
 /* TemplateList */
 .template-list{
   display: flex;
@@ -5,6 +18,7 @@
   justify-content: center;
   min-height: auto;
   margin: 30px;
+  margin-bottom: 6rem;
 }
 
 .template-grid {
