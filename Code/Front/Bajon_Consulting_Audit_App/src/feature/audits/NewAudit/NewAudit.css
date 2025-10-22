@@ -1,22 +1,36 @@
-.test {
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #ccc;
+  border-radius: 6px;
+  text-decoration: none;
+  color: black;
+}
+.btn:hover {
+  background-color: #bbb;
+}
+
+
+.new-audits {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #ffff;
     border-radius: 10px;
-    max-width: 80%;
-    margin: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 87%;
+    width: 95%;
+    margin: 0 auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     margin-top: 3rem;
     margin-bottom: 3rem;
-    padding-bottom: 2rem;
+    padding: 1.5rem 2rem 2rem 2rem;
 }
 
-.test::before {
+.new-audits::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("../assets/fond-auth.jpeg");
+  background-image: url("../../../assets/fond-auth.jpeg");
   background-size: cover;
   background-position: center;
   filter: blur(20px);
@@ -24,38 +38,109 @@
   z-index: -1;
 }
 
+.titre-new-audits {
+    color: rgba(36, 97, 132, 1);
+    padding: 1rem;
+}
 
-.new-audit-form {
+.new-audits-form {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    width: 100%;
+    max-width: 920px;
+    align-items: stretch;
     max-width: 640px;
     align-items: center;
 }
 
-.new-audit-form label {
+.new-audits-form label {
     font-weight: 600;
 }
 
-.new-audit-form input,
-.new-audit-form textarea,
-.new-audit-form select {
-    padding: 8px;
-    font-size: 14px;
+.new-audits-form input,
+.new-audits-form textarea,
+.new-audits-form select {
+    padding: 10px 12px;
+    font-size: 15px;
     width: 100%;
     box-sizing: border-box;
+    border: 1px solid #676767;
+    border-radius: 6px;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    min-height: 42px;
 }
 
-.new-audit-form .error {
+.new-audits-form input:focus,
+.new-audits-form textarea:focus,
+.new-audits-form select:focus {
+    border-color: #676767;
+    box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06);
+}
+
+.new-audits-form .error {
     color: #b00020;
     font-size: 12px;
 }
 
-.new-audit-form .form-actions {
+.new-audits-form .form-actions {
     display: flex;
     gap: 8px;
     margin-top: 12px;
 }
+
+.field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 6px;
+}
+
+.Client-info-name,
+.Client-info-contact,
+.business-info,
+.Client-info-adr {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.Client-info-name .field,
+.Client-info-contact .field,
+.business-info .field,
+.Client-info-adr .field {
+    flex: 1 1 48%; 
+}
+
+@media (max-width: 900px) {
+    .Client-info-name,
+    .Client-info-contact,
+    .business-info,
+    .Client-info-adr {
+        flex-direction: column;
+    }
+    .Client-info-name .field,
+    .Client-info-contact .field,
+    .business-info .field,
+    .Client-info-adr .field {
+        flex: 1 1 100%;
+    }
+}
+
+.audits-template .field,
+.new-audits .field {
+    min-width: 0;
+}
+
+.Client-info-name,
+.Client-info-contact,
+.business-info,
+.Client-info-adr {
+    display: flex;
+    align-items: center;
+}
+
 
 .form-message {
     color: #b00020;
@@ -70,16 +155,79 @@
     max-width: 640px;
     width: 100%;
 }
+
 .filter-input {
     padding: 6px 8px;
     font-size: 14px;
     flex: 1;
 }
 
-.audits-list {
+.input-style {
+    padding: 10px 12px;
+    font-size: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #676767;
+    border-radius: 6px;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    min-height: 42px;
+    background-color: white;
+}
+
+.input-style:focus {
+    border-color: #676767;
+    box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06);
+}
+
+.react-international-phone-input-container {
+    width: 100%;
+}
+
+.react-international-phone-input {
+    padding: 10px 12px !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    border: 1px solid #676767 !important;
+    border-radius: 6px !important;
+    min-height: 42px !important;
+    box-sizing: border-box !important;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease !important;
+    background-color: white !important;
+}
+
+.react-international-phone-input:focus {
+    border-color: #676767 !important;
+    box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06) !important;
+}
+
+.react-international-phone-country-selector {
+    border-radius: 6px 0 0 6px !important;
+    border: 1px solid #676767 !important;
+    border-right: none !important;
+    background-color: #f9f9f9 !important;
+    min-height: 42px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* test audits */
+
+.new-audits-list {
     display: grid;
     gap: 8px;
     margin-bottom: 20px;
     width: 100%;
     max-width: 640px;
+}
+
+.new-audits-card {
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: left;
+}
+
+.new-audits-empty {
+    color: #666;
 }

@@ -92,7 +92,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
           <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
             <option value="alphabetique">Ordre alphabétique</option>
-            <option value="date">Date</option>
+            <option value="date_creation">Date de création</option>
+            <option value="derniere_modification">Dernière modification</option>
           </select>
         </>
       )}
@@ -100,6 +101,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
       {/* === Variante USERS === */}
       {variant === 'users' && (
         <>
+          <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
+            <option value="tout-role">Tout (Rôle)</option>
+            <option value="Administrateur">Administrateur</option>
+            <option value="Utilisateur">Utilisateur</option>
+          </select>
           <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
             <option value="alphabetique">Ordre alphabétique</option>
             <option value="date_inscription">Date d'inscription</option>
