@@ -1,3 +1,16 @@
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #ccc;
+  border-radius: 6px;
+  text-decoration: none;
+  color: black;
+}
+.btn:hover {
+  background-color: #bbb;
+}
+
+
 .new-audits {
     display: flex;
     flex-direction: column;
@@ -85,7 +98,8 @@
 
 .Client-info-name,
 .Client-info-contact,
-.business-info {
+.business-info,
+.Client-info-adr {
     display: flex;
     gap: 16px;
     width: 100%;
@@ -94,19 +108,22 @@
 
 .Client-info-name .field,
 .Client-info-contact .field,
-.business-info .field {
+.business-info .field,
+.Client-info-adr .field {
     flex: 1 1 48%; 
 }
 
 @media (max-width: 900px) {
     .Client-info-name,
     .Client-info-contact,
-    .business-info {
+    .business-info,
+    .Client-info-adr {
         flex-direction: column;
     }
     .Client-info-name .field,
     .Client-info-contact .field,
-    .business-info .field {
+    .business-info .field,
+    .Client-info-adr .field {
         flex: 1 1 100%;
     }
 }
@@ -116,20 +133,14 @@
     min-width: 0;
 }
 
-.Client-info-name {
+.Client-info-name,
+.Client-info-contact,
+.business-info,
+.Client-info-adr {
     display: flex;
     align-items: center;
 }
 
-.Client-info-contact {
-    display: flex;
-    align-items: center;
-}
-
-.business-info {
-    display: flex;
-    align-items: center;
-}
 
 .form-message {
     color: #b00020;

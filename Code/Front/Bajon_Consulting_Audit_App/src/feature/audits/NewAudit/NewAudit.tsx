@@ -7,18 +7,25 @@ import { supabase } from "../../../supabaseClient";
 export default function NewAuditPage() {
 
     const [nameAudit, setNameAudit] = useState("");
-    const [name, setName] = useState("");
-    const [clientFirstName, setClientFirstName] = useState("");
     const [clientLastName, setClientLastName] = useState("");
+    const [clientFirstName, setClientFirstName] = useState("");
     const [clientEmail, setClientEmail] = useState("");
     const [clientPhone, setClientPhone] = useState("");
     const [companyName, setCompanyName] = useState("");
+    const [clientAddress, setClientAddress] = useState("");
+    const [clientCity, setClientCity] = useState("");
+    const [clientCountry, setClientCountry] = useState("");
     const [siren, setSiren] = useState("");
+    const [vatNumber, setVatNumber] = useState("");
+    const [businessActivity, setBusinessActivity] = useState("");
+    const [rcsNumber, setRcsNumber] = useState("");
+    const [shareCapital, setShareCapital] = useState("");
+    const [socialNetworks, setSocialNetworks] = useState("");
+    const [legalForm, setLegalForm] = useState("");
+    const [logo, setLogo] = useState("");
     const [error, setError] = useState("");
 
     const [message, setMessage] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
     const validPhone = new RegExp('^(\\+33|0)[1-9](\\d{2}){4}$');
 
@@ -31,7 +38,6 @@ export default function NewAuditPage() {
     const [selectedAuditId, setSelectedAuditId] = useState("");
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [auditSearch, setAuditSearch] = useState("");
-    const [auditSuggestions, setAuditSuggestions] = useState<any[]>([]);
 
     // ========================================================
     // Récupération audits
@@ -76,7 +82,7 @@ export default function NewAuditPage() {
                 .select(`id, auditname`)
                 .eq("template", true);
             if (!error && data) {
-                setAuditSuggestions(data);
+                setAuditsTemplate(data);
             }
             return;
         }
@@ -111,7 +117,7 @@ export default function NewAuditPage() {
                 themes: audit.own?.map(o => o.theme) || []
             }));
 
-            setAuditSuggestions(transformedData);
+            setAuditsTemplate(transformedData);
         }
     };
 
@@ -123,7 +129,7 @@ export default function NewAuditPage() {
     // ========================================================
     const handleSelectAuditTemplate = (value: string) => {
         setAuditSearch(value);
-        const selected = auditSuggestions.find(a => a.auditname === value);
+        const selected = auditsTemplate.find(a => a.auditname === value);
         if (selected) {
             setSelectedAuditId(selected.id);
         } else {
@@ -169,7 +175,25 @@ export default function NewAuditPage() {
 
         const { data, error } = await supabase
             .from("client")
-            .select("id, clientfirstname, clientlastname, clientemail, clientphone, companyname, siren")
+            .select(`
+                id, 
+                clientlastname, 
+                clientfirstname, 
+                clientemail, 
+                clientphone, 
+                companyname, 
+                clientAddress, 
+                clientCity,
+                clientCountry, 
+                siren, 
+                vatNumber, 
+                businessActivity, 
+                rcsNumber, 
+                shareCapital, 
+                socialNetworks, 
+                legalForm, 
+                logo
+            `)
             .ilike("clientlastname", `%${value}%`)
             .limit(10);
 
@@ -179,12 +203,22 @@ export default function NewAuditPage() {
     };
 
     const handleSelectClient = (client) => {
-        setClientFirstName(client.clientfirstname || "");
         setClientLastName(client.clientlastname || "");
+        setClientFirstName(client.clientfirstname || "");
         setClientEmail(client.clientemail || "");
         setClientPhone(client.clientphone || "");
         setCompanyName(client.companyname || "");
+        setClientAddress(client.clientAddress || "");
+        setClientCity(client.clientCity || "");
+        setClientCountry(client.clientCountry || "");
         setSiren(client.siren || "");
+        setVatNumber(client.vatNumber || "");
+        setBusinessActivity(client.businessActivity || "");
+        setRcsNumber(client.rcsNumber || "");
+        setShareCapital(client.shareCapital || "");
+        setSocialNetworks(client.socialNetworks || "");
+        setLegalForm(client.legalForm || "");
+        setLogo(client.logo || "");
     };
 
     useEffect(() => {
@@ -203,25 +237,33 @@ export default function NewAuditPage() {
         e.preventDefault();
 
         const payload = {
-            nameAudit,
-            name,
-            clientFirstName,
             clientLastName,
+            clientFirstName,
             clientEmail,
             clientPhone,
             companyName,
+            clientAddress,
+            clientCity,
+            clientCountry,
             siren,
+            vatNumber,
+            businessActivity,
+            rcsNumber,
+            socialNetworks,
+            legalForm,
+            logo,
+            nameAudit,
         };
         console.log("Créer client : ", payload);
         setError("");
         alert("client créé !");
 
-        if (!validEmail.test(email)) {
+        if (!validEmail.test(clientEmail)) {
             setMessage("Email invalide");
             return;
         }
 
-        if (!validPhone.test(phone)) {
+        if (!validPhone.test(clientPhone)) {
             setMessage("Numéro de téléphone invalide");
             return;
         }
@@ -264,6 +306,41 @@ export default function NewAuditPage() {
                             value={clientFirstName}
                             onChange={(e) => setClientFirstName(e.target.value)}
                             placeholder="Ex: Jean"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="Client-info-adr">
+                    <div className="field">
+                        <label htmlFor="client-adr">adresse du client</label>
+                        <input
+                            className="input-style"
+                            value={clientAddress}
+                            onChange={(e) => setClientAddress(e.target.value)}
+                            placeholder="Ex: 37 Rue du Dolmen"
+                            required
+                        />
+                    </div>
+
+                    <div className="field">
+                        <label htmlFor="client-city">Ville du client</label>
+                        <input
+                            className="input-style"
+                            value={clientCity}
+                            onChange={(e) => setClientCity(e.target.value)}
+                            placeholder="Ex: Poitiers"
+                            required
+                        />
+                    </div>
+                    
+                    <div className="field">
+                        <label htmlFor="client-country">Pays du client</label>
+                        <input
+                            className="input-style"
+                            value={clientCountry}
+                            onChange={(e) => setClientCountry(e.target.value)}
+                            placeholder="Ex: France"
                             required
                         />
                     </div>
@@ -333,7 +410,7 @@ export default function NewAuditPage() {
                         />
 
                         <datalist id="audits-list">
-                            {auditSuggestions.map((a) => (
+                            {auditsTemplate.map((a) => (
                                 <option key={a.id} value={a.auditname} />
                             ))}
                         </datalist>
@@ -342,9 +419,7 @@ export default function NewAuditPage() {
 
                 <div className="form-actions">
                     <button type="submit">Créer</button>
-                    <button type="button" onClick={() => window.history.back()}>
-                        Annuler
-                    </button>
+                    <a href="/audit" className="btn">Annuler</a>
                 </div>
 
                 {error && <p className="form-message">{error}</p>}
@@ -354,7 +429,7 @@ export default function NewAuditPage() {
 
             {selectedAuditId && (
                 <div className="audit-list">
-                    {auditSuggestions
+                    {auditsTemplate
                         .filter((a) => a.id === selectedAuditId)
                         .map((a) => (
                             <div key={a.id} className="audit-card">

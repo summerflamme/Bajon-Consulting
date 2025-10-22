@@ -21,22 +21,23 @@ DROP TABLE IF EXISTS AuditOffer CASCADE;
 
 -- Table Client
 CREATE TABLE Client (
-    id SERIAL PRIMARY KEY,
-    clientLastName VARCHAR(100),
-    clientFirstName VARCHAR(100),
-    clientEmail VARCHAR(255),
-    clientPhone VARCHAR(20),
-    companyName VARCHAR(150),
-    clientAddress VARCHAR(255),
-    clientCountry VARCHAR(100),
-    siren VARCHAR(20),
-    vatNumber VARCHAR(20),
-    businessActivity VARCHAR(100),
-    rcsNumber VARCHAR(50),
-    shareCapital NUMERIC(15,2),
-    socialNetworks VARCHAR(255),
+    id SERIAL PRIMARY KEY, -- pas besoin
+    clientLastName VARCHAR(100), -- implémenté
+    clientFirstName VARCHAR(100), -- implémenté
+    clientEmail VARCHAR(255), -- implémenté
+    clientPhone VARCHAR(20), -- implémenté
+    companyName VARCHAR(150), -- implémenté
+    clientAddress VARCHAR(255), -- implémenté
+    clientCity VARCHAR(255), -- implémenté
+    clientCountry VARCHAR(100), -- implémenté
+    siren VARCHAR(20), -- implémenté
+    vatNumber VARCHAR(20), 
+    businessActivity VARCHAR(100), 
+    rcsNumber VARCHAR(50), 
+    shareCapital NUMERIC(15,2), 
+    socialNetworks VARCHAR(255), 
     legalForm VARCHAR(100),
-    logo BYTEA
+    logo BYTEA 
 );
 
 -- Table AuditType
