@@ -20,7 +20,6 @@ function AuditList() {
   const fetchAudits = useCallback(async () => {
     setLoading(true);
 
-    // Récupération des audits avec leurs types et offres
     let query = supabase
       .from('audit')
       .select(`
@@ -30,7 +29,6 @@ function AuditList() {
       `)
       .eq('template', false);
 
-    // Filtres
     if (searchTerm.trim() !== '') query = query.ilike('auditname', `%${searchTerm}%`);
     if (auditType) query = query.eq('idaudittype', auditType);
     if (offerType) query = query.eq('idauditoffer', offerType);
@@ -43,7 +41,6 @@ function AuditList() {
       return;
     }
 
-    // Ajout des infos de création et dernière modif
     const auditsWithDates = await Promise.all(
       (auditsData || []).map(async (audit) => {
         const { data: modifies, error: modifyError } = await supabase
@@ -79,7 +76,6 @@ function AuditList() {
           };
         }
 
-        // Aucun enregistrement dans "modify"
         return {
           ...audit,
           creation_date: null,
@@ -94,7 +90,6 @@ function AuditList() {
       })
     );
 
-    // Tri local
     const sortedAudits = [...auditsWithDates];
 
     if (sortField === 'alphabetique') {
@@ -117,7 +112,6 @@ function AuditList() {
       });
     }
 
-    // Mise à jour de l’état
     setAudits(sortedAudits);
     setLoading(false);
   }, [searchTerm, auditType, offerType, sortField, sortOrder]);
