@@ -1,13 +1,13 @@
 import './users.css';
+import avatarImage from "../../assets/testinfoutilisateur.jpg";
 
 function UserInfo() {
   return (
     <>
       <div className="user-info-wrapper">
-        {/* 👉 Conteneur ajouté ici */}
         <div className="user-avatar-container">
           <img
-            src="../../../public/testinfoutilisateur.jpg"
+            src={avatarImage}
             alt="Avatar utilisateur"
             className="user-avatar"
           />
