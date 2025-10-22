@@ -15,7 +15,7 @@ type Props = {
     onUpdate: (newData: Section[]) => void;
 };
 
-function AuditForm({ data, mode, onUpdate, responses, setResponses }: Props) {
+function AuditForm({ data, mode, onUpdate, responses, setResponses}: Props) {
     // Fonction mettre à jour section
     const updateSection = (sectionId: number, updatedSection: Section) => {
         const newData = data.map((s) =>
@@ -82,7 +82,7 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses }: Props) {
                             <button
                                 type="button"
                                 onClick={handleAddSection}
-                                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                className="btn-add"
                             >
                                 Ajouter une section
                             </button>
@@ -97,17 +97,20 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses }: Props) {
         <div className={`audit-container-${mode}`}>
             {/* Sidebar */}
             {
+                
                 mode === "edit" &&(
+                    <div>
 
                     <SideBarNav
                         data={data}
                         currentIndex={currentIndex}
                         goToSection={goToSection}
                         />
+                        </div>
                 )
             }
-            {/* Section principale */}
             <div className={`audit-form-section-${mode}`}>
+            {/* Section principale */}
                 <form className="">
                     <SectionBox
                         key={currentSection.id}
@@ -135,10 +138,7 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses }: Props) {
                                 <button
                                     onClick={handlePrevious}
                                     disabled={currentIndex === 0}
-                                    className={`px-4 py-2 rounded ${currentIndex === 0
-                                            ? "bg-gray-300 cursor-not-allowed"
-                                            : "bg-gray-600 text-white hover:bg-gray-700"
-                                        }`}
+                                    className={`btn-nav ${currentIndex === 0 ? 'btn-disabled' : ''}`}
                                 >
                                     Précédent
                                 </button>
@@ -147,10 +147,7 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses }: Props) {
                                     type="button"
                                     onClick={handleNext}
                                     disabled={currentIndex === data.length - 1}
-                                    className={`px-4 py-2 rounded ${currentIndex === data.length - 1
-                                            ? "bg-gray-300 cursor-not-allowed"
-                                            : "bg-blue-600 text-white hover:bg-blue-700"
-                                        }`}
+                                    className={`btn-primary ${currentIndex === data.length - 1 ? 'btn-disabled' : ''}`}
                                 >
                                     Suivant
                                 </button>
@@ -160,13 +157,13 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses }: Props) {
                                 <button
                                     type="button"
                                     onClick={handleAddSection}
-                                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                    className="btn-add"
                                 >
                                     Ajouter une section
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                                    className="btn-primary"
                                 >
                                     Valider
                                 </button>

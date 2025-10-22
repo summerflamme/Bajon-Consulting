@@ -168,7 +168,7 @@ function SectionBox({
                                     onPrevious?.();
                                 }
                             }}
-                            className="px-3 py-1 rounded border"
+                            className="btn-nav"
                         >
                             {currentQuestionIndex > 0 ? 'Précédent' : 'Précédent section'}
                         </button>
@@ -187,7 +187,7 @@ function SectionBox({
                                     onEnd?.();
                                 }
                             }}
-                            className="px-3 py-1 rounded bg-blue-500 text-white"
+                            className="btn-primary"
                         >
                             {currentQuestionIndex < questions.length - 1 ? 'Suivant' : 'Suivant section'}
                         </button>
@@ -208,7 +208,7 @@ function SectionBox({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="btn-add bg-blue-500 text-white px-3 py-1.5 rounded-md shadow-sm hover:bg-blue-600"
+                        className="btn-add shadow-sm"
                     >
                         Ajouter une question
                     </motion.button>

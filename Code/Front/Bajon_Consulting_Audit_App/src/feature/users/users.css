@@ -307,35 +307,11 @@
   }
 }
 
-@media (max-width: 430px) {
-  .audit-form-section-view label {
-    font-size: 0.9em;
-  }
-  .audit-container-view {
-    padding: 1rem;
-  }
-  .audit-form-question-view label {
-    font-size: 0.7em;
-  }
-  .audit-form-descriptions-view
- {
-    font-size: 0.65em;
-  }
-  
-.answer-choice.selected label {
-    font-size: 0.6em;
- }
-}
+
 
 
 @media (max-width: 768px) {
-  /*section box*/
-  .audit-form-section-view{
-    width: 100%;
-  }
-  .audit-form-section-view {
-    font-size: 1.1em;
-  }
+ 
 
   .user-info-wrapper {
     padding: 1rem;

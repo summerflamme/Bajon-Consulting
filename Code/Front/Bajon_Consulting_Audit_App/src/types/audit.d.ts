@@ -28,5 +28,9 @@ type Section = {
 
 type Audit = {
     mode: "edit" | "view";
+    title: string;
+    idclient: number;
+
+    sections: Section[];
 };
 export { Answer, Question, Section, data, Audit, Response };

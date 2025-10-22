@@ -187,7 +187,7 @@ function QuestionBox({ id, text, choices, answers, descriptions, mode, onUpdate,
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="btn-add bg-blue-500 text-white px-3 py-1.5 rounded-md shadow-sm hover:bg-blue-600"
+                        className="btn-add "
                     >
                         Ajouter une réponse
                     </motion.button>

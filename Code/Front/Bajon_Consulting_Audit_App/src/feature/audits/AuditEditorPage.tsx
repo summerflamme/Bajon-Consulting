@@ -1,9 +1,15 @@
 import { useState, useCallback } from 'react';
 import AuditForm from './AuditForm/AuditForm';
-import type { Response, Section } from '../../types/audit';
+import type { Audit, Response, Section } from '../../types/audit';
 import './AuditForm/AuditStyle.css';
 
-function AuditEditorPage() {
+type Props = {
+    auditData?: Audit;
+    
+
+};
+
+function AuditEditorPage({ auditData }: Props) {
     const [responses, setResponses] = useState<Response[]>([
 
         {
@@ -108,7 +114,7 @@ function AuditEditorPage() {
     };
     return (
         <div className="audit-editor-page">
-            <h1>Audit Editor Page</h1>
+            <h1>{auditData?.title ? auditData.title : "Titre de l'audit"}</h1>
             <button onClick={clearData}>Vider</button>
             <button onClick={toggleMode}>{mode === "edit" ? "Passer en mode vue" : "Passer en mode édition"}</button>
             <AuditForm data={data} mode={mode} onUpdate={handleUpdate} responses={responses} setResponses={setResponses} />

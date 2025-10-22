@@ -2,12 +2,20 @@ import type { Section } from "@/types/audit";
 import "./AuditStyle.css";
 import { useState } from 'react';
 import { Menu } from "lucide-react";
+import { motion } from "framer-motion";
 
 function SideBarNav({ data, currentIndex, goToSection }: { data: Section[]; currentIndex: number; goToSection: (index: number) => void }) {
     const [collapsed, setCollapsed] = useState(false);
 
     return (
-        <div className={`sidebar-nav ${collapsed ? 'collapsed' : ''}`}>
+
+
+        <motion.div className={`sidebar-nav ${collapsed ? 'collapsed' : ''}`}
+                initial={{ width: collapsed ? 56 : 220 }}
+            animate={{ width: collapsed ? 56 : 220 }}
+            exit={{ width: collapsed ? 56 : 220 }}
+            transition={{ duration: 0.3 }}
+        >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 className="sections-title">Sections</h3>
                 <Menu
@@ -27,7 +35,7 @@ function SideBarNav({ data, currentIndex, goToSection }: { data: Section[]; curr
                     </li>
                 ))}
             </ul>
-        </div>
+        </motion.div>
     );
 }
 
