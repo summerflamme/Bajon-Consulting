@@ -101,6 +101,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
       {variant === 'users' && (
         <>
           <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
+            <option value="tout-role">Tout (Rôle)</option>
+            <option value="Administrateur">Administrateur</option>
+            <option value="Utilisateur">Utilisateur</option>
+          </select>
+          <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
             <option value="alphabetique">Ordre alphabétique</option>
             <option value="date_inscription">Date d'inscription</option>
             <option value="role">Dernière connexion</option>
