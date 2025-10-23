@@ -1,110 +1,94 @@
 package com.bajonconsulting.Bajon_audit_App.Types;
 
-import java.rmi.server.UID;
-import java.security.Timestamp;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
-    
 
-    private UID uid;
+
+    @JsonProperty("id")
+    private String uid;
     private String email;
 
-    private Timestamp createdAt; 
-    private Timestamp lastSignInAt;
+    @JsonProperty("created_at")
+    private String createdAt;
+
+    @JsonProperty("last_sign_in_at")
+    private String lastSignInAt;
 
     //metadata
-    private String userRole ;
-    private String phone; 
-    private String displayName;
-    private String firstName; 
-    private String lastName;
+    @JsonProperty("user_metadata")
+    private UserMetadata userMetadata;
 
-    User(){}
 
-    User(UID Uid, String DispalyName, String Email, String Phone, Timestamp CreatedAt, Timestamp LastSignInAt, String UserRole){
-        this.uid = Uid;
-        this.displayName = DispalyName;
-        this.email = Email;
-        this.phone = Phone; 
-        this.createdAt = CreatedAt;
-        this.lastSignInAt = LastSignInAt;
-        this.userRole = UserRole; 
-        this.firstName = displayName.split(" ")[1];
-        this.lastName = displayName.split(" ")[0];
+    public User() {
     }
-    //getter 
 
-    public UID getUID(){
+    //getter / setter
+
+    //UID
+    public String getUID() {
         return this.uid;
-    } 
-    
-    public String getDisplayName(){
-        return this.displayName;
     }
 
-    public String getEmail(){
-        return this.email;
-    }
-
-    public String getPhone(){
-        return this.phone;
-    }
-
-    public Timestamp getCreatedAt(){
-        return this.createdAt;
-    }
-
-    public Timestamp getLastSignInAt(){
-        return this.lastSignInAt;
-    }
-
-    public String getFirstName(){
-        return this.firstName;
-    }
-
-    public String getLastName(){
-        return this.lastName;
-    }
-
-    public String getUserRole(){
-        return this.userRole; 
-    }
-
-    //Setter 
-
-    public void setUID(UID uid){
+    public void setUID(String uid) {
         this.uid = uid;
     }
 
-    public void setDisplayName(String displayName){
-        this.displayName = displayName;
+    //email
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setPhone(String phone){
-        this.phone = phone;
+    //createdat
+    public String getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt){
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public void setLastSignInAt(Timestamp lastSignInAp){
+
+    //lastSginInAt
+
+    public String getLastSignInAt() {
+        return this.lastSignInAt;
+    }
+
+    public void setLastSignInAt(String lastSignInAp) {
         this.lastSignInAt = lastSignInAp;
     }
 
-    public void setFirstName(String FirstName){
-        this.firstName = FirstName;
+    public UserMetadata getUserMetadata() {
+        return this.userMetadata;
     }
 
-    public void setLastName(String LastName) {
-        this.lastName = LastName;
+    public void setUserMetadata(UserMetadata userMetadata) {
+        this.userMetadata = userMetadata;
     }
 
-    public void setUserRole(String UserRole) {
-        this.userRole = UserRole;
+    public String getDsipalyName() {
+        return userMetadata.getDisplayName();
+    }
+
+    public String getPhone() {
+        return userMetadata.getPhone();
+    }
+
+    public String getCurrentRole() {
+        return userMetadata.getRole();
+    }
+
+    public String getFirstName() {
+        return userMetadata.getFirstName();
+    }
+
+    public String getLastName() {
+        return userMetadata.getLastName();
     }
 }
+
