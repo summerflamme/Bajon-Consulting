@@ -37,7 +37,7 @@
   margin-bottom: 20px;
   color: #236084;
 }
-
+.select, .option
 .login-box label {
   display: block;
   margin-bottom: 5px;
@@ -54,7 +54,9 @@
   margin-bottom: 15px;
 }
 
-.login-box input {
+.login-box input,
+.login-box select,
+.login-box option {
   border: 1px solid #000000;
   background-color: #fff;
   color: black;
@@ -85,6 +87,91 @@
 .forgot-password a:hover {
   text-decoration: underline;
 }
+/* 
+.phoneInput .react-international-phone-input {
+    padding: 10px 12px !important;
+    margin-left: 3px !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    border: 1px solid #676767 !important;
+    border-radius: 6px !important;
+    min-height: 42px !important;
+    box-sizing: border-box !important;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease !important;
+    background-color: white !important;
+}
+
+
+.phoneInput .react-international-phone-input:focus {
+    border-color: #676767 !important;
+    box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06) !important;
+}
+
+.phoneInput .react-international-phone-country-selector {
+    padding-top: 10px;
+    border-radius: 6px 0 0 6px !important;
+    border: 1px solid #676767 !important;
+    border-right: none !important;
+    background-color: #f9f9f9 !important;
+    max-height: 42px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.phoneInput react-international-phone-country-selector-button{
+  background-color: brown !important;
+} */
+.phoneInput {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.phoneInput .react-international-phone-input-container {
+    display: flex !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+
+.phoneInput .react-international-phone-country-selector {
+    border-radius: 6px 0 0 6px !important;
+    border: 1px solid #000000 !important;
+    border-right: none !important;
+    background-color: #fff !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 8px !important;
+}
+
+.phoneInput .react-international-phone-country-selector-button {
+    background-color: transparent !important;
+    border: none !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.phoneInput .react-international-phone-input {
+    padding: 10px 12px !important;
+    font-size: 15px !important;
+    flex: 1 !important;
+    border: 1px solid #000000 !important;
+    border-left: none !important;
+    border-radius: 0 6px 6px 0 !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    box-sizing: border-box !important;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease !important;
+    background-color: white !important;
+    margin: 0 !important;
+}
+
 
 /* Responsive */
 
