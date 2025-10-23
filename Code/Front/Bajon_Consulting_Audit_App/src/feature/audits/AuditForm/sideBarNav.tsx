@@ -1,27 +1,29 @@
 import type { Section } from "@/types/audit";
 import "./AuditStyle.css";
 import { useState } from 'react';
-import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { MenuIcon } from "@/components/ui/menu";
 
 function SideBarNav({ data, currentIndex, goToSection }: { data: Section[]; currentIndex: number; goToSection: (index: number) => void }) {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
 
     return (
 
 
-        <motion.div className={`sidebar-nav ${collapsed ? 'collapsed' : ''}`}
-                initial={{ width: collapsed ? 56 : 220 }}
-            animate={{ width: collapsed ? 56 : 220 }}
-            exit={{ width: collapsed ? 56 : 220 }}
-            transition={{ duration: 0.3 }}
-        >
+        <motion.div layout className={`sidebar-nav ${collapsed ? 'collapsed' : ''}`}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 className="sections-title">Sections</h3>
-                <Menu
-                    onClick={() => setCollapsed((c) => !c)}
-                >
-                </Menu>
+                {/* ecran reduit */}
+                {window.innerWidth < 768 ? (
+                    <ChevronDown
+                        onClick={() => setCollapsed((c) => !c)}
+                        className={`chev ${collapsed ? 'chev-rotated' : ''}`}
+                        aria-hidden={false}
+                    />
+                ) : (
+                    <MenuIcon open={collapsed} onClick={() => setCollapsed((c) => !c)} />
+                )}
             </div>
             <ul className="sections-list">
                 {data.map((section, index) => (

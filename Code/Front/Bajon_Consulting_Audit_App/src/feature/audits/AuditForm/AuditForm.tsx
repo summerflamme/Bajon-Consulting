@@ -142,6 +142,13 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses}: Props) {
                                 >
                                     Précédent
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={handleAddSection}
+                                    className="btn-add"
+                                >
+                                    Ajouter une section
+                                </button>
 
                                 <button
                                     type="button"
@@ -153,20 +160,20 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses}: Props) {
                                 </button>
                             </div>
 
-                            <div className="mt-6 flex gap-3">
-                                <button
-                                    type="button"
-                                    onClick={handleAddSection}
-                                    className="btn-add"
-                                >
-                                    Ajouter une section
-                                </button>
+                            <div className="mt-6 flex gap-3 alignItems" >
                                 <button
                                     type="submit"
                                     className="btn-primary"
                                 >
-                                    Valider
+                                    Enregistrer
                                 </button>
+                                <button
+                                    type="button"
+                                    className="btn-annuler"
+                                >
+                                    annuler
+                                </button>
+
                             </div>
                         </>
                     )}
