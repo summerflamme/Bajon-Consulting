@@ -8,6 +8,7 @@ type Answer = {
 type Response = {
     
     idAnswer: number;
+
     idQuestion: number;
 
 }

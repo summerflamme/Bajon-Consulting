@@ -1,126 +1,91 @@
-import { useState, useCallback } from 'react';
-import AuditForm from './AuditForm/AuditForm';
-import type { Audit, Response, Section } from '../../types/audit';
-import './AuditForm/AuditStyle.css';
+import { useState, useCallback, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import AuditForm from "./AuditForm/AuditForm";
+import type { Audit, Response, Section } from "../../types/audit";
+import "./AuditForm/AuditStyle.css";
+import { supabase } from "@/supabaseClient";
 
 type Props = {
     auditData?: Audit;
-    
-
+    mode: "edit" | "view";
 };
 
-function AuditEditorPage({ auditData }: Props) {
-    const [responses, setResponses] = useState<Response[]>([
+function AuditEditorPage({ auditData, mode = "view" }: Props) {
+    const params = useParams();
+    const routeId = params.id ? parseInt(params.id, 10) : undefined;
 
-        {
-            idAnswer: 1,
-            idQuestion: 1
-        },
-        {
-            idAnswer: 2,
-            idQuestion: 2
+    const [data, setData] = useState<Section[]>([]);
+    const [initialResponses, setInitialResponses] = useState<Response[]>([]);
+    const [updatedResponses, setUpdatedResponses] = useState<Response[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // --- Récupération des données d’audit ---
+    const fetchAuditData = useCallback(async (id?: number) => {
+        if (!id) return;
+        setLoading(true);
+        setError(null);
+
+        const { data, error } = await supabase.rpc("get_audit_data", { _idaudit: id });
+        setLoading(false);
+
+        if (error) {
+            console.error("Erreur chargement audit :", error);
+            setError(error.message);
+        } else {
+            console.log("Fetched responses:", data);
+
+            setData(data || []);
         }
+    }, []);
 
-    ]);
-
-    const [data, setData] = useState<Section[]>([
-        {
-            id: 1,
-            title: "Section 1",
-            questions: [
-                {
-                    id: 1,
-                    text: "Question 1.1 ",
-                    choices: "single-choice",
-                    descriptions: "description de la question 1.1",
-                    answers: [
-                        { id: 1, text: "Réponse 1.1", score: -10 },
-                        { id: 2, text: "Réponse 1.2", score: 0 },
-                        { id: 3, text: "Réponse 1.3", score: 30 },
-                    ],
-                },
-                {
-                    id: 2,
-                    text: "Question 1.2",
-                    choices: "single-choice",
-                    descriptions: "description de la question 1.2",
-                    answers: [
-                        { id: 1, text: "Réponse 1.1", score: -10 },
-                        { id: 2, text: "Réponse 1.2", score: 10 },
-                        { id: 3, text: "Réponse 1.3", score: 0 },
-                    ],
-                },
-                {
-                    id: 3,
-                    text: "Question 1.3",
-                    choices: "single-choice",
-                    descriptions: "description de la question 1.3",
-                    answers: [
-                        { id: 1, text: "Réponse 1.1", score: 0 },
-                        { id: 2, text: "Réponse 1.2", score: 10 },
-                        { id: 3, text: "Réponse 1.3", score: 20 },
-                    ],
-                },
-            ],
-        }, {
-            id: 2,
-            title: "Section 2",
-            questions: [
-                {
-                    id: 1,
-                    text: "Question 2.1",
-                    choices: "single-choice",
-                    descriptions: "description de la question 2.1",
-                    answers: [
-                        { id: 1, text: "Réponse 2.1", score: -10 },
-                        { id: 2, text: "Réponse 2.2", score: 0 },
-                        { id: 3, text: "Réponse 2.3", score: 30 },
-                    ],
-                },
-                {
-                    id: 2,
-                    text: "Question 2.2",
-                    choices: "single-choice",
-                    descriptions: "description de la question 2.2",
-                    answers: [
-                        { id: 1, text: "Réponse 2.1", score: -10 },
-                        { id: 2, text: "Réponse 2.2", score: 10 },
-                        { id: 3, text: "Réponse 2.3", score: 0 },
-                    ],
-                },
-                {
-                    id: 3,
-                    text: "Question 3.3",
-                    choices: "single-choice",
-                    descriptions: "description de la question 3.3",
-                    answers: [
-                        { id: 1, text: "Réponse 3.1", score: 0 },
-                        { id: 2, text: "Réponse 3.2", score: 10 },
-                        { id: 3, text: "Réponse 3.3", score: 20 },
-                    ],
-                },
-            ],
+    // --- Récupération des réponses du client ---
+    const fetchAuditResponses = useCallback(async (id?: number) => {
+        if (!id) return;
+        const { data, error } = await supabase.rpc("get_audit_responses", { _idaudit: id });
+        if (error) {
+            console.error("Erreur chargement réponses :", error);
+            setError(error.message);
+        } else {
+            console.log("Fetched responses:", data);
+            setInitialResponses(data || []);
+            setUpdatedResponses(data || []); // copie de départ
         }
-    ]);
+    }, []);
+
+    useEffect(() => {
+        if (routeId) {
+            fetchAuditData(routeId);
+            fetchAuditResponses(routeId);
+        }
+    }, [routeId, fetchAuditData, fetchAuditResponses]);
+
     const clearData = useCallback(() => setData([]), []);
-    const [mode, setMode] = useState<"edit" | "view">("view");
-    const toggleMode = useCallback(() => setMode((m) => (m === 'edit' ? 'view' : 'edit')), []);
-
-
 
     const handleUpdate = (newData: Section[]) => {
         setData(newData);
         console.log("Data updated:", newData);
     };
+
     return (
         <div className="audit-editor-page">
-            <h1>{auditData?.title ? auditData.title : "Titre de l'audit"}</h1>
+            <h1>{auditData?.title || "Titre de l'audit"}</h1>
+
             <button onClick={clearData}>Vider</button>
-            <button onClick={toggleMode}>{mode === "edit" ? "Passer en mode vue" : "Passer en mode édition"}</button>
-            <AuditForm data={data} mode={mode} onUpdate={handleUpdate} responses={responses} setResponses={setResponses} />
+            {loading && <p>Chargement des données...</p>}
+            {error && <p className="error">Erreur : {error}</p>}
 
-
+            <AuditForm
+                auditId={routeId}
+                data={data}
+                mode={mode}
+                onUpdate={handleUpdate}
+                initialResponses={initialResponses}
+                updatedResponses={updatedResponses}
+                setUpdatedResponses={setUpdatedResponses}
+            />
         </div>
     );
 }
+
 export default AuditEditorPage;

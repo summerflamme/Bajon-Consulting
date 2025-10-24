@@ -1,92 +1,120 @@
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/ToastProvider";
 import SectionBox from "./sectionBox";
-import type { Audit, Response, Section } from "../../../types/audit";
-import './AuditStyle.css';
-import { useState, useEffect } from "react";
 import SideBarNav from "./sideBarNav";
-
-import type { Dispatch, SetStateAction } from "react";
+import { supabase } from "@/supabaseClient";
+import type { Audit, Response, Section } from "../../../types/audit";
+import "./AuditStyle.css";
 
 type Props = {
     data: Section[];
     mode: Audit["mode"];
-    responses: Response[];
-    setResponses: Dispatch<SetStateAction<Response[]>>;
-
+    initialResponses: Response[];
+    updatedResponses: Response[];
+    setUpdatedResponses: React.Dispatch<React.SetStateAction<Response[]>>;
     onUpdate: (newData: Section[]) => void;
+    auditId?: number;
 };
 
-function AuditForm({ data, mode, onUpdate, responses, setResponses}: Props) {
-    // Fonction mettre à jour section
-    const updateSection = (sectionId: number, updatedSection: Section) => {
-        const newData = data.map((s) =>
-            s.id === sectionId ? updatedSection : s
-        );
-        onUpdate(newData);
-    };
-    const handleAddSection = () => {
-        const newSection: Section = {
-            id: Date.now(),
-            title: "New Section",
-            questions: [
-                { id: 1, text: "", choices: "single-choice", descriptions: "", answers: [
-                    { id: 1, text: "", score: 0 }
-                ] },
-            ],
-        };
-        onUpdate([...data, newSection]);
-    };
-    const handleRemoveSection = (sectionId: number) => {
-        const newData = data.filter((s) => s.id !== sectionId);
-        onUpdate(newData);
-    };
+function AuditForm({
+    data,
+    mode,
+    initialResponses,
+    updatedResponses,
+    setUpdatedResponses,
+    onUpdate,
+    auditId,
+}: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
+    const toast = useToast();
 
-    // Quand "data" change, recaler currentIndex pour rester dans les bornes
-    useEffect(() => {
-        if (data.length === 0) {
-            setCurrentIndex(0);
+    // 🔁 Compare les réponses initiales et modifiées
+    const getChangedResponses = (initial: Response[], updated: Response[]) => {
+        const serialize = (arr: Response[]) => arr.map(r => `${r.idQuestion}-${r.idAnswer}`);
+        const initialSet = new Set(serialize(initial));
+        return updated.filter(r => !initialSet.has(`${r.idQuestion}-${r.idAnswer}`));
+    };
+
+    // --- Mise à jour (structure ou réponses) ---
+    const updateAudit = useCallback(async () => {
+        if (!auditId) {
+            toast?.error("Aucun audit sélectionné");
             return;
         }
-        if (currentIndex > data.length - 1) {
-            setCurrentIndex(data.length - 1);
-        }
-    }, [data, currentIndex]);
 
-    const handleNext = () => {
-        if (currentIndex < data.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-        }
-    };
+        try {
+            setLoading(true);
+            setError(null);
 
-    const handlePrevious = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-        }
-    };
+            const isEditMode = mode === "edit";
+            let rpcPayload;
+            let rpcName;
 
-    const goToSection = (index: number) => {
-        setCurrentIndex(index);
-    };
+            if (isEditMode) {
+                rpcName = "update_audit_data";
+                rpcPayload = { _idaudit: auditId, _data: data };
+            } else {
+                rpcName = "update_audit_responses";
+                const changed = getChangedResponses(initialResponses, updatedResponses);
+                rpcPayload = {
+                    _idaudit: auditId,
+                    _responses: changed.length > 0 ? changed : updatedResponses,
+                };
+            }
+
+            console.log("➡️ Appel RPC :", rpcName, rpcPayload);
+            const { data: result, error } = await supabase.rpc(rpcName, rpcPayload);
+
+            if (error) {
+                console.error("❌ Erreur RPC :", error);
+                setError(error.message);
+                toast?.error(error.message);
+                return;
+            }
+
+            console.log("✅ Succès :", result);
+            toast?.success(
+                isEditMode
+                    ? "Structure d’audit mise à jour avec succès"
+                    : "Réponses enregistrées avec succès"
+            );
+
+            if (!isEditMode) {
+                // Mise à jour de la baseline
+                toast?.info("Les réponses initiales ont été actualisées");
+            }
+
+            navigate("/audits");
+        } catch (err) {
+            console.error("💥 Erreur inattendue :", err);
+            const msg =
+                err instanceof Error
+                    ? err.message
+                    : "Erreur inattendue lors de la mise à jour.";
+            setError(msg);
+            toast?.error(msg);
+        } finally {
+            setLoading(false);
+        }
+    }, [auditId, mode, data, initialResponses, updatedResponses, toast, navigate]);
+
+    // --- Navigation entre sections ---
+    const handleNext = () => currentIndex < data.length - 1 && setCurrentIndex(currentIndex + 1);
+    const handlePrevious = () => currentIndex > 0 && setCurrentIndex(currentIndex - 1);
+    const goToSection = (index: number) => setCurrentIndex(index);
 
     const currentSection = data[currentIndex] ?? null;
 
-    // Rendu sécurisé si pas de sections
     if (!currentSection) {
         return (
-            <div className={`audit-container-view`}>
-                
+            <div className="audit-container-view">
                 <div className="audit-form-section-edit">
                     <div style={{ padding: 24 }}>
                         <p>Aucune section disponible.</p>
-                        {mode === "edit" && (
-                            <button
-                                type="button"
-                                onClick={handleAddSection}
-                                className="btn-add"
-                            >
-                                Ajouter une section
-                            </button>
-                        )}
                     </div>
                 </div>
             </div>
@@ -95,23 +123,17 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses}: Props) {
 
     return (
         <div className={`audit-container-${mode}`}>
-            {/* Sidebar */}
-            {
-                
-                mode === "edit" &&(
-                    <div>
+            {mode === "edit" && (
+                <SideBarNav data={data} currentIndex={currentIndex} goToSection={goToSection} />
+            )}
 
-                    <SideBarNav
-                        data={data}
-                        currentIndex={currentIndex}
-                        goToSection={goToSection}
-                        />
-                        </div>
-                )
-            }
             <div className={`audit-form-section-${mode}`}>
-            {/* Section principale */}
-                <form className="">
+                <form
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        await updateAudit();
+                    }}
+                >
                     <SectionBox
                         key={currentSection.id}
                         id={currentSection.id}
@@ -119,65 +141,30 @@ function AuditForm({ data, mode, onUpdate, responses, setResponses}: Props) {
                         questions={currentSection.questions}
                         mode={mode}
                         onUpdate={(updatedSection) =>
-                            updateSection(currentSection.id, updatedSection)
+                            onUpdate(
+                                data.map((s) =>
+                                    s.id === currentSection.id ? updatedSection : s
+                                )
+                            )
                         }
-                        handleRemoveSection={() =>
-                            handleRemoveSection(currentSection.id)
-                        }
-                        responses={responses}
-                        setResponses={setResponses}
+                        handleRemoveSection={() => onUpdate(data.filter((s) => s.id !== currentSection.id))}
+                        responses={updatedResponses}
+                        setResponses={setUpdatedResponses}
                         onEnd={handleNext}
                         onPrevious={handlePrevious}
-
                     />
 
-                    {/* Navigation entre sections */}
-                    {mode === "edit" && (
-                        <>
-                            <div className="flex justify-between mt-6">
-                                <button
-                                    onClick={handlePrevious}
-                                    disabled={currentIndex === 0}
-                                    className={`btn-nav ${currentIndex === 0 ? 'btn-disabled' : ''}`}
-                                >
-                                    Précédent
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleAddSection}
-                                    className="btn-add"
-                                >
-                                    Ajouter une section
-                                </button>
+                    <div className="mt-6 flex gap-3 alignItems">
+                        <button type="submit" className="btn-primary" disabled={loading}>
+                            {loading ? "Enregistrement..." : "Enregistrer"}
+                        </button>
+                            <button type="button" className="btn-annuler" onClick={() => navigate("/audits")}>
+                            Annuler
+                        </button>
+                    </div>
 
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    disabled={currentIndex === data.length - 1}
-                                    className={`btn-primary ${currentIndex === data.length - 1 ? 'btn-disabled' : ''}`}
-                                >
-                                    Suivant
-                                </button>
-                            </div>
-
-                            <div className="mt-6 flex gap-3 alignItems" >
-                                <button
-                                    type="submit"
-                                    className="btn-primary"
-                                >
-                                    Enregistrer
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn-annuler"
-                                >
-                                    annuler
-                                </button>
-
-                            </div>
-                        </>
-                    )}
-                    </form>
+                    {error && <p className="error-text">Erreur : {error}</p>}
+                </form>
             </div>
         </div>
     );
