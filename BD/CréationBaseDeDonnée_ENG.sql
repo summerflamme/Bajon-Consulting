@@ -31,13 +31,13 @@ CREATE TABLE Client (
     clientCity VARCHAR(255), -- implémenté
     clientCountry VARCHAR(100), -- implémenté
     siren VARCHAR(20), -- implémenté
-    vatNumber VARCHAR(20), 
-    businessActivity VARCHAR(100), 
-    rcsNumber VARCHAR(50), 
-    shareCapital NUMERIC(15,2), 
-    socialNetworks VARCHAR(255), 
-    legalForm VARCHAR(100),
-    logo BYTEA 
+    vatNumber VARCHAR(20), -- implémenté
+    businessActivity VARCHAR(100), -- implémenté
+    rcsNumber VARCHAR(50), -- implémenté
+    shareCapital NUMERIC(15,2), -- implémenté
+    socialNetworks VARCHAR(255), -- implémenté
+    legalForm VARCHAR(100), -- implémenté
+    logo BYTEA -- implémenté
 );
 
 -- Table AuditType
