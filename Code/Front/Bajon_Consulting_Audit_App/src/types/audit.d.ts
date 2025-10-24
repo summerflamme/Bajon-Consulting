@@ -5,6 +5,14 @@ type Answer = {
     score: number;
 };
 
+type Response = {
+    
+    idAnswer: number;
+
+    idQuestion: number;
+
+}
+
 type Question = {
     id: number;
     text: string;
@@ -21,5 +29,9 @@ type Section = {
 
 type Audit = {
     mode: "edit" | "view";
+    title: string;
+    idclient: number;
+
+    sections: Section[];
 };
-export { Answer, Question, Section, data , Audit };
+export { Answer, Question, Section, data, Audit, Response };

@@ -7,15 +7,33 @@
 .audit-form{
   padding: 20px;
   display: flex;
+  
   flex-direction: column;
   align-items: center;
+}
+.audit-container-edit{
+  display: flex;
+      padding: 2em;
+}
+
+
+/*view*/
+.audit-container-view{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  padding: 2em;
+  min-height: 55vh;
 }
 
 /* SectionBox */
 .audit-form-section-edit {
-  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
   flex-direction: column;
   position: relative;
+  width: 60%;
   padding: 1.25rem 1.5rem;
   border-radius: 12px;
   background: #ffffff;
@@ -39,9 +57,78 @@
   margin-bottom: 10px;
 }
 
+/*SectionBox view*/
+.audit-form-section-view {
+  flex-direction: column;
+  position: relative;
+  width: 50%;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: #ffffff;
+  transition: all 0.25s ease;
+}
+.audit-form-section-edit * {
+  box-sizing: border-box;
+}
+.audit-form-section-view label {
+  display: flex;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 0.5rem;
+  font-size: 1.5em;
+}
 
 
-/* QuestionBox */
+
+/*side barre */
+.sidebar-nav {
+  width: 220px;
+  padding: 16px;
+  box-sizing: border-box;
+
+}
+
+.sidebar-nav .sections-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.sidebar-nav .sections-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+.sidebar-nav .section-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #374151; /* gray-700 */
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color .12s ease, color .12s ease;
+}
+
+.sidebar-nav .section-button:hover {
+  background: #ebf8ff; /* blue-100 */
+}
+
+.sidebar-nav .section-button.active {
+  background: #3b82f6; /* blue-500 */
+  color: #ffffff;
+}
+
+
+
+/* QuestionBox edit*/
 
 .audit-form-question-edit {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.148);
@@ -78,6 +165,44 @@
   min-height: 60px;
 }
 
+/* QuestionBox view*/
+.audit-form-question-view {
+   /* background-color: #3092b6; */
+  background-color: rgba(224, 224, 224, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.148);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+  
+}
+.audit-form-question-view label {
+  text-align: left;
+  min-height: 3em;
+  color: #000000;
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 0px;
+  font-weight: 600;
+  padding: 10px;
+  border-bottom: 1px solid #cccccc;
+
+}
+.audit-form-descriptions-view {
+  display: block;
+ 
+  padding: 10px;
+  white-space: pre-wrap;
+  text-align: left;
+  min-height: 10em;
+  color: #000000;
+  font-size: 1em;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #cccccc;
+}
+
 /* === AnswerBox (mode édition) === */
 .audit-form-answer-edit {
   display: flex;
@@ -90,6 +215,8 @@
   font-size: 0.9em;
   box-sizing: border-box;
 }
+
+
 
 /* Les deux blocs Réponse et Score sont des colonnes */
 .audit-form-text-edit,
@@ -122,6 +249,39 @@
   box-sizing: border-box;
 }
 
+
+/* === AnswerBox (mode vue) === */
+.audit-form-answer-view {
+  justify-content: center;
+  display: inline-block;
+  align-items: center; /* aligne le bas des blocs pour une ligne propre */
+  gap: 1rem;
+  border-radius: 8px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+}
+.answer-choice {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin: 0.5em;
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+
+
+.answer-choice:hover {
+  background-color: #ebf8ff;
+}
+
+/* Selected state for answers in view mode */
+.answer-choice.selected {
+  background-color: #3b82f6; /* blue-100 */
+}
+.answer-choice.selected label {
+  color: #ffffff;
+  font-weight: 700;
+}
+
 /* Delete icon à droite */
 .delete-icon {
   margin-left: auto;
@@ -129,8 +289,8 @@
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  height: 24px;
-  width: 24px;
+    height: 2.5em;
+  width: 2.5em;
   justify-content: center;
   transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -203,3 +363,341 @@
   font-weight: 500;
   color: #000000;
 }
+
+
+/* === SideBarNav === */
+.sidebar-nav {
+  position: sticky;
+  top: 10em;
+  align-self: flex-start;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+/* Toggle button in the sidebar header */
+.sidebar-toggle {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+  background: #eef2ff;
+}
+
+/* Collapsed state reduces width and hides the list text */
+.sidebar-nav.collapsed {
+  width: 56px !important;
+  border-radius: 100%;
+  overflow: hidden; /* hide internal content but keep area */
+  position: fixed;
+}
+.sidebar-nav.collapsed .sections-list {
+  display: none; /* hide section buttons when collapsed */
+}
+.sidebar-nav.collapsed .section-button {
+  display: none; /* fallback: ensure individual buttons are hidden */
+}
+
+/* Keep the toggle visible even when the sidebar is collapsed */
+.sidebar-nav.collapsed .sidebar-toggle {
+  position: fixed;
+  left: 8px;
+  top: 0px;
+  z-index: 60;
+  display: inline-flex;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* When sidebar is collapsed, center the main form section */
+.audit-container-edit .sidebar-nav.collapsed ~ .audit-form-section-edit {
+  margin-left: auto;
+  margin-right: auto;
+}
+.sidebar-nav.collapsed .sections-title {
+  display: none;
+}
+
+/* Chevron rotation for sidebar collapse */
+.chev {
+  transition: transform 0.18s ease;
+  transform-origin: center;
+  cursor: pointer;
+}
+.chev-rotated {
+  transform: rotate(90deg);
+}
+
+/* Expand collapsed sidebar on hover (useful for quick peek) */
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-nav.collapsed:hover {
+    width: 220px !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+    overflow: visible !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  }
+
+  .sidebar-nav.collapsed:hover .sections-list {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sidebar-nav.collapsed:hover .section-button {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  /* keep toggle accessible/visible when hovered open */
+  .sidebar-nav.collapsed:hover .sidebar-toggle {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+
+  /* make sure the chev also indicates open on hover */
+  .sidebar-nav.collapsed:hover .chev {
+    transform: rotate(90deg) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .audit-form-section-view label {
+    font-size: 0.9em;
+  }
+  .audit-container-view {
+    padding: 1rem;
+  }
+  .audit-form-question-view label {
+    font-size: 0.7em;
+  }
+  .audit-form-descriptions-view
+ {
+    font-size: 0.65em;
+  }
+  
+.answer-choice.selected label {
+    font-size: 0.6em;
+ }
+}
+
+
+@media (max-width: 768px) {
+  /*section box*/
+  .audit-form-section-view{
+    width: 100%;
+  }
+  .audit-form-section-view {
+    font-size: 1.1em;
+  }}
+
+
+
+
+
+/* ===== Button styles (reusable) ===== */
+/* Primary action button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--btn-primary, #2563eb); /* blue-600 fallback */
+  color: #ffffff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: background 0.12s ease, transform 0.06s ease, box-shadow 0.12s ease;
+}
+.btn-primary:hover { background: #1e40af; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Secondary / neutral button */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: #ffffff;
+  color: #111827; /* gray-900 */
+  border: 1px solid #e5e7eb; /* gray-200 */
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-secondary:hover { background: #f9fafb; }
+
+/* Navigation buttons used in view mode (Précédent / Suivant) */
+.btn-nav {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #111827;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-nav:hover { background: #f3f4f6; }
+
+/* Add button variant (btn-add used in components) */
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--btn-add, #059669); /* green-600 fallback */
+  color: #ffffff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-add:hover { background: #047857; }
+
+/* Delete icon / button styling */
+.delete-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--btn-delete, #ef4444); /* red-500 fallback */
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.delete-icon:hover { background: rgba(239, 68, 68, 0.08); }
+
+/* Rounded / small helpers */
+.btn-rounded { border-radius: 9999px; }
+.btn-sm { padding: 0.25rem 0.5rem; font-size: 0.85rem; }
+
+/* Make primary/nav/add buttons full-width on narrow screens */
+@media (max-width: 768px) {
+  .audit-form-section-edit input {
+    font-size: 0.9em;
+  }
+  .sidebar-nav.collapsed {
+  width: 25px !important;
+}
+.audit-form-answer-edit {
+  display: flow;
+}
+.audit-form-switch {
+    margin: 0.5em;
+  }
+  .btn-primary, .btn-nav, .btn-add {
+    font-size: 0.7em;
+    justify-content: center;
+  }
+  .sidebar-nav{
+    position: fixed;
+    z-index: 60;
+  }
+  
+  .sidebar-nav.collapsed {
+    display:flex;
+    z-index: 60;
+    min-width: 0px;
+    padding: 0px;
+    border-radius: 0px 10px 10px 0px;
+    width: 25px;
+    height: 45px;
+    
+  }
+  .audit-form-question-edit textarea {
+    font-size: 0.8em;
+  }
+  .delete-icon {
+    height: 2em;
+    width: 2em;
+  }
+  .audit-form-question-edit input
+  {
+    font-size: 0.8em;
+    margin-bottom:0px
+  }
+  .audit-container-edit {
+    display: block;
+    padding: 0em;
+  }
+  .audit-form-section-edit {
+    width: 95%;
+    padding: 1em;
+  }
+ 
+  .audit-form-answer-edit label{
+    font-size: 0.8em;
+  }
+
+}
+
+/* Disabled look for any button-like element */
+[disabled].btn-primary, [disabled].btn-secondary, [disabled].btn-nav, [disabled].btn-add {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Explicit utility class for disabled state (useful when toggling via className) */
+.btn-disabled {
+  background: #e5e7eb !important; /* gray-200 */
+  color: #6b7280 !important; /* gray-500 */
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+/* ===== End button styles ===== */
+
+/* ensure sidebar width transitions smoothly when collapsed class toggles */
+.sidebar-nav {
+  transition: width 240ms cubic-bezier(.2,.9,.2,1), padding 180ms ease, border-radius 180ms ease;
+  will-change: width;
+}
+
+/* Toast styles */
+.toast-portal {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  min-width: 200px;
+  max-width: 360px;
+  background: rgba(17,24,39,0.95);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 6px 24px rgba(2,6,23,0.2);
+  font-weight: 600;
+  transform-origin: bottom right;
+  animation: toast-in 240ms ease;
+}
+.toast--success { background: linear-gradient(90deg,#059669,#10b981); }
+.toast--error { background: linear-gradient(90deg,#ef4444,#f97316); }
+.toast--info { background: linear-gradient(90deg,#2563eb,#3b82f6); }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
