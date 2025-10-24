@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+
 import { supabase } from '../../supabaseClient';
 import '../auth/auth.css';
 import { PhoneInput } from 'react-international-phone';
 import type { EditionMode } from '../../types/editionMode';
 import type { User } from "@supabase/supabase-js"
 import 'react-international-phone/style.css';
+
+import axios from "axios";
+import { useParams } from 'react-router-dom';
 
 interface UserFormProps {
     mode : EditionMode
@@ -21,7 +25,9 @@ function UserForm( {mode, user} : UserFormProps) {
     const [message, setMessage] = useState('');
     const [role, setRole] = useState<Role[]>([]);
     const [currentRole, setCurrentRole] = useState('');
-    const [currentUser, setCurrentUser] = useState<User | undefined>(user);
+    const [currentUser, setCurrentUser] = useState<User | undefined>(user); 
+    const [APIResp, setAPIresp] = useState([]);
+    const { id } = useParams<{ id: string }>();
     const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
     const validPhone = new RegExp('^(\\+33|0)[1-9](\\d{2}){4}$');
 
@@ -30,17 +36,18 @@ function UserForm( {mode, user} : UserFormProps) {
         rolename: string;
     }
 
+
     useEffect(() => {
-        const fetchUser = async () => {
-            if (mode === 'edition') {
-                const { data } = await supabase.auth.getUser();
-                if (data?.user) {
-                    setCurrentUser(data.user);
-                }
-            }
-        };
-        fetchUser();
-    }, [mode]);
+        if (id) {
+            axios.get(`http://localhost:8080/api/users/${id}`)
+            .then(responce => {
+                setCurrentUser(responce.data);
+            })
+            .catch(error => {
+            console.error("Error feching user: ", error)
+        })
+    }
+}, [id]);
 
 
     useEffect(() => {
@@ -57,6 +64,17 @@ function UserForm( {mode, user} : UserFormProps) {
         fetchRole()
     }, [])
 
+
+    useEffect (() => {
+        axios
+        .get("http://localhost:8080/api/users/listUsers")
+        .then(response => {
+            setAPIresp(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching data: ", error)
+        });
+    },);
 
     useEffect(() => {
         if (mode === 'edition' && currentUser) {
@@ -86,77 +104,65 @@ function UserForm( {mode, user} : UserFormProps) {
             if (password.length < 6) {
             setMessage("Le mot de passe doit contenir au moins 6 caractères");
             return;
-        }
+            }
         
         
-        if (password !== confirmPassword) {
-            setMessage("Les mots de passe ne correspondent pas");
-            return;
+            if (password !== confirmPassword) {
+                setMessage("Les mots de passe ne correspondent pas");
+                return;
+            }
         }
-    }
 
         if (!validPhone.test(phone)) {
-            setMessage("Numéro de téléphone invalide");
+            setMessage("Numéro de téléphone invalide"); 
             return;
         }
 
         if( mode === 'creation'){
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    displayName: lastName + ' ' + firstName,
-                    phone: phone,
-                    role: currentRole
-                }
-            }
-        });
-        console.log(data);
-        if (error) {
-            console.error("Erreur lors de la création du compte:", error.message);
-            setMessage("Erreur lors de la création du compte: " + error.message);
-        } else {
-            setMessage("");
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
-            setFirstName('');
-            setLastName('');
-            setPhone('');
+            const createUserPost = {email, password, lastName, firstName, phone, currentRole}
+            axios
+            .post("http://localhost:8080/api/users/createUser", createUserPost)
+            .then(response => {
+            console.log("User creat", response.data);
+            })
+            .catch( error => {
+            console.log("Error creating users", error)
+            })
+            } else {
+                setMessage("");
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+                setFirstName('');
+                setLastName('');
+                setPhone('');
         }   
-    }
 
-    if( mode === 'edition' && currentUser){
-        const { data, error } = await supabase.auth.updateUser({
-            email,
-            data: {
-                displayName: lastName + ' ' + firstName,
-                phone: phone,
-                role: currentRole
+        if(mode === 'edition' && currentUser){
+            const updateUser = {id,email,lastName, firstName, phone, currentRole}
+            axios
+            .post(`http://localhost:8080/api/users/updateUser/${id}`, updateUser)
+            .then(response => {
+                console.log("User update :  ", response.data)
+        })
+            .catch(error => {
+                console.log("error update user :", error.data)
+            })
         }
-    });
-    console.log(data);
-        if (error) {
-            console.error("Erreur lors de la mise à jour du compte:", error.message);
-            setMessage("Erreur lors de la mise à jour du compte: " + error.message);
-        } else {
+        else{
             setMessage("");
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
-            setFirstName('');
-            setLastName('');
-            setPhone('');
-        }   
+            setEmail(email);
+            setLastName(lastName);
+            setFirstName(firstName);
+            setPhone(phone)
+            setCurrentRole(currentRole);
+        }
     }
-}
-    
     return (
     <div className="background-zone">
     <div className="user-form">
-        <h2>{mode === 'edition' ? 'Modifier un compte' : 'Créer un compte'}</h2>
         <div className="login-box">
+            <h2>{mode === 'edition' ? 'Modifier un compte' : 'Créer un compte'}</h2>
         <form onSubmit={handleSubmit}>
             <label htmlFor="lastName">Nom</label>
             <input
@@ -183,10 +189,10 @@ function UserForm( {mode, user} : UserFormProps) {
                 onChange={(e) => setEmail(e.target.value)}
             />
             <label htmlFor='phone'> Numéro de téléphone</label>
-            <PhoneInput
-                defaultCountry='fr'
-                value={phone}
-                onChange={(phone) => setPhone(phone)}></PhoneInput>
+                <PhoneInput
+                    defaultCountry='fr'
+                    value={phone}
+                    onChange={(phone) => setPhone(phone)}></PhoneInput>
             <label htmlFor='role'> Rôle</label>
             <select name="role" id="role" value={currentRole} onChange={(e) => setCurrentRole(e.target.value)}>
                 <option value="" > Sélectionner un rôle</option>
@@ -218,7 +224,6 @@ function UserForm( {mode, user} : UserFormProps) {
         </form>
         {message && 
         <p style={{ color: "red", marginTop: "10px" }} >{message}</p>}
-        
     </div>
     </div>
     </div>

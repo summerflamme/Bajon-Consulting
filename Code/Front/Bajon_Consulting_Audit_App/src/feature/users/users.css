@@ -1,4 +1,17 @@
 /*____________________ICI USERLIST____________________*/
+.fond-users-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh; 
+  background-image: url("../../assets/fond-users-list.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  background-repeat: no-repeat;
+}
+
 .user-page-container {
   max-width: 1200px;
   width: 90%;
@@ -9,6 +22,7 @@
   padding: 1.5rem 2rem;
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
+  margin-bottom: 6rem;
 }
 
 .user-list-header {
@@ -43,11 +57,6 @@
 
 .user-list-btn:active {
   transform: translateY(0);
-}
-
-.user-list-btn .icon {
-  width: 16px;
-  height: 16px;
 }
 
 .user-list-wrapper {
@@ -111,7 +120,7 @@
 }
 
 /* ==== RESPONSIVE ==== */
-@media (max-width: 1024px) {
+@media (max-width: 1300px) {
   .user-header-row,
   .user-row {
     grid-template-columns:
@@ -128,7 +137,40 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .user-page-container {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .user-list-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .add-user-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-header-row,
+  .user-row {
+    grid-template-columns:
+      1fr
+      1.3fr    
+      1.5fr;  
+    min-width: 0;
+  }
+
+  .user-cell:nth-child(3),
+  .user-cell:nth-child(4),
+  .user-cell:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 630px) {
   .user-page-container {
     width: 95%;
     padding: 1rem;
@@ -161,7 +203,7 @@
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 430px) {
   .user-header-row,
   .user-row {
     grid-template-columns: 0.8fr 1.2fr; 
@@ -178,6 +220,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .user-list-btn {
+    padding: 0.3rem 0.6rem;  /* plus petit padding */
+    font-size: 0.75rem;       /* texte plus petit */
   }
 }
 
@@ -198,7 +245,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("../../../public/testinfoutilisateur.jpg");
+  background-image: url("../../assets/testinfoutilisateur.jpg");
   background-size: cover;
   background-position: center;
   filter: blur(20px);

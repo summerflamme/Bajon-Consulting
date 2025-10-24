@@ -1,4 +1,8 @@
 import './users.css';
+import { DeleteIcon } from "../../components/ui/delete";
+import { SquarePenIcon } from "../../components/ui/square-pen";
+import {SearchIcon} from "../../components/ui/search";
+
 function UserCard() {
     const handleCoUser = () => {
         console.log("Consulter un utilisateur");
@@ -18,13 +22,13 @@ function UserCard() {
             <div className="user-cell">06/10/2025</div>
             <div className="user-cell actions">
                 <button onClick={handleCoUser} className="user-list-btn">
-                    CO
+                    <SearchIcon size={28}/>
                 </button>
                 <button onClick={handleMoUser} className="user-list-btn">
-                    MO
+                    <SquarePenIcon size={28}/>
                 </button>
                 <button onClick={handleSuUser} className="user-list-btn">
-                    SU
+                    <DeleteIcon size={28} />
                 </button>
             </div>
         </div>

@@ -10,7 +10,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-image: url('../../assets/fond-auth.jpeg');
+  background-image: url('../../assets/fond-accueil2.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -37,7 +37,7 @@
   margin-bottom: 20px;
   color: #236084;
 }
-
+.select, .option
 .login-box label {
   display: block;
   margin-bottom: 5px;
@@ -49,13 +49,14 @@
 .login-box button,
 .login-box select {
   width: 100%;
-  display: block;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 15px;
 }
 
-.login-box input {
+.login-box input,
+.login-box select,
+.login-box option {
   border: 1px solid #000000;
   background-color: #fff;
   color: black;
@@ -86,6 +87,57 @@
 .forgot-password a:hover {
   text-decoration: underline;
 }
+
+.phoneInput {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.phoneInput .react-international-phone-input-container {
+    display: flex !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+
+.phoneInput .react-international-phone-country-selector {
+    border-radius: 6px 0 0 6px !important;
+    border: 1px solid #000000 !important;
+    border-right: none !important;
+    background-color: #fff !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 8px !important;
+}
+
+.phoneInput .react-international-phone-country-selector-button {
+    background-color: transparent !important;
+    border: none !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.phoneInput .react-international-phone-input {
+    padding: 10px 12px !important;
+    font-size: 15px !important;
+    flex: 1 !important;
+    border: 1px solid #000000 !important;
+    border-left: none !important;
+    border-radius: 0 6px 6px 0 !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    box-sizing: border-box !important;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease !important;
+    background-color: white !important;
+    margin: 0 !important;
+}
+
 
 /* Responsive */
 
