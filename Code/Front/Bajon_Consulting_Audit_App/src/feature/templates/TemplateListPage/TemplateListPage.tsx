@@ -16,43 +16,103 @@ function TemplateList() {
   const [sortField, setSortField] = useState('alphabetique');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Récupération des audits depuis Supabase avec filtres et tri
+  // Récupération des templates depuis Supabase
   const fetchTemplates = useCallback(async () => {
     setLoading(true);
+
     let query = supabase
-      .from(`audit`)
-      .select(`*, audittype ( id, nameaudittype ), auditoffer ( id, nameauditoffer )`)
+      .from('audit')
+      .select(`
+        *,
+        audittype ( id, nameaudittype ),
+        auditoffer ( id, nameauditoffer )
+      `)
       .eq('template', true);
 
-    // Recherche textuelle
-    if (searchTerm.trim() !== '') {
-      query = query.ilike('auditname', `%${searchTerm}%`);
-    }
+    if (searchTerm.trim() !== '') query = query.ilike('auditname', `%${searchTerm}%`);
+    if (auditType) query = query.eq('idaudittype', auditType);
+    if (offerType) query = query.eq('idauditoffer', offerType);
 
-    // Filtre par type d’audit
-    if (auditType) {
-      query = query.eq('idaudittype', auditType);
-    }
-
-    // Filtre par type d’offre
-    if (offerType) {
-      query = query.eq('idauditoffer', offerType);
-    }
-
-    // Tri
-    if (sortField === 'alphabetique') {
-      query = query.order('auditname', { ascending: sortOrder === 'asc' });
-    } else if (sortField === 'date') {
-      query = query.order('datecreation', { ascending: sortOrder === 'asc' });
-    }
-
-    const { data, error } = await query;
+    const { data: templatesData, error } = await query;
 
     if (error) {
-      console.error('Erreur Supabase :', error);
-    } else {
-      setTemplates(data || []);
+      console.error('Erreur Supabase (template) :', error);
+      setLoading(false);
+      return;
     }
+
+    const TemplatesWithDates = await Promise.all(
+      (templatesData || []).map(async (template) => {
+        const { data: modifies, error: modifyError } = await supabase
+          .from('modify')
+          .select(`
+            modificationdate,
+            modificationtime,
+            staff ( firstname, lastname )
+          `)
+          .eq('idaudit', template.id)
+          .order('modificationdate', { ascending: true })
+          .order('modificationtime', { ascending: true });
+
+        if (modifyError) {
+          console.error('Erreur lors de la récupération des modifications :', modifyError);
+          return template;
+        }
+
+        if (modifies && modifies.length > 0) {
+          const creation = modifies[0];
+          const last = modifies[modifies.length - 1];
+
+          return {
+            ...template,
+            creation_date: creation.modificationdate,
+            creation_time: creation.modificationtime,
+            creation_staff_firstname: creation.staff?.firstname,
+            creation_staff_lastname: creation.staff?.lastname,
+            last_modif_date: last.modificationdate,
+            last_modif_time: last.modificationtime,
+            last_modif_staff_firstname: last.staff?.firstname,
+            last_modif_staff_lastname: last.staff?.lastname,
+          };
+        }
+
+        return {
+          ...template,
+          creation_date: null,
+          creation_time: null,
+          creation_staff_firstname: null,
+          creation_staff_lastname: null,
+          last_modif_date: null,
+          last_modif_time: null,
+          last_modif_staff_firstname: null,
+          last_modif_staff_lastname: null,
+        };
+      })
+    );
+
+    const sortedTemplates = [...TemplatesWithDates];
+
+    if (sortField === 'alphabetique') {
+      sortedTemplates.sort((a, b) =>
+        sortOrder === 'asc'
+          ? a.auditname.localeCompare(b.auditname)
+          : b.auditname.localeCompare(a.auditname)
+      );
+    } else if (sortField === 'date_creation') {
+      sortedTemplates.sort((a, b) => {
+        const aDate = new Date(`${a.creation_date || '1970-01-01'}T${a.creation_time || '00:00:00'}`);
+        const bDate = new Date(`${b.creation_date || '1970-01-01'}T${b.creation_time || '00:00:00'}`);
+        return sortOrder === 'asc' ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
+      });
+    } else if (sortField === 'derniere_modification') {
+      sortedTemplates.sort((a, b) => {
+        const aDate = new Date(`${a.last_modif_date || '1970-01-01'}T${a.last_modif_time || '00:00:00'}`);
+        const bDate = new Date(`${b.last_modif_date || '1970-01-01'}T${b.last_modif_time || '00:00:00'}`);
+        return sortOrder === 'asc' ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
+      });
+    }
+
+    setTemplates(sortedTemplates);
     setLoading(false);
   }, [searchTerm, auditType, offerType, sortField, sortOrder]);
 
@@ -60,29 +120,29 @@ function TemplateList() {
     fetchTemplates();
   }, [fetchTemplates]);
 
+  // Affichage
   return (
-    <>
     <div className="template-list-page">
-      <SearchBar variant='audit'
-        onSearchChange={(value) => setSearchTerm(value)}
-        onAuditTypeChange={(value) => setAuditType(value)}
-        onOfferTypeChange={(value) => setOfferType(value)}
-        onSortChange={(value) => setSortField(value)}
-        onSortOrderChange={(order) => setSortOrder(order)}
+      <SearchBar
+        variant="audit"
+        onSearchChange={setSearchTerm}
+        onAuditTypeChange={setAuditType}
+        onOfferTypeChange={setOfferType}
+        onSortChange={setSortField}
+        onSortOrderChange={setSortOrder}
       />
-      <a href='#' className="add-template-btn">
+
+      <a href="#" className="add-template-btn">
         <Plus className="icon" /> Ajouter un nouveau template
       </a>
+
       <div className="template-list">
         {loading ? (
-          <>
-            <br/><br/><br/><br/><br/><br/><br/><br/>
-            <p>Chargement...</p>
-          </>
+          <p>Chargement...</p>
         ) : (
           <div className="template-grid">
             {templates.length > 0 ? (
-              templates.map((template) => <AuditCard key={template.idaudit} audit={template} />)
+              templates.map((template) => <AuditCard key={template.id} audit={template} />)
             ) : (
               <p>Aucun template trouvé.</p>
             )}
@@ -90,7 +150,6 @@ function TemplateList() {
         )}
       </div>
     </div>
-    </>
   );
 }
 
