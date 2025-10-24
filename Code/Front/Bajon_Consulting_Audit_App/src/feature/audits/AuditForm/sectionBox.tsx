@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import QuestionBox from "./questionBox";
-import type { Audit, Question, Section } from "../../../types/audit";
+import type { Audit, Question, Section, Response } from "../../../types/audit";
 import "./AuditStyle.css";
+import React, { useState, useCallback } from "react";
 import { DeleteIcon } from "../../../components/ui/delete";
 
 type Props = {
@@ -11,6 +12,10 @@ type Props = {
     mode: Audit["mode"];
     handleRemoveSection: () => void;
     onUpdate: (updatedSection: Section) => void;
+    responses: Response[];
+    setResponses: React.Dispatch<React.SetStateAction<Response[]>>;
+    onPrevious?: () => void;
+    onEnd?: () => void;
 };
 
 function SectionBox({
@@ -20,8 +25,14 @@ function SectionBox({
     mode,
     onUpdate,
     handleRemoveSection,
+    onEnd,
+    onPrevious,
+    responses,
+    setResponses,
 }: Props) {
-    // --- Gestion des événements ---
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+    // --- Gestion du titre de section ---
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onUpdate({
             id,
@@ -30,6 +41,31 @@ function SectionBox({
         });
     };
 
+    // --- Enregistrer ou remplacer une réponse ---
+    const handleValidation = useCallback(
+        (newResponse: Response) => {
+            setResponses((prev) => {
+                const exists = prev.findIndex(
+                    (r) =>
+                        r.idQuestion === newResponse.idQuestion &&
+                        r.idAnswer === newResponse.idAnswer
+                );
+
+                // S’il existe, on met à jour la réponse
+                if (exists !== -1) {
+                    const copy = [...prev];
+                    copy[exists] = newResponse;
+                    return copy;
+                }
+
+                // Sinon, on ajoute la nouvelle
+                return [...prev, newResponse];
+            });
+        },
+        [setResponses]
+    );
+
+    // --- Suppression d'une question ---
     const handleRemoveQuestion = (questionId: number) => {
         onUpdate({
             id,
@@ -38,6 +74,7 @@ function SectionBox({
         });
     };
 
+    // --- Mise à jour d'une question ---
     const updateQuestion = (questionId: number, updatedQuestion: Question) => {
         const updatedSection: Section = {
             id,
@@ -49,12 +86,20 @@ function SectionBox({
         onUpdate(updatedSection);
     };
 
+    // --- Ajout d'une nouvelle question ---
     const handleAddQuestion = () => {
         const newQuestion: Question = {
             id: Date.now(),
             text: "",
             choices: "single-choice",
-            answers: [{ id: Date.now(), text: "", score: 0 }],
+            descriptions: "",
+            answers: [
+                {
+                    id: Date.now() + 1,
+                    text: "",
+                    score: 0,
+                },
+            ],
         };
         onUpdate({
             id,
@@ -63,65 +108,128 @@ function SectionBox({
         });
     };
 
-    // --- Animation principale du container ---
-    return (
-        <motion.div
-            layout
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className={`audit-form-section-${mode} border rounded-xl shadow-md p-4 mb-5 bg-white`}
-        >
-            {/* En-tête de la section */}
-            {mode === "edit" ? (
-                <motion.div
-                    layout
-                    className={`audit-form-section-text-${mode} flex flex-col mb-3`}
-                >
-                    <label className="font-semibold">Titre de la section </label>
-                    <motion.input
-                        type="text"
-                        placeholder="Entrer le titre de la section"
-                        onChange={handleTitleChange}
-                        whileFocus={{ scale: 1.02 }}
-                        transition={{ duration: 0.2 }}
-                        className="border p-2 rounded-md shadow-sm"
-                    />
-                </motion.div>
-            ) : (
-                <motion.h2
-                    layout
-                    className="text-lg font-bold mb-4 border-b pb-2 text-gray-800"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                >
-                    {title}
-                </motion.h2>
-            )}
+    // --- Animation du conteneur principal ---
+    const containerAnimationProps =
+        mode === "edit"
+            ? {
+                layout: true,
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+                exit: { opacity: 0, y: -20 },
+                transition: { duration: 0.3 },
+            }
+            : { layout: true };
 
-            {/* Liste des questions avec animations */}
-            <AnimatePresence>
-                {questions.map((question) => (
+    return (
+        <motion.div {...containerAnimationProps}>
+            {/* --- Titre de la section --- */}
+            {mode === "edit" ? (
+                <>
                     <motion.div
-                        key={question.id}
                         layout
-                        initial={{ opacity: 0, scale: 0.97 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.25 }}
+                        className={`audit-form-section-text-${mode} flex flex-col mb-3`}
                     >
-                        <QuestionBox
-                            {...question}
-                            mode={mode}
-                            onUpdate={(updated) => updateQuestion(question.id, updated)}
-                            handleRemoveQuestion={() => handleRemoveQuestion(question.id)}
+                        <label className="font-semibold">Titre de la section</label>
+                        <motion.input
+                            type="text"
+                            placeholder="Entrer le titre de la section"
+                            onChange={handleTitleChange}
+                            value={title || ""}
+                            className="border p-2 rounded-md shadow-sm"
                         />
                     </motion.div>
-                ))}
-            </AnimatePresence>
 
-            {/* Boutons d’action */}
+                    {/* --- Liste des questions --- */}
+                    <AnimatePresence>
+                        {questions.map((question) => (
+                            <motion.div key={question.id} layout>
+                                <QuestionBox
+                                    {...question}
+                                    mode={mode}
+                                    responses={responses}
+                                    setResponses={setResponses}
+                                    onUpdate={(updated) => updateQuestion(question.id, updated)}
+                                    handleRemoveQuestion={() => handleRemoveQuestion(question.id)}
+                                />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </>
+            ) : (
+                <>
+                    {/* --- Mode "vue" (client) --- */}
+                    <label className="audit-form-section-title">{title}</label>
+
+                    {questions.length > 0 && (
+                        <div key={questions[currentQuestionIndex].id}>
+                            <QuestionBox
+                                {...questions[currentQuestionIndex]}
+                                mode={mode}
+                                responses={responses}
+                                setResponses={setResponses}
+                                onUpdate={(updated) =>
+                                    updateQuestion(
+                                        questions[currentQuestionIndex].id,
+                                        updated
+                                    )
+                                }
+                                handleRemoveQuestion={() => { }}
+                            />
+                        </div>
+                    )}
+
+                    {/* --- Navigation entre questions --- */}
+                    {questions.length > 0 && (
+                        <div className="mt-4 flex justify-between items-center">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (currentQuestionIndex > 0) {
+                                        setCurrentQuestionIndex((i) => Math.max(0, i - 1));
+                                    } else {
+                                        onPrevious?.();
+                                    }
+                                }}
+                                className="btn-nav"
+                            >
+                                {currentQuestionIndex > 0
+                                    ? "Précédent"
+                                    : "Précédent section"}
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const currentQuestion =
+                                        questions[currentQuestionIndex];
+
+                                    // Récupère la réponse actuelle
+                                    const currentResponse = responses.find(
+                                        (r) => r.idQuestion === currentQuestion.id
+                                    );
+
+                                    // Enregistre la réponse actuelle si existante
+                                    if (currentResponse) handleValidation(currentResponse);
+
+                                    // Navigation
+                                    if (currentQuestionIndex < questions.length - 1) {
+                                        setCurrentQuestionIndex((i) => i + 1);
+                                    } else {
+                                        onEnd?.();
+                                    }
+                                }}
+                                className="btn-primary"
+                            >
+                                {currentQuestionIndex < questions.length - 1
+                                    ? "Suivant"
+                                    : "Suivant section"}
+                            </button>
+                        </div>
+                    )}
+                </>
+            )}
+
+            {/* --- Actions en mode édition --- */}
             {mode === "edit" && (
                 <div className="mt-4 flex gap-2">
                     <motion.button
@@ -130,7 +238,7 @@ function SectionBox({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="btn-add bg-blue-500 text-white px-3 py-1.5 rounded-md shadow-sm hover:bg-blue-600"
+                        className="btn-add shadow-sm"
                     >
                         Ajouter une question
                     </motion.button>
@@ -144,4 +252,5 @@ function SectionBox({
         </motion.div>
     );
 }
+
 export default SectionBox;
