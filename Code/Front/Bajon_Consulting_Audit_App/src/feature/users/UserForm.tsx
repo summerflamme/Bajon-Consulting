@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 
 interface UserFormProps {
     mode : EditionMode
-    user? : User
+    user? : User    
 }
 
 function UserForm( {mode, user} : UserFormProps) {
@@ -48,7 +48,6 @@ function UserForm( {mode, user} : UserFormProps) {
         })
     }
 }, [id]);
-
 
     useEffect(() => {
         const fetchRole = async () => {
