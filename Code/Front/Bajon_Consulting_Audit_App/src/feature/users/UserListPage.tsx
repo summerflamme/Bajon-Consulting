@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 import UserCard from "./UserCard";
 import './users.css';
@@ -6,16 +7,14 @@ import { Plus } from "lucide-react";
 const users = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 function UserList() {
-    const handleAddUser = () => {
-        console.log("Ajouter un utilisateur");
-    };
+    const navigate = useNavigate();
 
     return (
         <div className="fond-users-list">
             <SearchBar variant="users" />
             <div className="user-page-container">
                 <div className="user-list-header">
-                    <button onClick={handleAddUser} className="user-list-btn">
+                    <button className="user-list-btn" onClick={() => navigate(`/users/user-form/creation`)}>
                         <Plus className="icon" />
                         Ajouter un utilisateur
                     </button>

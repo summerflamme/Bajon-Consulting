@@ -60,7 +60,7 @@ function AuditEditorPage({ auditData, mode = "view" }: Props) {
         }
     }, [routeId, fetchAuditData, fetchAuditResponses]);
 
-    const clearData = useCallback(() => setData([]), []);
+
 
     const handleUpdate = (newData: Section[]) => {
         setData(newData);
@@ -71,7 +71,7 @@ function AuditEditorPage({ auditData, mode = "view" }: Props) {
         <div className="audit-editor-page">
             <h1>{auditData?.title || "Titre de l'audit"}</h1>
 
-            <button onClick={clearData}>Vider</button>
+       
             {loading && <p>Chargement des données...</p>}
             {error && <p className="error">Erreur : {error}</p>}
 
