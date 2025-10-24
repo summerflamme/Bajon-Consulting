@@ -14,7 +14,6 @@ export interface MenuIconHandle {
 
 interface MenuIconProps extends HTMLAttributes<HTMLDivElement> {
   size?: number;
-  /** When provided the icon will follow this state (open = animated) */
   open?: boolean;
 }
 

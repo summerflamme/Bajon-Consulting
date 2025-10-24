@@ -1,10 +1,12 @@
 import './AuditCard.css';
+import { useNavigate } from "react-router-dom";
 import { DeleteIcon } from '@/components/ui/delete';
 import { HistoryIcon } from '@/components/ui/history';
 import { SquarePenIcon } from '@/components/ui/modify';
 import { SearchIcon } from '@/components/ui/search';
 
 function AuditCard({ audit }) {
+  const navigate = useNavigate();
   return (
     <div className="audit-card">
       <div className="audit-card-header">
@@ -28,9 +30,9 @@ function AuditCard({ audit }) {
       </div>
 
       <div className="audit-card-body">
-        <button className="audit-card-btn"><SearchIcon /></button>
+        <button className="audit-card-btn" onClick={() => navigate(`/audit/${audit.id}/view`)}><SearchIcon /></button>
         <span className='audit-card-text'> </span>
-        <button className="audit-card-btn"><SquarePenIcon /></button>
+        <button className="audit-card-btn" onClick={() => navigate(`/audit/${audit.id}/edit`)}><SquarePenIcon /></button>
         <span className='audit-card-text'> </span>
         <button className="audit-card-btn"><DeleteIcon /></button>
       </div>

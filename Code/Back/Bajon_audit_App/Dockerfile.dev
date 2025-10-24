@@ -1,9 +1,9 @@
 FROM maven:3.9.6-eclipse-temurin-21
 
-# Crée un utilisateur non-root
+#Crée un utilisateur non-root
 RUN useradd -m -s /bin/bash vscode
 
-# Configure Maven pour vscode
+#Configure Maven pour vscode
 ENV MAVEN_CONFIG=/home/vscode/.m2
 ENV PATH="/usr/share/maven/bin:${PATH}"
 
@@ -16,7 +16,7 @@ RUN mvn -B -DskipTests dependency:resolve || true
 
 EXPOSE 8080
 
-# Passe en utilisateur vscode (pas root)
+#Passe en utilisateur vscode (pas root)
 #USER vscode
 
 CMD ["mvn", "spring-boot:run"]
