@@ -245,10 +245,9 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("../../assets/testinfoutilisateur.jpg");
+  background-image: url("../../assets/img3.jpg");
   background-size: cover;
   background-position: center;
-  filter: blur(20px);
   opacity: 0.3;
   z-index: -1;
 }

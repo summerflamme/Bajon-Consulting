@@ -25,7 +25,7 @@ export default function AppRoutes() {
                     <Route path="/newaudit" element={<NewAuditPage />} />
                     <Route path="/templates" element={<TemplateListPage />} />
                     <Route path="/users/list" element={<UserList />} />
-                    <Route path="/users/info" element={<UserInfo />} />
+                    <Route path="/users/info/:id" element={<UserInfo />} />
                     <Route path="/users/userForm/creation" element={<UserForm mode={'creation'} />} />
                     <Route path="/users/userForm/:id" element={<UserForm mode={'edition'} />} />
                     

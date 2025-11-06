@@ -3,7 +3,6 @@ import { supabase } from '../supabaseClient';
 import './components.css';
 import { ArrowUpIcon } from "../components/ui/arrow-up";
 import { ArrowDownIcon } from "../components/ui/arrow-down";
-import { SearchIcon } from "../components/ui/search";
 
 type SortOrder = 'asc' | 'desc';
 type SearchVariant = 'audit' | 'users' | 'template' | 'default';
@@ -15,6 +14,7 @@ type SearchBarProps = {
   onAuditTypeChange?: (value: string) => void;
   onOfferTypeChange?: (value: string) => void;
   onSortOrderChange?: (order: SortOrder) => void;
+  onRoleFilterChange?: (value: string) => void; // ✅ ajout du filtre de rôle
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -24,6 +24,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onAuditTypeChange,
   onOfferTypeChange,
   onSortOrderChange,
+  onRoleFilterChange, // ✅ nouvelle prop
 }) => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [offerTypes, setOfferTypes] = useState<any[]>([]);
@@ -35,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     onSortOrderChange?.(newOrder);
   };
 
-  // Récupération des données avec types d’audit et offre 
+  // === Récupération des données audits/offres ===
   useEffect(() => {
     const fetchOfferTypes = async () => {
       const { data, error } = await supabase.from("auditoffer").select("*");
@@ -57,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="advanced-search-bar">
-      {/* Champ de recherche commun */}
+      {/* 🔍 Champ de recherche commun */}
       <input
         type="text"
         placeholder={
@@ -98,31 +99,35 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </>
       )}
 
-      {/* === Variante USERS === */}
+      {/* === ✅ Variante USERS corrigée === */}
       {variant === 'users' && (
         <>
-          <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
-            <option value="tout-role">Tout (Rôle)</option>
+          {/* Filtre par rôle */}
+          <select className="search-select" onChange={(e) => onRoleFilterChange?.(e.target.value)}>
+            <option value="">Tout (Rôle)</option>
             <option value="Administrateur">Administrateur</option>
             <option value="Utilisateur">Utilisateur</option>
           </select>
+
+          {/* Tri */}
           <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
             <option value="alphabetique">Ordre alphabétique</option>
             <option value="date_inscription">Date d'inscription</option>
-            <option value="role">Dernière connexion</option>
-            <option value="role">Rôle</option>
+            <option value="last_connexion">Dernière connexion</option>
           </select>
         </>
       )}
 
-      {/* Bouton commun de tri */}
+      {/* 🔁 Bouton commun de tri (asc/desc) */}
       <button
         className="sort-order-button"
         onClick={toggleSortOrder}
         aria-label={`Trier en ordre ${sortOrder === 'asc' ? 'croissant' : 'décroissant'}`}
         type="button"
       >
-        {sortOrder === 'asc' ? <ArrowUpIcon className='arrow-icon'/> : <ArrowDownIcon className='arrow-icon' />}
+        {sortOrder === 'asc'
+          ? <ArrowUpIcon className='arrow-icon' />
+          : <ArrowDownIcon className='arrow-icon' />}
       </button>
     </div>
   );
