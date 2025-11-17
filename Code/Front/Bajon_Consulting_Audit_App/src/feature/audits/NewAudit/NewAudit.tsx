@@ -567,7 +567,7 @@ export default function NewAuditPage() {
                     >
                         Créer
                     </button> */}
-                    <a href="/audits" className="new-audits-btn">Annulé</a>
+                    <a href="/audits" className="new-audits-btn">Annuler</a>
                 </div>
 
                 {error && <p className="form-message">{error}</p>}
