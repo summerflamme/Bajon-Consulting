@@ -52,6 +52,12 @@ CREATE TABLE AuditOffer (
     nameAuditOffer VARCHAR(100) NOT NULL
 );
 
+-- Table Status
+CREATE TABLE Status(
+    id SERIAL PRIMARY KEY,
+    auditStatus VARCHAR(50)
+)
+
 -- Table Audit
 CREATE TABLE Audit (
     id SERIAL PRIMARY KEY,
@@ -62,6 +68,7 @@ CREATE TABLE Audit (
     template BOOLEAN NOT NULL DEFAULT false,
     FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
     FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id)
+    FOREIGN KEY (idStatus) REFERENCES Status(id)
 );
 
 -- Table role
@@ -82,8 +89,7 @@ CREATE TABLE Staff (
 -- Table Theme
 CREATE TABLE Theme (
     id SERIAL PRIMARY KEY,
-    themeName VARCHAR(150),
-    status VARCHAR(50)
+    themeName VARCHAR(150)
 );
 
 -- Table Type
@@ -96,7 +102,6 @@ CREATE TABLE Type (
 CREATE TABLE Question (
     id SERIAL PRIMARY KEY,
     label VARCHAR(255),
-    status VARCHAR(50),
     idTheme INT NOT NULL,
     FOREIGN KEY (idTheme) REFERENCES Theme(id)
 );

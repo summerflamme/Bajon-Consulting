@@ -30,19 +30,19 @@ INSERT INTO AuditOffer (nameAuditOffer) VALUES
 
 -- Table Audit
 INSERT INTO Audit (auditName, idAuditType, idAuditOffer, status, template) VALUES
-('Audit Sécurité', 1, 3, 'En cours', true),
-('Audit Financier', 5, 4, 'Terminé', false),
-('Audit Qualité', 3, 2, 'En cours', false),
-('Audit RH', 4, 1, 'Annulé', false),
-('Audit IT', 2, 5, 'Prévu', false);
+('Audit Sécurité', 1, 3, 1, true),
+('Audit Financier', 5, 4, 2, false),
+('Audit Qualité', 3, 2, 2, false),
+('Audit RH', 4, 1, 1, false),
+('Audit IT', 2, 5, 2, false);
 
 -- Table Theme
-INSERT INTO Theme (themeName, status) VALUES
-('Sécurité informatique', 'Actif'),
-('Conformité légale', 'Actif'),
-('Gestion financière', 'Inactif'),
-('Ressources humaines', 'Actif'),
-('Développement durable', 'Actif');
+INSERT INTO Theme (themeName) VALUES
+('Sécurité informatique'),
+('Conformité légale'),
+('Gestion financière'),
+('Ressources humaines'),
+('Développement durable');
 
 -- Table Type
 INSERT INTO Type (typeName) VALUES
@@ -65,22 +65,22 @@ INSERT INTO Staff (id, lastName, firstName, idRole)VALUES
 ('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 'test', 'test', 2);
 
 -- Table Question
-INSERT INTO Question (label, status, idTheme) VALUES
-('Le système est-il protégé par un pare-feu ?', 'Actif', 1),
-('Toutes les factures sont-elles archivées ?', 'Actif', 3),
-('Quelle est la satisfaction des employés ?', 'Actif', 4),
-('L’entreprise respecte-t-elle la norme ISO ?', 'Inactif', 2),
-('Y a-t-il un plan de réduction des déchets ?', 'Actif', 5),
-('Le réseau Wi-Fi est-il sécurisé par mot de passe ?', 'Actif', 1),
-('Les sauvegardes de données sont-elles effectuées régulièrement ?', 'Actif', 1),
-('Les employés disposent-ils d’un poste de travail ergonomique ?', 'Actif', 2),
-('Les contrats fournisseurs sont-ils à jour ?', 'Inactif', 3),
-('Un plan de continuité d’activité est-il en place ?', 'Actif', 2),
-('L’entreprise mesure-t-elle ses émissions de CO2 ?', 'Actif', 5),
-('Les accès aux serveurs sont-ils limités aux administrateurs ?', 'Actif', 1),
-('Les factures clients sont-elles vérifiées avant validation ?', 'Actif', 2),
-('Une procédure d’accueil des nouveaux employés existe-t-elle ?', 'Inactif', 4),
-('Un suivi de la consommation énergétique est-il effectué ?', 'Actif', 5);
+INSERT INTO Question (label, idTheme) VALUES
+('Le système est-il protégé par un pare-feu ?', 1),
+('Toutes les factures sont-elles archivées ?', 3),
+('Quelle est la satisfaction des employés ?', 4),
+('L’entreprise respecte-t-elle la norme ISO ?', 2),
+('Y a-t-il un plan de réduction des déchets ?', 5),
+('Le réseau Wi-Fi est-il sécurisé par mot de passe ?', 1),
+('Les sauvegardes de données sont-elles effectuées régulièrement ?', 1),
+('Les employés disposent-ils d’un poste de travail ergonomique ?', 2),
+('Les contrats fournisseurs sont-ils à jour ?', 3),
+('Un plan de continuité d’activité est-il en place ?', 2),
+('L’entreprise mesure-t-elle ses émissions de CO2 ?', 5),
+('Les accès aux serveurs sont-ils limités aux administrateurs ?', 1),
+('Les factures clients sont-elles vérifiées avant validation ?', 2),
+('Une procédure d’accueil des nouveaux employés existe-t-elle ?', 4),
+('Un suivi de la consommation énergétique est-il effectué ?', 5);
 
 -- Table OptionAnswer
 INSERT INTO OptionAnswer (optionLabel, optionPoints, idType) VALUES
