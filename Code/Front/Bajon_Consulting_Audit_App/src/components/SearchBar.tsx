@@ -5,7 +5,7 @@ import { ArrowUpIcon } from "../components/ui/arrow-up";
 import { ArrowDownIcon } from "../components/ui/arrow-down";
 
 type SortOrder = 'asc' | 'desc';
-type SearchVariant = 'audit' | 'users' | 'template' | 'default';
+type SearchVariant = 'audit' | 'users' | 'template' | 'default' | 'clients';
 
 type SearchBarProps = {
   variant?: SearchVariant;
@@ -14,7 +14,7 @@ type SearchBarProps = {
   onAuditTypeChange?: (value: string) => void;
   onOfferTypeChange?: (value: string) => void;
   onSortOrderChange?: (order: SortOrder) => void;
-  onRoleFilterChange?: (value: string) => void; // ✅ ajout du filtre de rôle
+  onRoleFilterChange?: (value: string) => void;
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -24,7 +24,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onAuditTypeChange,
   onOfferTypeChange,
   onSortOrderChange,
-  onRoleFilterChange, // ✅ nouvelle prop
+  onRoleFilterChange,
 }) => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [offerTypes, setOfferTypes] = useState<any[]>([]);
@@ -36,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     onSortOrderChange?.(newOrder);
   };
 
-  // === Récupération des données audits/offres ===
+  // === Récupération types audits/offres ===
   useEffect(() => {
     const fetchOfferTypes = async () => {
       const { data, error } = await supabase.from("auditoffer").select("*");
@@ -58,19 +58,22 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="advanced-search-bar">
-      {/* 🔍 Champ de recherche commun */}
+
+      {/* 🔍 Champ de recherche dynamique */}
       <input
         type="text"
         placeholder={
           variant === 'users'
             ? "Rechercher un utilisateur..."
-            : "Rechercher un audit..."
+            : variant === 'clients'
+            ? "Rechercher un client..."
+            : "Rechercher..."
         }
         className="search-input"
         onChange={(e) => onSearchChange?.(e.target.value)}
       />
 
-      {/* === Variante AUDITS === */}
+      {/* === AUDITS === */}
       {variant === 'audit' && (
         <>
           <select className="search-select" onChange={(e) => onAuditTypeChange?.(e.target.value)}>
@@ -99,17 +102,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </>
       )}
 
-      {/* === ✅ Variante USERS corrigée === */}
+      {/* === USERS === */}
       {variant === 'users' && (
         <>
-          {/* Filtre par rôle */}
           <select className="search-select" onChange={(e) => onRoleFilterChange?.(e.target.value)}>
             <option value="">Tout (Rôle)</option>
             <option value="Administrateur">Administrateur</option>
             <option value="Utilisateur">Utilisateur</option>
           </select>
 
-          {/* Tri */}
           <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
             <option value="alphabetique">Ordre alphabétique</option>
             <option value="date_inscription">Date d'inscription</option>
@@ -118,11 +119,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </>
       )}
 
-      {/* 🔁 Bouton commun de tri (asc/desc) */}
+      {/* === 🆕 CLIENTS === */}
+      {variant === 'clients' && (
+        <>
+          {/* Seulement tri alphabétique */}
+          <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
+            <option value="alphabetique">Ordre alphabétique</option>
+          </select>
+        </>
+      )}
+
+      {/* 🔁 Bouton tri asc/desc */}
       <button
         className="sort-order-button"
         onClick={toggleSortOrder}
-        aria-label={`Trier en ordre ${sortOrder === 'asc' ? 'croissant' : 'décroissant'}`}
+        aria-label={`Trier`}
         type="button"
       >
         {sortOrder === 'asc'

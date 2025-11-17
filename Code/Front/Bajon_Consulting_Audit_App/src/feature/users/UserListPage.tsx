@@ -122,6 +122,7 @@ function UserList() {
         .delete(`http://localhost:8080/api/users/deleteUser/${id}`)
         .then(() => {
           setUsers((prev) => prev.filter((user) => user.id !== id));
+          console.log('${id}');
         })
         .catch((error) =>
           console.error("Erreur lors de la suppression :", error)

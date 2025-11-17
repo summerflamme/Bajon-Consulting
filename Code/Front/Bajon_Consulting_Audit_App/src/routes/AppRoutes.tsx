@@ -9,6 +9,8 @@ import NewAuditPage from "../feature/audits/NewAudit/NewAudit";
 import UserForm from "../feature/users/UserForm";
 import AuditListPage from "../feature/audits/AuditListPage/AuditListPage";
 import TemplateListPage from "@/feature/templates/TemplateListPage/TemplateListPage";
+import ClientList from "../feature/clients/ClientListPage";
+
 
 
 export default function AppRoutes() {
@@ -28,6 +30,7 @@ export default function AppRoutes() {
                     <Route path="/users/info/:id" element={<UserInfo />} />
                     <Route path="/users/userForm/creation" element={<UserForm mode={'creation'} />} />
                     <Route path="/users/userForm/:id" element={<UserForm mode={'edition'} />} />
+                    <Route path="/clients/list" element={<ClientList />} />
                     
                 </Route>
             </Routes>
