@@ -40,7 +40,7 @@ export default function NewAuditPage() {
     const [auditSearch, setAuditSearch] = useState("");
 
     // ========================================================
-    // Récupération audits
+    // Début BD / Récupération audits
     // ========================================================
     const fetchAudits = async () => {
         setLoading(true);
@@ -76,7 +76,7 @@ export default function NewAuditPage() {
     // ========================================================
     const fetchAuditsTemplate = async (value) => {
         setAuditSearch(value);
-        
+
         const { data, error } = await supabase
             .from("audit")
             .select(`
@@ -116,7 +116,7 @@ export default function NewAuditPage() {
     useEffect(() => {
         fetchAuditsTemplate("");
     }, []);
-    
+
     // ========================================================
     // Sélection d'un template d'audit
     // ========================================================
@@ -135,7 +135,7 @@ export default function NewAuditPage() {
         if (auditsTemplate.length === 0 || !auditSearch) return;
 
         console.log("Vérification audit:", auditSearch);
-        
+
         const selected = auditsTemplate.find(
             (a) => a.auditname.toLowerCase().trim() === auditSearch.toLowerCase().trim()
         );
@@ -204,6 +204,48 @@ export default function NewAuditPage() {
         }
     };
 
+    // ========================================================
+    // Insert client
+    // ========================================================
+    // async function handleCreateClient() {
+    //     const { data, error } = await supabase
+    //         .from('client')
+    //         .insert([
+    //             {
+    //                 clientLastName: 'Dupont',
+    //                 clientFirstName: 'Jean',
+    //                 clientEmail: 'jean.dupont@example.com',
+    //                 clientPhone: '0601020304',
+    //                 companyName: 'Dupont SARL',
+    //                 clientAddress: '12 rue des Fleurs',
+    //                 clientCity: 'Paris',
+    //                 clientCountry: 'France',
+    //                 siren: '123456789',
+    //                 vatNumber: 'FR12345678901',
+    //                 businessActivity: 'Informatique',
+    //                 rcsNumber: 'RCS Paris 123 456 789',
+    //                 shareCapital: 50000,
+    //                 socialNetworks: 'https://linkedin.com/company/dupont-sarl',
+    //                 legalForm: 'SARL',
+    //                 logo: null
+    //             }
+    //         ])
+    //         .select();
+
+    //     if (error) {
+    //         console.error("Erreur insertion :", error);
+    //         return;
+    //     }
+
+    //     console.log("Client créé :", data);
+
+    //     window.location.href = "/audit";
+    // }
+
+    // ========================================================
+    // Fin BD
+    // ========================================================
+
     const handleSelectClient = (client) => {
         setClientLastName(client.clientlastname || "");
         setClientFirstName(client.clientfirstname || "");
@@ -239,7 +281,7 @@ export default function NewAuditPage() {
                 return match;
             }
         );
-        
+
         if (client) {
             console.log("Client trouvé, remplissage des champs...");
             handleSelectClient(client);
@@ -501,8 +543,8 @@ export default function NewAuditPage() {
 
                         <datalist id="audits-list">
                             {auditsTemplate
-                                .filter(a => 
-                                    auditSearch.length === 0 || 
+                                .filter(a =>
+                                    auditSearch.length === 0 ||
                                     a.auditname.toLowerCase().includes(auditSearch.toLowerCase())
                                 )
                                 .map((a) => (
@@ -519,7 +561,12 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="form-actions">
-                    <a href="/audit" className="new-audits-btn">Créer</a>
+                    {/* <button
+                        className="new-audits-btn"
+                        onClick={handleCreateClient}
+                    >
+                        Créer
+                    </button> */}
                     <a href="/audits" className="new-audits-btn">Annulé</a>
                 </div>
 
