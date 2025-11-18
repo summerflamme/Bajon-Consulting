@@ -20,6 +20,6 @@
     }
   },
   "postStartCommand": "sh /workspace/.devcontainer/init-git.sh || true",
-  "forwardPorts": [5173, 8080, 5432],
+  "forwardPorts": [5173, 8080],
   "remoteUser": "vscode"
 }

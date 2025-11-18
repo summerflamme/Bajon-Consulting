@@ -9,17 +9,14 @@ services:
     volumes:
       # Mount le code source pour le hot reload (compatible Windows/Linux)
       - ../:/workspace:cached
-      - /workspace/Code/Back/Bajon_audit_App/target
       - ../.git:/workspace/.git
+      - bajon_backend_target:/workspace/Code/Back/Bajon_audit_App/target
     env_file: ../.env
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bajon_audit_db
       SPRING_DATASOURCE_USERNAME: bajon
       SPRING_DATASOURCE_PASSWORD: bajon
-    depends_on:
-      - db
 
   frontend:
     build:
@@ -37,17 +34,5 @@ services:
     depends_on:
       - backend
 
-  db:
-    image: postgres:15-alpine
-    container_name: bajon_db_dev
-    environment:
-      POSTGRES_DB: bajon_audit_db
-      POSTGRES_USER: bajon
-      POSTGRES_PASSWORD: bajon
-    ports:
-      - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-
 volumes:
-  db_data:
+  bajon_backend_target:
