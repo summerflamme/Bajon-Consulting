@@ -1,5 +1,5 @@
 import './users.css';
-import avatarImage from "../../assets/testinfoutilisateur.png";
+import avatarImage from "../../assets/icone-utilisateur.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";

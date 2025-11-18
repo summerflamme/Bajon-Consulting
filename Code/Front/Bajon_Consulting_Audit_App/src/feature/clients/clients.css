@@ -210,8 +210,9 @@
 }
 
 
-/*____________________ICI USERINFO____________________*/
-.user-info-wrapper {
+/*____________________ICI CLIENT INFO____________________*/
+
+.client-info-wrapper {
   max-width: 900px;
   margin: 2rem auto;
   z-index: 1;
@@ -222,27 +223,26 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.user-info-wrapper::before {
+.client-info-wrapper::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("../../assets/img3.jpg");
+  background-image: url("../../assets/img1.jpg");
   background-size: cover;
   background-position: center;
   opacity: 0.3;
   z-index: -1;
 }
 
-/* Centrage de l'avatar */
-.user-avatar-container {
+/* Centrage avatar */
+.client-avatar-container {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 1.5rem;
 }
 
-/* Taille et effet sur l’image */
-.user-avatar {
+.client-avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
@@ -251,44 +251,46 @@
   transition: transform 0.3s ease;
 }
 
-.user-avatar:hover {
+.client-avatar:hover {
   transform: scale(1.05);
 }
 
-.user-info-grid {
+/* GRID */
+.client-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 
-.user-info-section,
-.user-settings-section {
+/* Sections */
+.client-info-section {
   background: rgba(255, 255, 255, 0.75);
   border-radius: 8px;
   padding: 1.2rem;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
 }
 
-.user-info-section h3,
-.user-settings-section h3 {
+.client-info-section h3 {
   margin-bottom: 1rem;
   color: #236084;
   font-weight: 600;
 }
 
-.user-info-row {
+/* Rows */
+.client-info-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.8rem;
   color: black;
 }
 
-.user-info-row strong {
+.client-info-row strong {
   color: #236084;
   margin-right: 8px;
 }
 
-.user-actions {
+/* Actions */
+.client-actions {
   display: flex;
   justify-content: center;
   gap: 1rem;
@@ -310,52 +312,48 @@
   background-color: #1e5375;
 }
 
-/* Responsive */
+/* ---------------------------- */
+/* RESPONSIVE */
+/* ---------------------------- */
 
 @media (max-width: 1024px) {
-  .user-info-wrapper {
+  .client-info-wrapper {
     max-width: 90%;
     padding: 1.5rem;
   }
 
-  .user-info-grid {
+  .client-info-grid {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
   }
 
-  .user-avatar {
+  .client-avatar {
     width: 100px;
     height: 100px;
   }
 
-  .user-info-section,
-  .user-settings-section {
+  .client-info-section {
     padding: 1rem;
   }
 }
 
-
-
-
 @media (max-width: 768px) {
- 
-
-  .user-info-wrapper {
+  .client-info-wrapper {
     padding: 1rem;
   }
 
-  .user-info-grid {
+  .client-info-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
-  .user-info-row {
+  .client-info-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.2rem;
   }
 
-  .user-actions {
+  .client-actions {
     flex-direction: column;
     gap: 0.8rem;
   }
@@ -367,22 +365,21 @@
 }
 
 @media (max-width: 420px) {
-  .user-info-wrapper {
+  .client-info-wrapper {
     padding: 0.8rem;
     border-radius: 8px;
   }
 
-  .user-avatar {
+  .client-avatar {
     width: 80px;
     height: 80px;
   }
 
-  .user-info-section h3,
-  .user-settings-section h3 {
+  .client-info-section h3 {
     font-size: 1rem;
   }
 
-  .user-info-row {
+  .client-info-row {
     font-size: 0.9rem;
   }
 
@@ -390,4 +387,113 @@
     font-size: 0.9rem;
     padding: 0.5rem 0.8rem;
   }
+}
+
+
+/*____________________ICI CLIENT INFO____________________*/
+
+/* form général */
+.new-audits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffff;
+    border-radius: 10px;
+
+    /* ➕ largeur ++ */
+    max-width: 96%;
+    width: 96%;
+
+    margin: 0 auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+
+    /* ➖ hauteur visuelle */
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.2rem 2rem;
+}
+
+/* Formulaire */
+.new-audits-form {
+    display: flex;
+    flex-direction: column;
+
+    /* ➕ plus large */
+    max-width: 900px;
+
+    gap: 10px; /* ➖ moins d'espace vertical */
+    width: 100%;
+    align-items: stretch;
+}
+
+/* Réduction de hauteur globale */
+.field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4px; /* ➖ plus compact */
+}
+
+.new-audits-form input,
+.new-audits-form textarea,
+.new-audits-form select,
+.input-style {
+    padding: 8px 10px; /* ➖ hauteur des inputs */
+    min-height: 36px; /* ➖ plus bas */
+    font-size: 15px;
+}
+
+/* Sections (client-info-wrapper) */
+.Client-info-name,
+.Client-info-contact,
+.Client-business-info,
+.Client-info-adr,
+.Client-info-mail,
+.Client-business-legal,
+.Client-business-img,
+.Client-business-social {
+    display: flex;
+    gap: 14px; /* ➖ un peu moins haut */
+    width: 100%;
+    justify-content: space-between;
+
+    /* ➕ alignement plus compact */
+    margin-bottom: 4px;
+}
+
+.Client-info-name .field,
+.Client-info-contact .field,
+.Client-business-info .field,
+.Client-info-adr .field,
+.Client-info-mail .field,
+.Client-business-legal .field,
+.Client-business-img .field,
+.Client-business-social .field {
+    flex: 1 1 50%; /* ➕ un peu plus large */
+}
+
+@media (max-width: 900px) {
+    .Client-info-name,
+    .Client-info-contact,
+    .Client-business-info,
+    .Client-info-adr,
+    .Client-info-mail,
+    .Client-business-legal,
+    .Client-business-img,
+    .Client-business-social {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; /* ➕ cohérent mobile */
+    }
+
+    .Client-info-name .field,
+    .Client-info-contact .field,
+    .Client-business-info .field,
+    .Client-info-adr .field,
+    .Client-info-mail .field,
+    .Client-business-legal .field,
+    .Client-business-img .field,
+    .Client-business-social .field {
+        flex: 1 1 100%;
+    }
 }
