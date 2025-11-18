@@ -6,14 +6,15 @@ ADD COLUMN password VARCHAR(255) NOT NULL;
 -- =======================
 
 -- Table Client
-INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
+INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCity, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
 VALUES
-('Dupont', 'Jean', 'jean.dupont@email.com', '0601020304', 'Dupont SARL', '10 rue de Paris', 'France', '123456789', 'FR123456789', 'Informatique', 'RCS12345', 5000.00, '@dupont', 'SARL', NULL),
-('Martin', 'Sophie', 'sophie.martin@email.com', '0605060708', 'Martin SAS', '25 avenue de Lyon', 'France', '987654321', 'FR987654321', 'Conseil', 'RCS54321', 15000.00, '@martin', 'SAS', NULL),
-('Durand', 'Paul', 'paul.durand@email.com', '0611223344', 'Durand & Co', '5 place Victor Hugo', 'Belgique', '654321987', 'BE654321987', 'Comptabilité', 'RCS65432', 2000.00, '@durand', 'EURL', NULL),
-('Lefevre', 'Julie', 'julie.lefevre@email.com', '0622334455', 'JL Consulting', '12 boulevard St-Michel', 'France', '112233445', 'FR112233445', 'Consulting', 'RCS11223', 10000.00, '@jlconsult', 'SASU', NULL),
-('Petit', 'Luc', 'luc.petit@email.com', '0677889900', 'Petit Entreprise', '50 chemin des Fleurs', 'Suisse', '998877665', 'CH998877665', 'Commerce', 'RCS99887', 8000.00, '@petit', 'SA', NULL);
+('Dupont', 'Jean', 'jean.dupont@email.com', '0601020304', 'Dupont SARL', '10 rue de Paris', 'Paris', 'France', '123456789', 'FR123456789', 'Informatique', 'RCS12345', 5000.00, '@dupont', 'SARL', NULL),
+('Martin', 'Sophie', 'sophie.martin@email.com', '0605060708', 'Martin SAS', '25 avenue de Lyon', 'Paris', 'France', '987654321', 'FR987654321', 'Conseil', 'RCS54321', 15000.00, '@martin', 'SAS', NULL),
+('Durand', 'Paul', 'paul.durand@email.com', '0611223344', 'Durand & Co', '5 place Victor Hugo', 'Paris', 'Belgique', '654321987', 'BE654321987', 'Comptabilité', 'RCS65432', 2000.00, '@durand', 'EURL', NULL),
+('Lefevre', 'Julie', 'julie.lefevre@email.com', '0622334455', 'JL Consulting', '12 boulevard St-Michel', 'Paris', 'France', '112233445', 'FR112233445', 'Consulting', 'RCS11223', 10000.00, '@jlconsult', 'SASU', NULL),
+('Petit', 'Luc', 'luc.petit@email.com', '0677889900', 'Petit Entreprise', '50 chemin des Fleurs', 'Paris', 'Suisse', '998877665', 'CH998877665', 'Commerce', 'RCS99887', 8000.00, '@petit', 'SA', NULL);
 
+-- Table AuditType
 INSERT INTO AuditType (nameAuditType) VALUES
 ('Interne'),
 ('Externe'),
@@ -21,6 +22,7 @@ INSERT INTO AuditType (nameAuditType) VALUES
 ('Conformité'),
 ('Performance');
 
+-- Table AuditOffer
 INSERT INTO AuditOffer (nameAuditOffer) VALUES
 ('Standard'),
 ('Premium'),
@@ -28,13 +30,19 @@ INSERT INTO AuditOffer (nameAuditOffer) VALUES
 ('Personnalisé'),
 ('Gratuit');
 
--- Table Audit
-INSERT INTO Audit (auditName, idAuditType, idAuditOffer, status, template) VALUES
-('Audit Sécurité', 1, 3, 1, true),
-('Audit Financier', 5, 4, 2, false),
-('Audit Qualité', 3, 2, 2, false),
-('Audit RH', 4, 1, 1, false),
-('Audit IT', 2, 5, 2, false);
+INSERT INTO Status (auditStatus) VALUES
+('En Cours'),
+('En attente d’analyse'),
+('En attente de validation'),
+('Validé');
+
+
+-- Table role
+INSERT INTO Role (roleName) VALUES
+('Administrateur'),
+('Auditeur'),
+('Manager'),
+('Analyste'); 
 
 -- Table Theme
 INSERT INTO Theme (themeName) VALUES
@@ -52,12 +60,13 @@ INSERT INTO Type (typeName) VALUES
 ('Choix multiple'),
 ('Nombre');
 
--- Table role
-INSERT INTO Role (roleName) VALUES
-('Administrateur'),
-('Auditeur'),
-('Manager'),
-('Analyste');   
+-- Table Audit
+INSERT INTO Audit (auditName, idAuditType, idAuditOffer, idStatus, template, archived) VALUES
+('Audit Sécurité', 1, 3, 1, true, false),
+('Audit Financier', 5, 4, 2, false, true),
+('Audit Qualité', 3, 2, 4, false, false),
+('Audit RH', 4, 1, 1, false, true),
+('Audit IT', 2, 5, 3, false, false);
 
 -- Table User
 INSERT INTO Staff (id, lastName, firstName, idRole)VALUES 

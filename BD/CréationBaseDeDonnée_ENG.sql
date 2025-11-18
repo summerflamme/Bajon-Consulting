@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS OptionAnswer CASCADE;
 DROP TABLE IF EXISTS Question CASCADE;
 
 -- Drop independent tables
+DROP TABLE IF EXISTS Status CASCADE;
 DROP TABLE IF EXISTS Type CASCADE;
 DROP TABLE IF EXISTS Theme CASCADE;
 DROP TABLE IF EXISTS Staff CASCADE;
@@ -30,7 +31,7 @@ CREATE TABLE Client (
     clientAddress VARCHAR(255), -- implémenté
     clientCity VARCHAR(255), -- implémenté
     clientCountry VARCHAR(100), -- implémenté
-    siren VARCHAR(20), -- implémenté
+    siren VARCHAR(20), 
     vatNumber VARCHAR(20), -- implémenté
     businessActivity VARCHAR(100), -- implémenté
     rcsNumber VARCHAR(50), -- implémenté
@@ -56,34 +57,12 @@ CREATE TABLE AuditOffer (
 CREATE TABLE Status(
     id SERIAL PRIMARY KEY,
     auditStatus VARCHAR(50)
-)
-
--- Table Audit
-CREATE TABLE Audit (
-    id SERIAL PRIMARY KEY,
-    idAuditType INT NOT NULL,
-    idAuditOffer INT NOT NULL,
-    auditName VARCHAR(150) NOT NULL,
-    status VARCHAR(50),
-    template BOOLEAN NOT NULL DEFAULT false,
-    FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
-    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id)
-    FOREIGN KEY (idStatus) REFERENCES Status(id)
 );
 
 -- Table role
 CREATE TABLE Role  (
     id SERIAL PRIMARY KEY,
     roleName VARCHAR(150) NOT NULL
-);
-
--- Table User ( pour les test )
-CREATE TABLE Staff (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    lastName VARCHAR(100),
-    firstName VARCHAR(100),
-    idRole INT NOT NULL,
-    FOREIGN KEY (idRole) REFERENCES Role(id)
 );
 
 -- Table Theme
@@ -96,6 +75,29 @@ CREATE TABLE Theme (
 CREATE TABLE Type (
     id SERIAL PRIMARY KEY,
     typeName VARCHAR(100)
+);
+
+-- Table Audit
+CREATE TABLE Audit (
+    id SERIAL PRIMARY KEY,
+    idAuditType INT NOT NULL,
+    idAuditOffer INT NOT NULL,
+    idStatus INT NOT NULL,
+    auditName VARCHAR(150) NOT NULL,
+    template BOOLEAN NOT NULL DEFAULT false,
+    archived BOOLEAN NOT NULL DEFAULT false,
+    FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
+    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id),
+    FOREIGN KEY (idStatus) REFERENCES Status(id)
+);
+
+-- Table User ( pour les test )
+CREATE TABLE Staff (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    lastName VARCHAR(100),
+    firstName VARCHAR(100),
+    idRole INT NOT NULL,
+    FOREIGN KEY (idRole) REFERENCES Role(id)
 );
 
 -- Table Question

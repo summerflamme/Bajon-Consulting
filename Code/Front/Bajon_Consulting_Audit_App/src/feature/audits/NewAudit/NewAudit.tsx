@@ -207,46 +207,101 @@ export default function NewAuditPage() {
     // ========================================================
     // Insert client
     // ========================================================
-    // async function handleCreateClient() {
-    //     const { data, error } = await supabase
-    //         .from('client')
-    //         .insert([
-    //             {
-    //                 clientLastName: 'Dupont',
-    //                 clientFirstName: 'Jean',
-    //                 clientEmail: 'jean.dupont@example.com',
-    //                 clientPhone: '0601020304',
-    //                 companyName: 'Dupont SARL',
-    //                 clientAddress: '12 rue des Fleurs',
-    //                 clientCity: 'Paris',
-    //                 clientCountry: 'France',
-    //                 siren: '123456789',
-    //                 vatNumber: 'FR12345678901',
-    //                 businessActivity: 'Informatique',
-    //                 rcsNumber: 'RCS Paris 123 456 789',
-    //                 shareCapital: 50000,
-    //                 socialNetworks: 'https://linkedin.com/company/dupont-sarl',
-    //                 legalForm: 'SARL',
-    //                 logo: null
-    //             }
-    //         ])
-    //         .select();
+    async function handleCreateClient() {
+        console.log('🔵 handleCreateClient called', {
+            clientLastName,
+            clientFirstName,
+            clientEmail,
+            clientPhone,
+            companyName,
+        });
 
-    //     if (error) {
-    //         console.error("Erreur insertion :", error);
-    //         return;
-    //     }
+        if (!validEmail.test(clientEmail)) {
+            setMessage("Email invalide");
+            return;
+        }
 
-    //     console.log("Client créé :", data);
+        if (!validPhone.test(clientPhone)) {
+            setMessage("Numéro de téléphone invalide");
+            return;
+        }
 
-    //     window.location.href = "/audit";
-    // }
+        if (!clientLastName || !clientFirstName || !companyName) {
+            setMessage("Veuillez remplir les champs obligatoires");
+            return;
+        }
+
+        // ========================================================
+        // vérif si le Client existe déjà
+        // ========================================================
+
+        const { data: existingClient, error: checkError } = await supabase
+            .from('client')
+            .select('*')
+            .eq('clientlastname', clientLastName)
+            .eq('clientfirstname', clientFirstName)
+            .eq('clientemail', clientEmail)
+            .single();
+
+        if (!checkError && existingClient) {
+            console.log("Client déjà existant:");
+        }
+
+        if (checkError && checkError.code !== 'PGRST116') {
+            console.log("Erreur lors de la vérification:", checkError);
+            setMessage(`Erreur : ${checkError.message}`);
+            return;
+        }
+
+        // ========================================================
+        // Insertion du nouveau client
+        // ========================================================
+        const { data, error } = await supabase
+            .from('client')
+            .insert([
+                {
+                    clientlastname: clientLastName,
+                    clientfirstname: clientFirstName,
+                    clientemail: clientEmail,
+                    clientphone: clientPhone,
+                    companyname: companyName,
+                    clientaddress: clientAddress,
+                    clientcity: clientCity,
+                    clientcountry: clientCountry,
+                    siren: siren,
+                    vatnumber: vatNumber,
+                    businessactivity: businessActivity,
+                    rcsnumber: rcsNumber,
+                    sharecapital: shareCapital ? parseFloat(shareCapital) : null,
+                    socialnetworks: socialNetworks,
+                    legalform: legalForm,
+                    logo: logo || null
+                }
+            ])
+            .select();
+
+        if (error) {
+            console.error("Erreur insertion :", error);
+            setMessage(`Erreur : ${error.message}`);
+            return;
+        }
+
+        // Supabase retourne généralement un tableau avec la ligne insérée
+        const createdId = Array.isArray(data) && (data as any).length > 0 ? (data as any)[0].id : (data as any)?.id;
+        console.log("✅ Client créé :", { createdId, data });
+        setMessage(`Client créé avec succès ! (ID: ${createdId ?? 'inconnu'})`);
+
+        // Redirection
+        // setTimeout(() => {
+        //     window.location.href = "/audits";
+        // }, 1500);
+    }
 
     // ========================================================
     // Fin BD
     // ========================================================
 
-    const handleSelectClient = (client) => {
+    const handleSelectClient = (client: any) => {
         setClientLastName(client.clientlastname || "");
         setClientFirstName(client.clientfirstname || "");
         setClientEmail(client.clientemail || "");
@@ -272,7 +327,6 @@ export default function NewAuditPage() {
         console.log("Vérification sélection:", clientLastName);
         console.log("Suggestions disponibles:", suggestions);
 
-        // Cherche correspondance nom prénom
         const client = suggestions.find(
             (c) => {
                 const fullName = `${c.clientlastname} ${c.clientfirstname}`;
@@ -435,7 +489,7 @@ export default function NewAuditPage() {
                             className="input-style"
                             value={rcsNumber}
                             onChange={(e) => setRcsNumber(e.target.value)}
-                            placeholder="Ex: Linkedin"
+                            placeholder="Ex: RCS PARIS B 517 403 572"
                         />
                     </div>
                 </div>
@@ -489,19 +543,19 @@ export default function NewAuditPage() {
                             className="input-style"
                             value={legalForm}
                             onChange={(e) => setLegalForm(e.target.value)}
-                            placeholder="..."
+                            placeholder="SARL"
                         />
                     </div>
                 </div>
 
                 <div className="Client-business-img">
                     <div className="field">
-                        <label htmlFor="business-activity">Domaine d'activité</label>
+                        <label htmlFor="business-activity">Siren</label>
                         <input
                             className="input-style"
-                            value={businessActivity}
-                            onChange={(e) => setBusinessActivity(e.target.value)}
-                            placeholder="Informatique"
+                            value={siren}
+                            onChange={(e) => setSiren(e.target.value)}
+                            placeholder="362 521 879 00034"
                         />
                     </div>
 
@@ -511,7 +565,7 @@ export default function NewAuditPage() {
                             className="input-style"
                             value={logo}
                             onChange={(e) => setLogo(e.target.value)}
-                            placeholder="Informatique"
+                            placeholder="..."
                         />
                     </div>
                 </div>
@@ -552,24 +606,26 @@ export default function NewAuditPage() {
                                 ))
                             }
                         </datalist>
-                        {/* {selectedAuditId && (
+                        {selectedAuditId && (
                             <small style={{ color: 'green', marginTop: '4px' }}>
                                 Audit trouvé
                             </small>
-                        )} */}
+                        )}
                     </div>
                 </div>
 
                 <div className="form-actions">
-                    {/* <button
+                    <button
+                        type="button"
                         className="new-audits-btn"
                         onClick={handleCreateClient}
                     >
                         Créer
-                    </button> */}
+                    </button>
                     <a href="/audits" className="new-audits-btn">Annuler</a>
                 </div>
 
+                {message && <p className="form-message">{message}</p>}
                 {error && <p className="form-message">{error}</p>}
             </form>
 
