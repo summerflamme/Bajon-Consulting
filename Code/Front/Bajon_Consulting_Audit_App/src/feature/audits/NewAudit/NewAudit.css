@@ -93,7 +93,8 @@
 .Client-info-mail,
 .Client-business-legal,
 .Client-business-img,
-.Client-business-social {
+.Client-business-social,
+.Client-audits-template {
     display: flex;
     gap: 16px;
     width: 100%;
@@ -107,7 +108,8 @@
 .Client-info-mail .field,
 .Client-business-legal .field,
 .Client-business-img .field,
-.Client-business-social .field {
+.Client-business-social .field,
+.Client-audits-template .field {
     flex: 1 1 48%; 
 }
 
@@ -119,7 +121,8 @@
     .Client-info-mail,
     .Client-business-legal,
     .Client-business-img,
-    .Client-business-social {
+    .Client-business-social,
+    .Client-audits-template {
         flex-direction: column;
         display: flex;
         align-items: center;
@@ -131,7 +134,8 @@
     .Client-info-mail .field,
     .Client-business-legal .field,
     .Client-business-img .field,
-    .Client-business-social .field {
+    .Client-business-social .field,
+    .Client-audits-template .field {
         flex: 1 1 100%;
     }
 }

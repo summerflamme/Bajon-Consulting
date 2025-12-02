@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./header";
 import Footer from "./Footer";
-import { AuthProvider } from "../feature/auth/AuthProvider";
+import { AuthProvider } from "@/feature/auth/AuthProvider";
 
 export default function BaseLayout() {
   return (
@@ -15,4 +15,5 @@ export default function BaseLayout() {
       </div>
     </AuthProvider>
   );
+
 }

@@ -6,14 +6,15 @@ ADD COLUMN password VARCHAR(255) NOT NULL;
 -- =======================
 
 -- Table Client
-INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
+INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCity, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
 VALUES
-('Dupont', 'Jean', 'jean.dupont@email.com', '0601020304', 'Dupont SARL', '10 rue de Paris', 'France', '123456789', 'FR123456789', 'Informatique', 'RCS12345', 5000.00, '@dupont', 'SARL', NULL),
-('Martin', 'Sophie', 'sophie.martin@email.com', '0605060708', 'Martin SAS', '25 avenue de Lyon', 'France', '987654321', 'FR987654321', 'Conseil', 'RCS54321', 15000.00, '@martin', 'SAS', NULL),
-('Durand', 'Paul', 'paul.durand@email.com', '0611223344', 'Durand & Co', '5 place Victor Hugo', 'Belgique', '654321987', 'BE654321987', 'Comptabilité', 'RCS65432', 2000.00, '@durand', 'EURL', NULL),
-('Lefevre', 'Julie', 'julie.lefevre@email.com', '0622334455', 'JL Consulting', '12 boulevard St-Michel', 'France', '112233445', 'FR112233445', 'Consulting', 'RCS11223', 10000.00, '@jlconsult', 'SASU', NULL),
-('Petit', 'Luc', 'luc.petit@email.com', '0677889900', 'Petit Entreprise', '50 chemin des Fleurs', 'Suisse', '998877665', 'CH998877665', 'Commerce', 'RCS99887', 8000.00, '@petit', 'SA', NULL);
+('Dupont', 'Jean', 'jean.dupont@email.com', '0601020304', 'Dupont SARL', '10 rue de Paris', 'Paris', 'France', '123456789', 'FR123456789', 'Informatique', 'RCS12345', 5000.00, '@dupont', 'SARL', NULL),
+('Martin', 'Sophie', 'sophie.martin@email.com', '0605060708', 'Martin SAS', '25 avenue de Lyon', 'Paris', 'France', '987654321', 'FR987654321', 'Conseil', 'RCS54321', 15000.00, '@martin', 'SAS', NULL),
+('Durand', 'Paul', 'paul.durand@email.com', '0611223344', 'Durand & Co', '5 place Victor Hugo', 'Paris', 'Belgique', '654321987', 'BE654321987', 'Comptabilité', 'RCS65432', 2000.00, '@durand', 'EURL', NULL),
+('Lefevre', 'Julie', 'julie.lefevre@email.com', '0622334455', 'JL Consulting', '12 boulevard St-Michel', 'Paris', 'France', '112233445', 'FR112233445', 'Consulting', 'RCS11223', 10000.00, '@jlconsult', 'SASU', NULL),
+('Petit', 'Luc', 'luc.petit@email.com', '0677889900', 'Petit Entreprise', '50 chemin des Fleurs', 'Paris', 'Suisse', '998877665', 'CH998877665', 'Commerce', 'RCS99887', 8000.00, '@petit', 'SA', NULL);
 
+-- Table AuditType
 INSERT INTO AuditType (nameAuditType) VALUES
 ('Interne'),
 ('Externe'),
@@ -21,6 +22,7 @@ INSERT INTO AuditType (nameAuditType) VALUES
 ('Conformité'),
 ('Performance');
 
+-- Table AuditOffer
 INSERT INTO AuditOffer (nameAuditOffer) VALUES
 ('Standard'),
 ('Premium'),
@@ -28,21 +30,27 @@ INSERT INTO AuditOffer (nameAuditOffer) VALUES
 ('Personnalisé'),
 ('Gratuit');
 
--- Table Audit
-INSERT INTO Audit (auditName, idAuditType, idAuditOffer, status, template) VALUES
-('Audit Sécurité', 1, 3, 'En cours', true),
-('Audit Financier', 5, 4, 'Terminé', false),
-('Audit Qualité', 3, 2, 'En cours', false),
-('Audit RH', 4, 1, 'Annulé', false),
-('Audit IT', 2, 5, 'Prévu', false);
+INSERT INTO Status (auditStatus) VALUES
+('En Cours'),
+('En attente d’analyse'),
+('En attente de validation'),
+('Validé');
+
+
+-- Table role
+INSERT INTO Role (roleName) VALUES
+('Administrateur'),
+('Auditeur'),
+('Manager'),
+('Analyste'); 
 
 -- Table Theme
-INSERT INTO Theme (themeName, status) VALUES
-('Sécurité informatique', 'Actif'),
-('Conformité légale', 'Actif'),
-('Gestion financière', 'Inactif'),
-('Ressources humaines', 'Actif'),
-('Développement durable', 'Actif');
+INSERT INTO Theme (themeName) VALUES
+('Sécurité informatique'),
+('Conformité légale'),
+('Gestion financière'),
+('Ressources humaines'),
+('Développement durable');
 
 -- Table Type
 INSERT INTO Type (typeName) VALUES
@@ -52,12 +60,30 @@ INSERT INTO Type (typeName) VALUES
 ('Choix multiple'),
 ('Nombre');
 
--- Table role
-INSERT INTO Role (roleName) VALUES
-('Administrateur'),
-('Auditeur'),
-('Manager'),
-('Analyste');   
+-- Table Audit
+INSERT INTO Audit (auditName, idAuditType, idAuditOffer, idStatus, template, archived) VALUES
+('Audit Sécurité', 1, 3, 1, true, false),
+('Audit Financier', 5, 4, 2, false, true),
+('Audit Qualité', 3, 2, 4, false, false),
+('Audit RH', 4, 1, 1, false, true),
+('Audit IT', 2, 5, 3, false, false),
+('Audit Marketing', 4, 2, 1, true, true),
+('Audit Logistique', 3, 4, 3, false, false),
+('Audit Commercial', 2, 1, 3, true, false),
+('Audit Juridique', 4, 1, 2, false, true),
+('Audit Production', 1, 3, 4, true, false),
+('Audit Environnement', 3, 2, 2, false, false),
+('Audit Sécurité Avancée', 1, 4, 3, false, false),
+('Audit Fiscal', 5, 2, 3, false, false),
+('Audit Client', 2, 3, 1, false, false),
+('Audit Fournisseur', 4, 1, 4, false, false),
+('Audit Processus', 5, 1, 2, false, false),
+('Audit Stratégique', 3, 2, 3, false, false),
+('Audit Opérationnel', 1, 3, 3, false, false),
+('Audit Performance', 4, 4, 1, false, false),
+('Audit Innovation', 2, 4, 4, false, false),
+('Audit dont le nom doir être extrèmement long pour pouvoir faire des test, du coup je doit mettre quelque mots pour pouvoir combler', 1, 1, 1, false, false);
+
 
 -- Table User
 INSERT INTO Staff (id, lastName, firstName, idRole)VALUES 
@@ -65,22 +91,22 @@ INSERT INTO Staff (id, lastName, firstName, idRole)VALUES
 ('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 'test', 'test', 2);
 
 -- Table Question
-INSERT INTO Question (label, status, idTheme) VALUES
-('Le système est-il protégé par un pare-feu ?', 'Actif', 1),
-('Toutes les factures sont-elles archivées ?', 'Actif', 3),
-('Quelle est la satisfaction des employés ?', 'Actif', 4),
-('L’entreprise respecte-t-elle la norme ISO ?', 'Inactif', 2),
-('Y a-t-il un plan de réduction des déchets ?', 'Actif', 5),
-('Le réseau Wi-Fi est-il sécurisé par mot de passe ?', 'Actif', 1),
-('Les sauvegardes de données sont-elles effectuées régulièrement ?', 'Actif', 1),
-('Les employés disposent-ils d’un poste de travail ergonomique ?', 'Actif', 2),
-('Les contrats fournisseurs sont-ils à jour ?', 'Inactif', 3),
-('Un plan de continuité d’activité est-il en place ?', 'Actif', 2),
-('L’entreprise mesure-t-elle ses émissions de CO2 ?', 'Actif', 5),
-('Les accès aux serveurs sont-ils limités aux administrateurs ?', 'Actif', 1),
-('Les factures clients sont-elles vérifiées avant validation ?', 'Actif', 2),
-('Une procédure d’accueil des nouveaux employés existe-t-elle ?', 'Inactif', 4),
-('Un suivi de la consommation énergétique est-il effectué ?', 'Actif', 5);
+INSERT INTO Question (label, idTheme) VALUES
+('Le système est-il protégé par un pare-feu ?', 1),
+('Toutes les factures sont-elles archivées ?', 3),
+('Quelle est la satisfaction des employés ?', 4),
+('L’entreprise respecte-t-elle la norme ISO ?', 2),
+('Y a-t-il un plan de réduction des déchets ?', 5),
+('Le réseau Wi-Fi est-il sécurisé par mot de passe ?', 1),
+('Les sauvegardes de données sont-elles effectuées régulièrement ?', 1),
+('Les employés disposent-ils d’un poste de travail ergonomique ?', 2),
+('Les contrats fournisseurs sont-ils à jour ?', 3),
+('Un plan de continuité d’activité est-il en place ?', 2),
+('L’entreprise mesure-t-elle ses émissions de CO2 ?', 5),
+('Les accès aux serveurs sont-ils limités aux administrateurs ?', 1),
+('Les factures clients sont-elles vérifiées avant validation ?', 2),
+('Une procédure d’accueil des nouveaux employés existe-t-elle ?', 4),
+('Un suivi de la consommation énergétique est-il effectué ?', 5);
 
 -- Table OptionAnswer
 INSERT INTO OptionAnswer (optionLabel, optionPoints, idType) VALUES
