@@ -66,7 +66,24 @@ INSERT INTO Audit (auditName, idAuditType, idAuditOffer, idStatus, template, arc
 ('Audit Financier', 5, 4, 2, false, true),
 ('Audit Qualité', 3, 2, 4, false, false),
 ('Audit RH', 4, 1, 1, false, true),
-('Audit IT', 2, 5, 3, false, false);
+('Audit IT', 2, 5, 3, false, false),
+('Audit Marketing', 4, 2, 1, true, true),
+('Audit Logistique', 3, 4, 3, false, false),
+('Audit Commercial', 2, 1, 3, true, false),
+('Audit Juridique', 4, 1, 2, false, true),
+('Audit Production', 1, 3, 4, true, false),
+('Audit Environnement', 3, 2, 2, false, false),
+('Audit Sécurité Avancée', 1, 4, 3, false, false),
+('Audit Fiscal', 5, 2, 3, false, false),
+('Audit Client', 2, 3, 1, false, false),
+('Audit Fournisseur', 4, 1, 4, false, false),
+('Audit Processus', 5, 1, 2, false, false),
+('Audit Stratégique', 3, 2, 3, false, false),
+('Audit Opérationnel', 1, 3, 3, false, false),
+('Audit Performance', 4, 4, 1, false, false),
+('Audit Innovation', 2, 4, 4, false, false),
+('Audit dont le nom doir être extrèmement long pour pouvoir faire des test, du coup je doit mettre quelque mots pour pouvoir combler', 1, 1, 1, false, false);
+
 
 -- Table User
 INSERT INTO Staff (id, lastName, firstName, idRole)VALUES 
