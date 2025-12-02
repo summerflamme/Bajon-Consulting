@@ -496,15 +496,15 @@ export default function NewAuditPage() {
     // Affichage
     // ========================================================
     return (
-        <div className="new-audits">
-            <h2 className="titre-new-audits">Créer un audit</h2>
+        <div className="new-client-audits">
+            <h1 className="titre-new-audits">Création d'audit</h1>
 
             <form onSubmit={handleSubmit} className="new-audits-form">
                 <div className="Client-info-name">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-last">Nom du client</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             list="client-list"
                             value={clientLastName}
                             onChange={(e) => handleSearch(e.target.value)}
@@ -522,10 +522,10 @@ export default function NewAuditPage() {
                         </datalist>
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-first">Prénom du client</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={clientFirstName}
                             onChange={(e) => setClientFirstName(e.target.value)}
                             placeholder="Ex: Jean"
@@ -535,10 +535,10 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-info-adr">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-adr">adresse du client</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={clientAddress}
                             onChange={(e) => setClientAddress(e.target.value)}
                             placeholder="Ex: 37 Rue du Dolmen"
@@ -546,10 +546,10 @@ export default function NewAuditPage() {
                         />
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-city">Ville du client</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={clientCity}
                             onChange={(e) => setClientCity(e.target.value)}
                             placeholder="Ex: Poitiers"
@@ -557,10 +557,10 @@ export default function NewAuditPage() {
                         />
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-country">Pays du client</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={clientCountry}
                             onChange={(e) => setClientCountry(e.target.value)}
                             placeholder="Ex: France"
@@ -570,10 +570,10 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-info-mail">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-email">Email du client</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             type="email"
                             value={clientEmail}
                             onChange={(e) => setClientEmail(e.target.value)}
@@ -584,20 +584,20 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-info-contact">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-phone">Téléphone</label>
                         <PhoneInput
-                            inputClassName="input-style"
+                            inputClassName="new-input-style"
                             defaultCountry="fr"
                             value={clientPhone}
                             onChange={(value: string) => setClientPhone(value)}
                         />
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-social-rcs">Numéro RCS</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={rcsNumber}
                             onChange={(e) => setRcsNumber(e.target.value)}
                             placeholder="Ex: RCS PARIS B 517 403 572"
@@ -606,30 +606,30 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-business-info">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="company-name">Nom de l'entreprise</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
                             placeholder="Ex: ACME SARL"
                         />
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="business-activity">Domaine d'activité</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={businessActivity}
                             onChange={(e) => setBusinessActivity(e.target.value)}
                             placeholder="Ex: Informatique"
                         />
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="business-shareCapital">capital social</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={shareCapital}
                             onChange={(e) => setShareCapital(e.target.value)}
                             placeholder="Ex: 1000000.00"
@@ -638,20 +638,20 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-business-legal">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="company-vat">Numéro de TVA</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={vatNumber}
                             onChange={(e) => setVatNumber(e.target.value)}
                             placeholder="Ex: FR12 345678901"
                         />
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-social-legal">Forme juridique</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={legalForm}
                             onChange={(e) => setLegalForm(e.target.value)}
                             placeholder="SARL"
@@ -660,20 +660,20 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-business-img">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="business-activity">Siren</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={siren}
                             onChange={(e) => setSiren(e.target.value)}
                             placeholder="362 521 879 00034"
                         />
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="business-activity">Logo de l'entreprise</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={logo}
                             onChange={(e) => setLogo(e.target.value)}
                             placeholder="..."
@@ -682,10 +682,10 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-business-social">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="client-social-networks">Réseau social</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             value={socialNetworks}
                             onChange={(e) => setSocialNetworks(e.target.value)}
                             placeholder="Ex: Linkedin"
@@ -694,10 +694,10 @@ export default function NewAuditPage() {
                 </div>
 
                 <div className="Client-audits-template">
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="audits-name">Template audits</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             list="audits-list"
                             value={auditSearch}
                             onChange={(e) => setAuditSearch(e.target.value)}
@@ -723,10 +723,10 @@ export default function NewAuditPage() {
                         )} */}
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="audits-type">Type d'audits</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             list="audittype-list"
                             value={auditTypeSearch}
                             onChange={(e) => setAuditTypeSearch(e.target.value)}
@@ -753,10 +753,10 @@ export default function NewAuditPage() {
                         )} */}
                     </div>
 
-                    <div className="field">
+                    <div className="new-field">
                         <label htmlFor="audits-offer">Offres d'audits</label>
                         <input
-                            className="input-style"
+                            className="new-input-style"
                             list="auditoffer-list"
                             value={auditOfferSearch}
                             onChange={(e) => setAuditOfferSearch(e.target.value)}

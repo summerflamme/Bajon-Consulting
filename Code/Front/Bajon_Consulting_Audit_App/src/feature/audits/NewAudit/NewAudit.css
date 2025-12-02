@@ -1,5 +1,5 @@
 /* form général */
-.new-audits {
+.new-client-audits {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +14,7 @@
     padding: 1.5rem 2rem 2rem 2rem;
 }
 
-.new-audits::before {
+.new-client-audits::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -75,9 +75,10 @@
     display: flex;
     gap: 8px;
     margin-top: 12px;
+    justify-content: center;
 }
 
-.field {
+.new-field {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -101,15 +102,15 @@
     justify-content: space-between;
 }
 
-.Client-info-name .field,
-.Client-info-contact .field,
-.Client-business-info .field,
-.Client-info-adr .field,
-.Client-info-mail .field,
-.Client-business-legal .field,
-.Client-business-img .field,
-.Client-business-social .field,
-.Client-audits-template .field {
+.Client-info-name .new-field,
+.Client-info-contact .new-field,
+.Client-business-info .new-field,
+.Client-info-adr .new-field,
+.Client-info-mail .new-field,
+.Client-business-legal .new-field,
+.Client-business-img .new-field,
+.Client-business-social .new-field,
+.Client-audits-template .new-field {
     flex: 1 1 48%; 
 }
 
@@ -127,21 +128,21 @@
         display: flex;
         align-items: center;
     }
-    .Client-info-name .field,
-    .Client-info-contact .field,
-    .Client-business-info .field,
-    .Client-info-adr .field,
-    .Client-info-mail .field,
-    .Client-business-legal .field,
-    .Client-business-img .field,
-    .Client-business-social .field,
-    .Client-audits-template .field {
+    .Client-info-name .new-field,
+    .Client-info-contact .new-field,
+    .Client-business-info .new-field,
+    .Client-info-adr .new-field,
+    .Client-info-mail .new-field,
+    .Client-business-legal .new-field,
+    .Client-business-img .new-field,
+    .Client-business-social .new-field,
+    .Client-audits-template .new-field {
         flex: 1 1 100%;
     }
 }
 
-.audits-template .field,
-.new-audits .field {
+.Client-audits-template .new-field,
+.new-audits .new-field {
     min-width: 0;
 }
 
@@ -185,7 +186,7 @@
     flex: 1;
 }
 
-.input-style {
+.new-input-style {
     padding: 10px 12px;
     font-size: 15px;
     width: 100%;
@@ -197,21 +198,20 @@
     background-color: white;
 }
 
-.input-style:focus {
+.new-input-style:focus {
     border-color: #676767;
     box-shadow: 0 0 0 4px rgba(93, 92, 92, 0.06);
 }
 
 /* test phone */
 
-    width: 100%;
-.new-audits .react-international-phone-input-container {
+.new-client-audits .react-international-phone-input-container {
     display: flex !important;
     align-items: stretch !important;
     width: 100% !important;
 }
 
-.new-audits .react-international-phone-country-selector {
+.new-client-audits .react-international-phone-country-selector {
     border-radius: 6px 0 0 6px !important;
     border: 1px solid #000000 !important;
     border-right: none !important;
@@ -223,7 +223,7 @@
     justify-content: center !important;
 }
 
-.new-audits .react-international-phone-country-selector-button {
+.new-client-audits .react-international-phone-country-selector-button {
     background-color: transparent !important;
     border: none !important;
     height: 100% !important;
@@ -234,7 +234,7 @@
     margin: 0 !important;
 }
 
-.new-audits .react-international-phone-input {
+.new-client-audits .react-international-phone-input {
     padding: 10px 12px !important;
     font-size: 15px !important;
     flex: 1 !important;
