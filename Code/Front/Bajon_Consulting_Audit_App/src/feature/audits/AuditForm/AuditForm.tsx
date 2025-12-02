@@ -38,6 +38,23 @@ function AuditForm({
         const initialSet = new Set(serialize(initial));
         return updated.filter(r => !initialSet.has(`${r.idQuestion}-${r.idAnswer}`));
     };
+    //  Ajouter une nouvelle section
+    const handleAddSection = () => {
+        const newSection: Section = {
+            id: Date.now(),
+            title: "Nouvelle section",
+            questions: [
+                {
+                    id: Date.now() + 1,
+                    text: "",
+                    choices: "single-choice",
+                    descriptions: "",
+                    answers: [{ id: Date.now() + 2, text: "", score: 0 }]
+                },
+            ],
+        };
+        onUpdate([...data, newSection]);
+    };
 
     // --- Mise à jour (structure ou réponses) ---
     const updateAudit = useCallback(async () => {
@@ -115,6 +132,11 @@ function AuditForm({
                 <div className="audit-form-section-edit">
                     <div style={{ padding: 24 }}>
                         <p>Aucune section disponible.</p>
+                        {mode === "edit" && (
+                            <button type="button" onClick={handleAddSection} className="btn-add">
+                                Ajouter une section
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -155,6 +177,11 @@ function AuditForm({
                     />
 
                     <div className="mt-6 flex gap-3 alignItems">
+                        {mode === "edit" && (
+                            <button type="button" onClick={handleAddSection} className="btn-add">
+                                Ajouter une section
+                            </button>
+                        )}
                         <button type="submit" className="btn-primary" disabled={loading}>
                             {loading ? "Enregistrement..." : "Enregistrer"}
                         </button>

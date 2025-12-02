@@ -1,38 +1,70 @@
 import './users.css';
 import { DeleteIcon } from "../../components/ui/delete";
 import { SquarePenIcon } from "../../components/ui/square-pen";
-import {SearchIcon} from "../../components/ui/search";
+import { SearchIcon } from "../../components/ui/search";
 
-function UserCard() {
-    const handleCoUser = () => {
-        console.log("Consulter un utilisateur");
-    };
-    const handleMoUser = () => {
-        console.log("Consulter un utilisateur");
-    };
-    const handleSuUser = () => {
-        console.log("Consulter un utilisateur");
-    };
-    return (
-        <div className="user-row">
-            <div className="user-cell">Nom Prénom</div>
-            <div className="user-cell">email@exemple.com</div>
-            <div className="user-cell">06 12 34 56 78</div>
-            <div className="user-cell">01/01/2023</div>
-            <div className="user-cell">06/10/2025</div>
-            <div className="user-cell actions">
-                <button onClick={handleCoUser} className="user-list-btn">
-                    <SearchIcon size={28}/>
-                </button>
-                <button onClick={handleMoUser} className="user-list-btn">
-                    <SquarePenIcon size={28}/>
-                </button>
-                <button onClick={handleSuUser} className="user-list-btn">
-                    <DeleteIcon size={28} />
-                </button>
-            </div>
-        </div>
-    );
+interface UserCardProps {
+  id: string; // <- string, car ton backend renvoie un UUID
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  createdAt?: string;
+  updatedAt?: string;
+  onConsult?: (id: string) => void; // ✅ ajouté
+  onEdit?: (id: string) => void;    // ✅ ajouté
+  onDelete?: (id: string) => void;  // ✅ ajouté
+}
+
+function UserCard({
+  id,
+  firstName,
+  lastName,
+  email,
+  phone,
+  createdAt,
+  updatedAt,
+  onConsult,
+  onEdit,
+  onDelete,
+}: UserCardProps) {
+
+  return (
+    <div className="user-row">
+      <div className="user-cell">{`${lastName || ""} ${firstName || ""}`}</div>
+      <div className="user-cell">{email || "-"}</div>
+      <div className="user-cell">{phone || "-"}</div>
+      <div className="user-cell">
+        {createdAt ? new Date(createdAt).toLocaleDateString() : "-"}
+      </div>
+      <div className="user-cell">
+        {updatedAt ? new Date(updatedAt).toLocaleDateString() : "-"}
+      </div>
+      <div className="user-cell actions">
+        <button
+          onClick={() => onConsult?.(id)}
+          className="user-list-btn"
+          title="Consulter"
+        >
+          <SearchIcon size={22} />
+        </button>
+        <button
+          onClick={() => onEdit?.(id)}
+          className="user-list-btn"
+          title="Modifier"
+        >
+          <SquarePenIcon size={22} />
+        </button>
+        <button
+          onClick={() => onDelete?.(id)}
+          className="user-list-btn"
+          title="Supprimer"
+        >
+          <DeleteIcon size={22} />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default UserCard;
