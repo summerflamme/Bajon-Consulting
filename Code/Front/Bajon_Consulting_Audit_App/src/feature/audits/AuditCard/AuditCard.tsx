@@ -1,11 +1,48 @@
 import './AuditCard.css';
 import { useNavigate } from "react-router-dom";
-import { DeleteIcon } from '@/components/ui/delete';
 import { HistoryIcon } from '@/components/ui/history';
 import { SquarePenIcon } from '@/components/ui/modify';
 import { SearchIcon } from '@/components/ui/search';
+import { ArchiveIcon } from '@/components/ui/archive';
+import { RefreshCCWIcon } from '@/components/ui/refresh-ccw';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../../../supabaseClient';
 
-function AuditCard({ audit }) {
+function AuditCard({ audit, onArchiveToggle }) {
+  const [isArchived, setIsArchived] = useState(audit.archived);
+
+  const toggleArchived = async () => {
+    try {
+      const newArchivedState = !isArchived;
+      // Mise à jour via Supabase
+      const { error } = await supabase
+        .from('audit')
+        .update({ archived: newArchivedState })
+        .eq('id', audit.id);
+
+      if (error) {
+        console.error('Erreur Supabase (toggle archived):', error);
+        return;
+      }
+
+      // Mise à jour locale après succès
+      setIsArchived(newArchivedState);
+      console.log(`Audit ${audit.id} archived state updated to ${newArchivedState}`);
+      
+      // Appel du callback parent pour rafraîchir la liste
+      if (onArchiveToggle) {
+        onArchiveToggle();
+      }
+    } catch (error) {
+      console.error('Error toggling archive state:', error);
+    }
+  };
+
+  useEffect (() => {
+        // Optionnel : récupérer les données utilisateur si nécessaire
+    },
+  );
+  
   const navigate = useNavigate();
   return (
     <div className="audit-card">
@@ -26,7 +63,7 @@ function AuditCard({ audit }) {
       <div className="audit-card-body">
         <p className="audit-card-text"><strong>Type d'Audit :</strong> {audit.audittype?.nameaudittype}</p>
         <p className="audit-card-text"><strong>Type d'Offre :</strong> {audit.auditoffer?.nameauditoffer}</p>
-        <p className="audit-card-text"><strong>Statut :</strong> {audit.status}</p>
+        <p className="audit-card-text"><strong>Statut :</strong> {audit.status?.auditstatus}</p>
       </div>
 
       <div className="audit-card-body">
@@ -34,7 +71,7 @@ function AuditCard({ audit }) {
         <span className='audit-card-text'> </span>
         <button className="audit-card-btn" onClick={() => navigate(`/audit/${audit.id}/edit`)}><SquarePenIcon /></button>
         <span className='audit-card-text'> </span>
-        <button className="audit-card-btn"><DeleteIcon /></button>
+        {isArchived ?(<button className="audit-card-btn" onClick={toggleArchived}><RefreshCCWIcon /> </button>) : (<button className="audit-card-btn" onClick={toggleArchived}><ArchiveIcon /></button>) }
       </div>
 
       <div className="audit-card-footer">

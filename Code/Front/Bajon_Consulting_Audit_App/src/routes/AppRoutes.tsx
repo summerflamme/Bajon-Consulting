@@ -28,7 +28,6 @@ export default function AppRoutes() {
                     <Route path="/users/info" element={<UserInfo />} />
                     <Route path="/users/userForm/creation" element={<UserForm mode={'creation'} />} />
                     <Route path="/users/userForm/:id" element={<UserForm mode={'edition'} />} />
-                    
                 </Route>
             </Routes>
             </ToastProvider>
