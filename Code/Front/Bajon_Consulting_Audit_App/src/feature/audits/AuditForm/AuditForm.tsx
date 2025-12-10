@@ -133,7 +133,7 @@ function AuditForm({
                     <div style={{ padding: 24 }}>
                         <p>Aucune section disponible.</p>
                         {mode === "edit" && (
-                            <button type="button" onClick={handleAddSection} className="btn-add">
+                            <button type="button" onClick={handleAddSection} className="auditform-list-btn">
                                 Ajouter une section
                             </button>
                         )}
@@ -178,14 +178,14 @@ function AuditForm({
 
                     <div className="mt-6 flex gap-3 alignItems">
                         {mode === "edit" && (
-                            <button type="button" onClick={handleAddSection} className="btn-add">
+                            <button type="button" onClick={handleAddSection} className="auditform-list-btn">
                                 Ajouter une section
                             </button>
                         )}
-                        <button type="submit" className="btn-primary" disabled={loading}>
+                        <button type="submit" className="auditform-list-btn" disabled={loading}>
                             {loading ? "Enregistrement..." : "Enregistrer"}
                         </button>
-                            <button type="button" className="btn-annuler" onClick={() => navigate("/audits")}>
+                            <button type="button" className="auditform-list-btn" onClick={() => navigate("/audits")}>
                             Annuler
                         </button>
                     </div>
