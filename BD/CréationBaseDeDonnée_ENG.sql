@@ -31,7 +31,7 @@ CREATE TABLE Client (
     clientAddress VARCHAR(255), -- implémenté
     clientCity VARCHAR(255), -- implémenté
     clientCountry VARCHAR(100), -- implémenté
-    siren VARCHAR(20), 
+    siren VARCHAR(20), -- implémenté
     vatNumber VARCHAR(20), -- implémenté
     businessActivity VARCHAR(100), -- implémenté
     rcsNumber VARCHAR(50), -- implémenté
