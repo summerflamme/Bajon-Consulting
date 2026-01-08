@@ -434,7 +434,7 @@ export default function NewAuditPage() {
 
     // Redirection
     // setTimeout(() => {
-    // window.location.href = "/audit";
+    //   window.location.href = `/audit/${insertedAuditId}/edit`;
     // }, 1500);
   }
 
@@ -469,7 +469,9 @@ export default function NewAuditPage() {
       const fullName = `${c.clientlastname} ${c.clientfirstname}`;
       const match =
         fullName.toLowerCase().trim() === clientLastName.toLowerCase().trim();
-      console.log(`Comparaison: "${fullName}" === "${clientLastName}" ? ${match}`);
+      console.log(
+        `Comparaison: "${fullName}" === "${clientLastName}" ? ${match}`
+      );
       return match;
     });
     if (client) {
@@ -519,7 +521,7 @@ export default function NewAuditPage() {
   // ========================================================
   // Affichage
   // ========================================================
-    return (
+  return (
     <div className="new-client-audits">
       <h1 className="titre-new-audits">Création d'audit</h1>
       <form onSubmit={handleSubmit} className="new-audits-form">
@@ -724,7 +726,9 @@ export default function NewAuditPage() {
                 .filter(
                   (a) =>
                     auditSearch.length === 0 ||
-                    a.auditname.toLowerCase().includes(auditSearch.toLowerCase())
+                    a.auditname
+                      .toLowerCase()
+                      .includes(auditSearch.toLowerCase())
                 )
                 .map((a) => (
                   <option key={a.id} value={a.auditname} />
