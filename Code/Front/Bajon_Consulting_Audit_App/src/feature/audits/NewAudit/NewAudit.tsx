@@ -40,6 +40,7 @@ export default function NewAuditPage() {
   const [auditsTemplate, setAuditsTemplate] = useState<any[]>([]);
 
   const [selectedAuditName, setSelectedAuditName] = useState("");
+  const [selectedAuditId, setSelectedAuditId] = useState("");
   const [selectedAuditTypeId, setSelectedAuditTypeId] = useState("");
   const [selectedAuditOfferId, setSelectedAuditOfferId] = useState("");
 
