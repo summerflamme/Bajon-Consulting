@@ -176,7 +176,7 @@ function QuestionBox({
                                         animate={{
                                             backgroundColor:
                                                 choices === "multiple-choice"
-                                                    ? "rgba(72, 100, 255, 0.8)"
+                                                    ? "#236084"
                                                     : "rgba(150,150,150,0.6)",
                                         }}
                                         transition={{ duration: 0.25 }}
@@ -227,7 +227,7 @@ function QuestionBox({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="btn-add"
+                        className="auditform-list-btn"
                     >
                         Ajouter une réponse
                     </motion.button>
