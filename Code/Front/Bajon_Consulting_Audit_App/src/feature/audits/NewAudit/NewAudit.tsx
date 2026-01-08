@@ -388,6 +388,7 @@ export default function NewAuditPage() {
       const client = existingClient[0];
       console.log("Client déjà existant :", client.id);
       checkCount += 1;
+      return;
     }
 
     // ========================================================
@@ -406,21 +407,19 @@ export default function NewAuditPage() {
       const audit = existingTemplate[0];
       console.log("Template d'audit déjà existant :", audit.id);
       checkCount += 1;
+      return;
     }
 
     if (checkCount === 1) {
       console.log("Une seule condition est vraie");
-      return;
     }
 
     if (checkCount === 2) {
       console.log("Les deux conditions sont vraies");
-      return;
     }
 
     if (checkCount === 0) {
       console.log("Aucune condition n'est vraie");
-      return;
     }
 
     // ========================================================
