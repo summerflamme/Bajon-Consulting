@@ -371,6 +371,8 @@ export default function NewAuditPage() {
       return;
     }
 
+    let checkCount = 0;
+
     // ========================================================
     // Vérifier si le client existe déjà
     // ========================================================
@@ -385,23 +387,39 @@ export default function NewAuditPage() {
     if (existingClient && existingClient.length > 0) {
       const client = existingClient[0];
       console.log("Client déjà existant :", client.id);
-      return;
+      checkCount += 1;
     }
 
     // ========================================================
     // Vérifier si l'audit existe déjà
     // ========================================================
     const auditNameToCheck = (auditSearch || "").trim();
-    const { data: existingTemplate, error: existingTemplateError } = await supabase
-      .from("audit")
-      .select("*")
-      .eq("template", true)
-      .eq("auditname", auditNameToCheck)
-      .limit(1);
+    const { data: existingTemplate, error: existingTemplateError } =
+      await supabase
+        .from("audit")
+        .select("*")
+        .eq("template", true)
+        .eq("auditname", auditNameToCheck)
+        .limit(1);
 
     if (existingTemplate && existingTemplate.length > 0) {
       const audit = existingTemplate[0];
       console.log("Template d'audit déjà existant :", audit.id);
+      checkCount += 1;
+    }
+
+    if (checkCount === 1) {
+      console.log("Une seule condition est vraie");
+      return;
+    }
+
+    if (checkCount === 2) {
+      console.log("Les deux conditions sont vraies");
+      return;
+    }
+
+    if (checkCount === 0) {
+      console.log("Aucune condition n'est vraie");
       return;
     }
 
@@ -494,9 +512,9 @@ export default function NewAuditPage() {
     console.log("Client créé :", { createdId, clientData });
 
     // Redirection
-    // setTimeout(() => {
-    //     window.location.href = "/audit";
-    // }, 1500);
+    setTimeout(() => {
+      window.location.href = `/audit/${insertedAuditId}/edit`;
+    }, 1500);
   }
 
   // ========================================================
@@ -789,7 +807,7 @@ export default function NewAuditPage() {
 
         <div className="Client-audits-template">
           <div className="new-field">
-            <label htmlFor="audits-name">Template audits</label>
+            <label htmlFor="audits-name">Audits</label>
             <input
               className="new-input-style"
               list="audits-list"
