@@ -71,12 +71,8 @@ function TemplateList() {
             ...template,
             creation_date: creation.modificationdate,
             creation_time: creation.modificationtime,
-            creation_staff_firstname: creation.staff?.firstname,
-            creation_staff_lastname: creation.staff?.lastname,
             last_modif_date: last.modificationdate,
             last_modif_time: last.modificationtime,
-            last_modif_staff_firstname: last.staff?.firstname,
-            last_modif_staff_lastname: last.staff?.lastname,
           };
         }
 
