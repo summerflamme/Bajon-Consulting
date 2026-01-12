@@ -6,6 +6,7 @@ import { supabase } from "../../../supabaseClient";
 
 export default function NewAuditPage() {
   const [nameAudit, setNameAudit] = useState("");
+  const [selectedAuditId, setSelectedAuditId] = useState("");
   const [auditType, setAuditType] = useState<any[]>([]);
   const [auditOffer, setAuditOffer] = useState<any[]>([]);
   const [clientLastName, setClientLastName] = useState("");
@@ -363,7 +364,7 @@ export default function NewAuditPage() {
   };
 
   // ========================================================
-  // Insert client + l'audit dans la base de donner
+  // Insertion client + l'audit dans la base de donner
   // ========================================================
   async function handleCreateClient() {
     if (!validEmail.test(clientEmail)) {
@@ -371,7 +372,8 @@ export default function NewAuditPage() {
       return;
     }
 
-    let checkCount = 0;
+    let clientExiste: boolean = false;
+    let isTemplate: boolean = false;
 
     // ========================================================
     // Vérifier si le client existe déjà
@@ -387,7 +389,7 @@ export default function NewAuditPage() {
     if (existingClient && existingClient.length > 0) {
       const client = existingClient[0];
       console.log("Client déjà existant :", client.id);
-      checkCount += 1;
+      clientExiste = true;
     }
 
     // ========================================================
@@ -405,116 +407,330 @@ export default function NewAuditPage() {
     if (existingTemplate && existingTemplate.length > 0) {
       const audit = existingTemplate[0];
       console.log("Template d'audit déjà existant :", audit.id);
-      checkCount += 1;
+      isTemplate = true;
     }
 
-    if (checkCount === 1) {
-      console.log("Une seule condition est vraie");
-      return;
-    }
-
-    if (checkCount === 2) {
-      console.log("Les deux conditions sont vraies");
-      return;
-    }
-
-    if (checkCount === 0) {
-      console.log("Aucune condition n'est vraie");
-      return;
-    }
-
-    // ========================================================
-    // Insertion du nouveau client si template non choisie
-    // ========================================================
-    const { data: clientData, error: error } = await supabase
-      .from("client")
-      .insert([
-        {
-          clientlastname: clientLastName,
-          clientfirstname: clientFirstName,
-          clientemail: clientEmail,
-          clientphone: clientPhone,
-          companyname: companyName,
-          clientaddress: clientAddress,
-          clientcity: clientCity,
-          clientcountry: clientCountry,
-          siren: siren,
-          vatnumber: vatNumber,
-          businessactivity: businessActivity,
-          rcsnumber: rcsNumber,
-          sharecapital: shareCapital ? parseFloat(shareCapital) : null,
-          socialnetworks: socialNetworks,
-          legalform: legalForm,
-          logo: logo || null,
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Erreur insertion :", error);
-      setMessage(`Erreur : ${error.message}`);
-      return;
-    }
-
-    const insertedClientId = clientData?.id;
-    console.log("Client inséré -> ID :", insertedClientId);
+    const clientExistant = clientExiste === true;
+    const templateExistant = isTemplate === true;
 
     const idauditofferValue = selectedAuditOfferId;
     const idaudittypeValue = selectedAuditTypeId;
     const nameAuditTemplate = selectedAuditName;
 
-    const { data: auditData, error: auditError } = await supabase
-      .from("audit")
-      .insert([
-        {
-          idaudittype: idaudittypeValue,
-          idauditoffer: idauditofferValue,
-          idstatus: 1,
-          auditname: nameAuditTemplate,
-        },
-      ])
-      .select()
-      .single();
+    const auditNameFromForm = auditSearch.trim();
 
-    if (auditError) {
-      console.error("Erreur insertion audit :", auditError);
-      setMessage(`Erreur audit : ${auditError.message}`);
-      return;
-    }
+    // ========================================================
+    // Condition pour les insert
+    // ========================================================
+    if (clientExistant && !templateExistant) {
+      console.log("clientExistant = true && !templateExistant = false");
 
-    const insertedAuditId = auditData?.id;
-    console.log("Client inséré -> ID :", insertedAuditId);
+      // ========================================================
+      // récupération du client existant
+      // ========================================================
+      const existingClientId = existingClient[0].id;
 
-    const { data: auditParticipate, error: auditParticipateError } =
-      await supabase
-        .from("participate")
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
         .insert([
           {
-            idclient: insertedClientId,
-            idaudit: insertedAuditId,
-            participationdate: new Date().toISOString().split("T")[0],
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
           },
         ])
         .select()
         .single();
 
-    if (auditParticipateError) {
-      console.error("Erreur insertion audit :", auditParticipateError);
-      setMessage(`Erreur audit : ${auditParticipateError.message}`);
+      const insertedAuditId = auditData.id;
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { error: participateError } = await supabase
+        .from("participate")
+        .insert([
+          {
+            idclient: existingClientId,
+            idaudit: insertedAuditId,
+            participationdate: new Date().toISOString().split("T")[0],
+          },
+        ]);
       return;
     }
 
-    const createdId =
-      Array.isArray(clientData) && (clientData as any).length > 0
-        ? (clientData as any)[0].id
-        : (clientData as any)?.id;
-    console.log("Client créé :", { createdId, clientData });
+    if (!clientExistant && templateExistant) {
+      console.log("!clientExistant = false && templateExistant = true");
+
+      // ========================================================
+      // récupération du template existant
+      // ========================================================
+      const existingTemplateId = existingTemplate[0].id;
+
+      // ========================================================
+      // insert table client
+      // ========================================================
+      const { data: clientData, error: error } = await supabase
+        .from("client")
+        .insert([
+          {
+            clientlastname: clientLastName,
+            clientfirstname: clientFirstName,
+            clientemail: clientEmail,
+            clientphone: clientPhone,
+            companyname: companyName,
+            clientaddress: clientAddress,
+            clientcity: clientCity,
+            clientcountry: clientCountry,
+            siren: siren,
+            vatnumber: vatNumber,
+            businessactivity: businessActivity,
+            rcsnumber: rcsNumber,
+            sharecapital: shareCapital ? parseFloat(shareCapital) : null,
+            socialnetworks: socialNetworks,
+            legalform: legalForm,
+            logo: logo || null,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedClientId = clientData?.id;
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData?.id;
+
+      const templateId = existingTemplate[0].id;
+
+      // ========================================================
+      // recherche de idtheme dans la table own
+      // ========================================================
+      const { data: templateThemes, error: templateThemesError } =
+        await supabase.from("own").select("idtheme").eq("idaudit", templateId);
+
+      // ========================================================
+      // insert table own
+      // ========================================================
+      for (const theme of templateThemes) {
+        if (!theme.idtheme) continue;
+        const { data: ownData, error: ownError } = await supabase
+          .from("own")
+          .insert([
+            {
+              idaudit: insertedAuditId,
+              idtheme: theme.idtheme,
+            },
+          ])
+          .select()
+          .single();
+
+        if (ownError) {
+          console.error(
+            "Erreur insertion Own pour le thème :",
+            theme.idtheme,
+            ownError
+          );
+        } else {
+          console.log("Own inséré pour le thème :", theme.idtheme, ownData);
+        }
+      }
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { data: auditParticipate, error: auditParticipateError } =
+        await supabase
+          .from("participate")
+          .insert([
+            {
+              idclient: insertedClientId,
+              idaudit: insertedAuditId,
+              participationdate: new Date().toISOString().split("T")[0],
+            },
+          ])
+          .select()
+          .single();
+      return;
+    }
+
+    if (clientExistant && templateExistant) { 
+      console.log("clientExistant = true && templateExistant = true");
+
+      // ========================================================
+      // récupération du client existant
+      // ========================================================
+      const existingClientId = existingClient[0].id;
+
+      // ========================================================
+      // récupération du template existant
+      // ========================================================
+      const existingTemplateId = existingTemplate[0].id;
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData.id;
+
+      const templateId = existingTemplate[0].id;
+
+      // ========================================================
+      // recherche de idtheme dans la table own
+      // ========================================================
+      const { data: templateThemes, error: templateThemesError } =
+        await supabase.from("own").select("idtheme").eq("idaudit", templateId);
+
+      // ========================================================
+      // insert table own
+      // ========================================================
+      for (const theme of templateThemes) {
+        if (!theme.idtheme) continue;
+        const { data: ownData, error: ownError } = await supabase
+          .from("own")
+          .insert([
+            {
+              idaudit: insertedAuditId,
+              idtheme: theme.idtheme,
+            },
+          ])
+          .select()
+          .single();
+
+        if (ownError) {
+          console.error(
+            "Erreur insertion Own pour le thème :",
+            theme.idtheme,
+            ownError
+          );
+        } else {
+          console.log("Own inséré pour le thème :", theme.idtheme, ownData);
+        }
+      }
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { error: participateError } = await supabase
+        .from("participate")
+        .insert([
+          {
+            idclient: existingClientId,
+            idaudit: insertedAuditId,
+            participationdate: new Date().toISOString().split("T")[0],
+          },
+        ]);
+      return;
+    }
+
+    if (!clientExistant && !templateExistant) {
+      console.log("!clientExistant = false && !templateExistant = false");
+
+      // ========================================================
+      // insert table client
+      // ========================================================
+      const { data: clientData, error: error } = await supabase
+        .from("client")
+        .insert([
+          {
+            clientlastname: clientLastName,
+            clientfirstname: clientFirstName,
+            clientemail: clientEmail,
+            clientphone: clientPhone,
+            companyname: companyName,
+            clientaddress: clientAddress,
+            clientcity: clientCity,
+            clientcountry: clientCountry,
+            siren: siren,
+            vatnumber: vatNumber,
+            businessactivity: businessActivity,
+            rcsnumber: rcsNumber,
+            sharecapital: shareCapital ? parseFloat(shareCapital) : null,
+            socialnetworks: socialNetworks,
+            legalform: legalForm,
+            logo: logo || null,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedClientId = clientData?.id;
+      const auditNameFromForm = auditSearch.trim();
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData?.id;
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { data: auditParticipate, error: auditParticipateError } =
+        await supabase
+          .from("participate")
+          .insert([
+            {
+              idclient: insertedClientId,
+              idaudit: insertedAuditId,
+              participationdate: new Date().toISOString().split("T")[0],
+            },
+          ])
+          .select()
+          .single();
+      return;
+    }
 
     // Redirection
-    setTimeout(() => {
-      window.location.href = `/audit/${insertedAuditId}/edit`;
-    }, 1500);
+    // setTimeout(() => {
+    //   window.location.href = `/audit/${insertedAuditId}/edit`;
+    // }, 1500);
   }
 
   // ========================================================
