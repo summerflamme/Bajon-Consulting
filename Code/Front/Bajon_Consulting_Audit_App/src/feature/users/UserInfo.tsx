@@ -3,7 +3,8 @@ import avatarImage from "../../assets/icone-utilisateur.png";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../../feature/auth/useAuth"; // Assure-toi du bon chemin
+import { useAuth } from "../../feature/auth/useAuth";
+
 
 interface User {
   id: string;
@@ -19,16 +20,18 @@ interface User {
 function UserInfo() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { currentUser, currentRole } = useAuth(); // Récupère l'utilisateur courant
+  const { currentUser, currentRole } = useAuth();
+  const isAdmin = currentRole === "Administrateur";
+
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
 
-    // Si l'utilisateur n'est pas admin et tente d'accéder à un autre ID
+    // Sécurité : non-admin ne peut voir que son profil
     if (currentRole !== "Administrateur" && currentUser?.id !== id) {
-      navigate("/audits"); // Redirection
+      navigate("/audits");
       return;
     }
 
@@ -69,18 +72,34 @@ function UserInfo() {
         <div className="user-settings-section">
           <h3>Paramètres</h3>
           <div className="user-info-row"><strong>Rôle :</strong> {user.currentRole ?? '-'}</div>
-          <div className="user-info-row"><strong>Date de création :</strong> 
+          <div className="user-info-row">
+            <strong>Date de création :</strong>{" "}
             {user.created_at ? new Date(user.created_at).toLocaleDateString() : '-'}
           </div>
-          <div className="user-info-row"><strong>Dernière connexion :</strong> 
+          <div className="user-info-row">
+            <strong>Dernière connexion :</strong>{" "}
             {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString() : '-'}
           </div>
         </div>
       </div>
 
       <div className="user-actions">
-        <button className="btn primary">Modifier les informations</button>
-        <button className="btn secondary">Mot de passe oublié</button>
+        <button
+          className="btn primary"
+          onClick={() => navigate(`/users/userForm/${id}`)}
+        >
+          Modifier les informations
+        </button>
+
+        {isAdmin && (
+          <button
+            className="btn secondary"
+            onClick={() => navigate("/users/list")}
+          >
+            Liste des utilisateurs
+          </button>
+        )}
+
       </div>
     </div>
   );
