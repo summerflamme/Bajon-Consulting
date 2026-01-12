@@ -15,4 +15,5 @@ export default function BaseLayout() {
       </div>
     </AuthProvider>
   );
+
 }

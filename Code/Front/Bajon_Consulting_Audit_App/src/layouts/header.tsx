@@ -50,12 +50,12 @@ export default function Header() {
   const menus = [
     { id: "audits", title: "Audits", link: "/audits" },
     { id: "templates", title: "Templates", link: "/templates" },
-    { id: "clients", title: "Clients", link: "/clients" },
+    { id: "clients", title: "Clients", link: "/clients/list" },
     {
       id: "user",
       title: <UserIcon size={28} />,
       subMenus: [
-        { title: "Mes informations", link: "/users/info" },
+        {title: "Mes informations", link: currentUser ? `/users/info/${currentUser.id}` : "/users/info"},
         { title: "Liste des utilisateurs", link: "/users/list" },
       ],
     },

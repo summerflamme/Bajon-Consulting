@@ -38,6 +38,23 @@ function AuditForm({
         const initialSet = new Set(serialize(initial));
         return updated.filter(r => !initialSet.has(`${r.idQuestion}-${r.idAnswer}`));
     };
+    //  Ajouter une nouvelle section
+    const handleAddSection = () => {
+        const newSection: Section = {
+            id: Date.now(),
+            title: "Nouvelle section",
+            questions: [
+                {
+                    id: Date.now() + 1,
+                    text: "",
+                    choices: "single-choice",
+                    descriptions: "",
+                    answers: [{ id: Date.now() + 2, text: "", score: 0 }]
+                },
+            ],
+        };
+        onUpdate([...data, newSection]);
+    };
 
     // --- Mise à jour (structure ou réponses) ---
     const updateAudit = useCallback(async () => {
@@ -115,6 +132,11 @@ function AuditForm({
                 <div className="audit-form-section-edit">
                     <div style={{ padding: 24 }}>
                         <p>Aucune section disponible.</p>
+                        {mode === "edit" && (
+                            <button type="button" onClick={handleAddSection} className="auditform-list-btn">
+                                Ajouter une section
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -155,10 +177,15 @@ function AuditForm({
                     />
 
                     <div className="mt-6 flex gap-3 alignItems">
-                        <button type="submit" className="btn-primary" disabled={loading}>
+                        {mode === "edit" && (
+                            <button type="button" onClick={handleAddSection} className="auditform-list-btn">
+                                Ajouter une section
+                            </button>
+                        )}
+                        <button type="submit" className="auditform-list-btn" disabled={loading}>
                             {loading ? "Enregistrement..." : "Enregistrer"}
                         </button>
-                            <button type="button" className="btn-annuler" onClick={() => navigate("/audits")}>
+                            <button type="button" className="auditform-list-btn" onClick={() => navigate("/audits")}>
                             Annuler
                         </button>
                     </div>

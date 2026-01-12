@@ -1,9 +1,14 @@
 /* Styles Editor Page */
 .audit-editor-page {
   gap: 20px;
-  background-color: #3092b6;
-
+  background-image: url("../../../assets/fond-users-list.jpg"); /* chemin vers ton image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 2rem 0;
 }
+
 .audit-form{
   padding: 20px;
   display: flex;
@@ -110,32 +115,28 @@
   text-align: left;
   padding: 8px 12px;
   border-radius: 6px;
-  background: #ffffff;
-  color: #374151; /* gray-700 */
+  background: transparent;
+  color: #236084; 
   border: 1px solid transparent;
   cursor: pointer;
   transition: background-color .12s ease, color .12s ease;
 }
 
 .sidebar-nav .section-button:hover {
-  background: #ebf8ff; /* blue-100 */
+  background: #0056b3; 
+  color: #fff; 
 }
 
 .sidebar-nav .section-button.active {
-  background: #3b82f6; /* blue-500 */
+  background: #0056b3;
   color: #ffffff;
 }
-
-
-
-/* QuestionBox edit*/
 
 .audit-form-question-edit {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.148);
   display: flex;
   flex-direction: column;
   border-radius: 3px;
-  border-top: 4px solid #000000;
   padding: 10px;
   margin-bottom: 10px;
   background-color: rgba(224, 224, 224, 0.8);
@@ -158,6 +159,8 @@
   border-radius: 6px;
 }
 .audit-form-question-edit textarea {
+  background-color: #fff;
+  color: #000000;
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -274,15 +277,6 @@
   background-color: #ebf8ff;
 }
 
-/* Selected state for answers in view mode */
-.answer-choice.selected {
-  background-color: #3b82f6; /* blue-100 */
-}
-.answer-choice.selected label {
-  color: #ffffff;
-  font-weight: 700;
-}
-
 /* Delete icon à droite */
 .delete-icon {
   margin-left: auto;
@@ -336,9 +330,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(150, 150, 150, 0.6);
+  background-color: #236084;
   border-radius: 24px;
   transition: background-color 0.25s ease;
+  color: #236084;
 }
 
 /* Bouton rond */
@@ -394,16 +389,12 @@
 
 /* Collapsed state reduces width and hides the list text */
 .sidebar-nav.collapsed {
-  width: 56px !important;
-  border-radius: 100%;
-  overflow: hidden; /* hide internal content but keep area */
-  position: fixed;
+  width: 56px ;
 }
 .sidebar-nav.collapsed .sections-list {
-  display: none; /* hide section buttons when collapsed */
-}
-.sidebar-nav.collapsed .section-button {
-  display: none; /* fallback: ensure individual buttons are hidden */
+  margin:2px;
+  gap:2px;
+  display: none; 
 }
 
 /* Keep the toggle visible even when the sidebar is collapsed */
@@ -504,72 +495,6 @@
   }}
 
 
-
-
-
-/* ===== Button styles (reusable) ===== */
-/* Primary action button */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  background: var(--btn-primary, #2563eb); /* blue-600 fallback */
-  color: #ffffff;
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  line-height: 1;
-  transition: background 0.12s ease, transform 0.06s ease, box-shadow 0.12s ease;
-}
-.btn-primary:hover { background: #1e40af; transform: translateY(-1px); }
-.btn-primary:active { transform: translateY(0); }
-.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-/* Secondary / neutral button */
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  background: #ffffff;
-  color: #111827; /* gray-900 */
-  border: 1px solid #e5e7eb; /* gray-200 */
-  cursor: pointer;
-  font-weight: 600;
-}
-.btn-secondary:hover { background: #f9fafb; }
-
-/* Navigation buttons used in view mode (Précédent / Suivant) */
-.btn-nav {
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.375rem;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  color: #111827;
-  cursor: pointer;
-  font-weight: 600;
-}
-.btn-nav:hover { background: #f3f4f6; }
-
-/* Add button variant (btn-add used in components) */
-.btn-add {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  background: var(--btn-add, #059669); /* green-600 fallback */
-  color: #ffffff;
-  border: 1px solid transparent;
-  cursor: pointer;
-  font-weight: 600;
-}
-.btn-add:hover { background: #047857; }
-
 /* Delete icon / button styling */
 .delete-icon {
   display: inline-flex;
@@ -582,10 +507,6 @@
   cursor: pointer;
 }
 .delete-icon:hover { background: rgba(239, 68, 68, 0.08); }
-
-/* Rounded / small helpers */
-.btn-rounded { border-radius: 9999px; }
-.btn-sm { padding: 0.25rem 0.5rem; font-size: 0.85rem; }
 
 /* Make primary/nav/add buttons full-width on narrow screens */
 @media (max-width: 768px) {
@@ -600,10 +521,6 @@
 }
 .audit-form-switch {
     margin: 0.5em;
-  }
-  .btn-primary, .btn-nav, .btn-add {
-    font-size: 0.7em;
-    justify-content: center;
   }
   .sidebar-nav{
     position: fixed;
@@ -647,22 +564,6 @@
 
 }
 
-/* Disabled look for any button-like element */
-[disabled].btn-primary, [disabled].btn-secondary, [disabled].btn-nav, [disabled].btn-add {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Explicit utility class for disabled state (useful when toggling via className) */
-.btn-disabled {
-  background: #e5e7eb !important; /* gray-200 */
-  color: #6b7280 !important; /* gray-500 */
-  cursor: not-allowed !important;
-  box-shadow: none !important;
-}
-
-/* ===== End button styles ===== */
-
 /* ensure sidebar width transitions smoothly when collapsed class toggles */
 .sidebar-nav {
   transition: width 240ms cubic-bezier(.2,.9,.2,1), padding 180ms ease, border-radius 180ms ease;
@@ -702,3 +603,37 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+
+
+
+
+
+
+
+
+
+
+.auditform-list-btn {
+  background: #236084;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.auditform-list-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.auditform-list-btn:active {
+  transform: translateY(0);
+}

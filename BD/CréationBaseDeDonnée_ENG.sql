@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS OptionAnswer CASCADE;
 DROP TABLE IF EXISTS Question CASCADE;
 
 -- Drop independent tables
+DROP TABLE IF EXISTS Status CASCADE;
 DROP TABLE IF EXISTS Type CASCADE;
 DROP TABLE IF EXISTS Theme CASCADE;
 DROP TABLE IF EXISTS Staff CASCADE;
@@ -52,22 +53,42 @@ CREATE TABLE AuditOffer (
     nameAuditOffer VARCHAR(100) NOT NULL
 );
 
--- Table Audit
-CREATE TABLE Audit (
+-- Table Status
+CREATE TABLE Status(
     id SERIAL PRIMARY KEY,
-    idAuditType INT NOT NULL,
-    idAuditOffer INT NOT NULL,
-    auditName VARCHAR(150) NOT NULL,
-    status VARCHAR(50),
-    template BOOLEAN NOT NULL DEFAULT false,
-    FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
-    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id)
+    auditStatus VARCHAR(50)
 );
 
 -- Table role
 CREATE TABLE Role  (
     id SERIAL PRIMARY KEY,
     roleName VARCHAR(150) NOT NULL
+);
+
+-- Table Theme
+CREATE TABLE Theme (
+    id SERIAL PRIMARY KEY,
+    themeName VARCHAR(150)
+);
+
+-- Table Type
+CREATE TABLE Type (
+    id SERIAL PRIMARY KEY,
+    typeName VARCHAR(100)
+);
+
+-- Table Audit
+CREATE TABLE Audit (
+    id SERIAL PRIMARY KEY,
+    idAuditType INT NOT NULL,
+    idAuditOffer INT NOT NULL,
+    idStatus INT NOT NULL,
+    auditName VARCHAR(150) NOT NULL,
+    template BOOLEAN NOT NULL DEFAULT false,
+    archived BOOLEAN NOT NULL DEFAULT false,
+    FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
+    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id),
+    FOREIGN KEY (idStatus) REFERENCES Status(id)
 );
 
 -- Table User ( pour les test )
@@ -79,24 +100,10 @@ CREATE TABLE Staff (
     FOREIGN KEY (idRole) REFERENCES Role(id)
 );
 
--- Table Theme
-CREATE TABLE Theme (
-    id SERIAL PRIMARY KEY,
-    themeName VARCHAR(150),
-    status VARCHAR(50)
-);
-
--- Table Type
-CREATE TABLE Type (
-    id SERIAL PRIMARY KEY,
-    typeName VARCHAR(100)
-);
-
 -- Table Question
 CREATE TABLE Question (
     id SERIAL PRIMARY KEY,
     label VARCHAR(255),
-    status VARCHAR(50),
     idTheme INT NOT NULL,
     FOREIGN KEY (idTheme) REFERENCES Theme(id)
 );
