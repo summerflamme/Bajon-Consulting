@@ -6,6 +6,7 @@ import { supabase } from "../../../supabaseClient";
 
 export default function NewAuditPage() {
   const [nameAudit, setNameAudit] = useState("");
+  const [selectedAuditId, setSelectedAuditId] = useState("");
   const [auditType, setAuditType] = useState<any[]>([]);
   const [auditOffer, setAuditOffer] = useState<any[]>([]);
   const [clientLastName, setClientLastName] = useState("");
@@ -25,8 +26,8 @@ export default function NewAuditPage() {
   const [legalForm, setLegalForm] = useState("");
   const [logo, setLogo] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
 
+  const [message, setMessage] = useState("");
   const validEmail = new RegExp(
     "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$"
   );
@@ -36,6 +37,7 @@ export default function NewAuditPage() {
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
+
   const [auditsTemplate, setAuditsTemplate] = useState<any[]>([]);
 
   const [selectedAuditName, setSelectedAuditName] = useState("");
@@ -56,15 +58,22 @@ export default function NewAuditPage() {
     try {
       const { data, error } = await supabase
         .from("audit")
-        .select(`id, auditname, audittype (id, nameaudittype)`)
+        .select(
+          `
+                    id,
+                    auditname,
+                    audittype (id, nameaudittype)
+                `
+        )
         .eq("template", false);
+
       if (error) {
         setFetchError(error.message);
         setAudits([]);
       } else {
         setAudits(data ?? []);
       }
-    } catch (err: any) {
+    } catch (err) {
       setFetchError(err.message ?? "Erreur inconnue");
       setAudits([]);
     }
@@ -78,12 +87,30 @@ export default function NewAuditPage() {
   // ========================================================
   // Récupération templates d'audits
   // ========================================================
-  const fetchAuditsTemplate = async (value: string) => {
+  const fetchAuditsTemplate = async (value) => {
     setAuditSearch(value);
+
     const { data, error } = await supabase
       .from("audit")
       .select(
-        `id, auditname, audittype:idaudittype (id, nameaudittype), own (theme:idtheme (id, themename, question (id, label)))`
+        `
+                id,
+                auditname,
+                audittype:idaudittype (
+                    id,
+                    nameaudittype
+                ),
+                own (
+                    theme:idtheme (
+                        id,
+                        themename,
+                        question (
+                            id,
+                            label
+                        )
+                    )
+                )
+            `
       )
       .eq("template", true)
       .order("auditname");
@@ -94,8 +121,9 @@ export default function NewAuditPage() {
         id: audit.id,
         auditname: audit.auditname,
         audittype: audit.audittype,
-        themes: audit.own?.map((o: any) => o.theme) || [],
+        themes: audit.own?.map((o) => o.theme) || [],
       }));
+
       setAuditsTemplate(transformedData);
     }
   };
@@ -107,11 +135,18 @@ export default function NewAuditPage() {
   // ========================================================
   // Récupération d'audits type
   // ========================================================
-  const fetchAuditsType = async (value: string) => {
+
+  const fetchAuditsType = async (value) => {
     setAuditTypeSearch(value);
+
     const { data, error } = await supabase
       .from("audittype")
-      .select(`id, nameaudittype`)
+      .select(
+        `
+                id,
+                nameaudittype
+            `
+      )
       .order("nameaudittype");
 
     if (!error && data) {
@@ -120,6 +155,7 @@ export default function NewAuditPage() {
         id: audittype.id,
         nameaudittype: audittype.nameaudittype,
       }));
+
       setAuditType(transformedData);
     }
   };
@@ -131,11 +167,18 @@ export default function NewAuditPage() {
   // ========================================================
   // Récupération d'audits offer
   // ========================================================
-  const fetchAuditsOffer = async (value: string) => {
+
+  const fetchAuditsOffer = async (value) => {
     setAuditOfferSearch(value);
+
     const { data, error } = await supabase
       .from("auditoffer")
-      .select(`id, nameauditoffer`)
+      .select(
+        `
+                id,
+                nameauditoffer
+            `
+      )
       .order("nameauditoffer");
 
     if (!error && data) {
@@ -144,6 +187,7 @@ export default function NewAuditPage() {
         id: auditoffer.id,
         nameauditoffer: auditoffer.nameauditoffer,
       }));
+
       setAuditOffer(transformedData);
     }
   };
@@ -159,20 +203,23 @@ export default function NewAuditPage() {
     setAuditSearch(value);
     const selected = auditsTemplate.find((a) => a.auditname === value);
     if (selected) {
-      setSelectedAuditName(selected.auditname);
+      setSelectedAuditId(selected.id);
       console.log("Audit sélectionné:", selected);
     } else {
-      setSelectedAuditName("");
+      setSelectedAuditId("");
     }
   };
 
   useEffect(() => {
     if (auditsTemplate.length === 0 || !auditSearch) return;
+
     console.log("Vérification audit:", auditSearch);
+
     const selected = auditsTemplate.find(
       (a) =>
         a.auditname.toLowerCase().trim() === auditSearch.toLowerCase().trim()
     );
+
     if (selected) {
       console.log(
         "Audit trouvé et sélectionné:",
@@ -180,7 +227,7 @@ export default function NewAuditPage() {
         "ID:",
         selected.id
       );
-      setSelectedAuditName(selected.auditname);
+      setSelectedAuditId(selected.id);
     } else {
       console.log("Aucun audit exact trouvé pour:", auditSearch);
     }
@@ -202,12 +249,15 @@ export default function NewAuditPage() {
 
   useEffect(() => {
     if (auditType.length === 0 || !auditTypeSearch) return;
+
     console.log("Vérification audit type:", auditTypeSearch);
+
     const selected = auditType.find(
       (a) =>
         a.nameaudittype.toLowerCase().trim() ===
         auditTypeSearch.toLowerCase().trim()
     );
+
     if (selected) {
       console.log(
         "Audit type trouvé et sélectionné:",
@@ -237,12 +287,15 @@ export default function NewAuditPage() {
 
   useEffect(() => {
     if (auditOffer.length === 0 || !auditOfferSearch) return;
+
     console.log("Vérification audit offer:", auditOfferSearch);
+
     const selected = auditOffer.find(
       (a) =>
         a.nameauditoffer.toLowerCase().trim() ===
         auditOfferSearch.toLowerCase().trim()
     );
+
     if (selected) {
       console.log(
         "Audit offer trouvé et sélectionné:",
@@ -262,13 +315,14 @@ export default function NewAuditPage() {
   const fetchClients = async () => {
     try {
       const { data, error } = await supabase.from("client").select("*");
+
       if (error) {
         setFetchError(error.message);
         setClients([]);
       } else {
         setClients(data ?? []);
       }
-    } catch (err: any) {
+    } catch (err) {
       setFetchError(err.message ?? "Erreur inconnue");
       setClients([]);
     }
@@ -281,9 +335,10 @@ export default function NewAuditPage() {
   // ========================================================
   // Autocomplétion client
   // ========================================================
-  const handleSearch = async (value: string) => {
+  const handleSearch = async (value) => {
     console.log("Recherche pour:", value);
     setClientLastName(value);
+
     if (value.length < 1) {
       setSuggestions([]);
       return;
@@ -291,7 +346,7 @@ export default function NewAuditPage() {
 
     const { data: handelsShearch, error: handelsShearchError } = await supabase
       .from("client")
-      .select("*")
+      .select(`*`)
       .or(`clientlastname.ilike.%${value}%,clientfirstname.ilike.%${value}%`)
       .limit(10);
 
@@ -309,7 +364,7 @@ export default function NewAuditPage() {
   };
 
   // ========================================================
-  // Insert client + l'audit
+  // Insertion client + l'audit dans la base de donner
   // ========================================================
   async function handleCreateClient() {
     if (!validEmail.test(clientEmail)) {
@@ -317,7 +372,13 @@ export default function NewAuditPage() {
       return;
     }
 
+    let clientExiste: boolean = false;
+    let isTemplate: boolean = false;
+
+    // ========================================================
     // Vérifier si le client existe déjà
+    // ========================================================
+
     const { data: existingClient } = await supabase
       .from("client")
       .select("*")
@@ -328,119 +389,365 @@ export default function NewAuditPage() {
     if (existingClient && existingClient.length > 0) {
       const client = existingClient[0];
       console.log("Client déjà existant :", client.id);
-      return;
+      clientExiste = true;
     }
 
+    // ========================================================
     // Vérifier si l'audit existe déjà
+    // ========================================================
     const auditNameToCheck = (auditSearch || "").trim();
-    const { data: existingTemplate } = await supabase
-      .from("audit")
-      .select("*")
-      .eq("template", true)
-      .eq("auditname", auditNameToCheck)
-      .limit(1);
+    const { data: existingTemplate, error: existingTemplateError } =
+      await supabase
+        .from("audit")
+        .select("*")
+        .eq("template", true)
+        .eq("auditname", auditNameToCheck)
+        .limit(1);
 
     if (existingTemplate && existingTemplate.length > 0) {
       const audit = existingTemplate[0];
       console.log("Template d'audit déjà existant :", audit.id);
-      return;
+      isTemplate = true;
     }
 
-    // Insertion du nouveau client
-    const { data: clientData, error: error } = await supabase
-      .from("client")
-      .insert([
-        {
-          clientlastname: clientLastName,
-          clientfirstname: clientFirstName,
-          clientemail: clientEmail,
-          clientphone: clientPhone,
-          companyname: companyName,
-          clientaddress: clientAddress,
-          clientcity: clientCity,
-          clientcountry: clientCountry,
-          siren: siren,
-          vatnumber: vatNumber,
-          businessactivity: businessActivity,
-          rcsnumber: rcsNumber,
-          sharecapital: shareCapital ? parseFloat(shareCapital) : null,
-          socialnetworks: socialNetworks,
-          legalform: legalForm,
-          logo: logo || null,
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Erreur insertion :", error);
-      setMessage(`Erreur : ${error.message}`);
-      return;
-    }
-
-    const insertedClientId = clientData?.id;
-    console.log("Client inséré -> ID :", insertedClientId);
+    const clientExistant = clientExiste === true;
+    const templateExistant = isTemplate === true;
 
     const idauditofferValue = selectedAuditOfferId;
     const idaudittypeValue = selectedAuditTypeId;
     const nameAuditTemplate = selectedAuditName;
 
-    const { data: auditData, error: auditError } = await supabase
-      .from("audit")
-      .insert([
-        {
-          idaudittype: idaudittypeValue,
-          idauditoffer: idauditofferValue,
-          idstatus: 1,
-          auditname: nameAuditTemplate,
-        },
-      ])
-      .select()
-      .single();
+    const auditNameFromForm = auditSearch.trim();
 
-    if (auditError) {
-      console.error("Erreur insertion audit :", auditError);
-      setMessage(`Erreur audit : ${auditError.message}`);
-      return;
-    }
+    // ========================================================
+    // Condition pour les insert
+    // ========================================================
+    if (clientExistant && !templateExistant) {
+      console.log("clientExistant = true && !templateExistant = false");
 
-    const insertedAuditId = auditData?.id;
-    console.log("Client inséré -> ID :", insertedAuditId);
+      // ========================================================
+      // récupération du client existant
+      // ========================================================
+      const existingClientId = existingClient[0].id;
 
-    const { data: auditParticipate, error: auditParticipateError } =
-      await supabase
-        .from("participate")
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
         .insert([
           {
-            idclient: insertedClientId,
-            idaudit: insertedAuditId,
-            participationdate: new Date().toISOString().split("T")[0],
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
           },
         ])
         .select()
         .single();
 
-    if (auditParticipateError) {
-      console.error("Erreur insertion audit :", auditParticipateError);
-      setMessage(`Erreur audit : ${auditParticipateError.message}`);
-      return;
+      const insertedAuditId = auditData.id;
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { error: participateError } = await supabase
+        .from("participate")
+        .insert([
+          {
+            idclient: existingClientId,
+            idaudit: insertedAuditId,
+            participationdate: new Date().toISOString().split("T")[0],
+          },
+        ]);
+      
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
     }
 
-    const createdId =
-      Array.isArray(clientData) && (clientData as any).length > 0
-        ? (clientData as any)[0].id
-        : (clientData as any)?.id;
-    console.log("Client créé :", { createdId, clientData });
+    if (!clientExistant && templateExistant) {
+      console.log("!clientExistant = false && templateExistant = true");
 
-    // Redirection
-    // setTimeout(() => {
-    //   window.location.href = `/audit/${insertedAuditId}/edit`;
-    // }, 1500);
+      // ========================================================
+      // récupération du template existant
+      // ========================================================
+      const existingTemplateId = existingTemplate[0].id;
+
+      // ========================================================
+      // insert table client
+      // ========================================================
+      const { data: clientData, error: error } = await supabase
+        .from("client")
+        .insert([
+          {
+            clientlastname: clientLastName,
+            clientfirstname: clientFirstName,
+            clientemail: clientEmail,
+            clientphone: clientPhone,
+            companyname: companyName,
+            clientaddress: clientAddress,
+            clientcity: clientCity,
+            clientcountry: clientCountry,
+            siren: siren,
+            vatnumber: vatNumber,
+            businessactivity: businessActivity,
+            rcsnumber: rcsNumber,
+            sharecapital: shareCapital ? parseFloat(shareCapital) : null,
+            socialnetworks: socialNetworks,
+            legalform: legalForm,
+            logo: logo || null,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedClientId = clientData?.id;
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData?.id;
+
+      const templateId = existingTemplate[0].id;
+
+      // ========================================================
+      // recherche de idtheme dans la table own
+      // ========================================================
+      const { data: templateThemes, error: templateThemesError } =
+        await supabase.from("own").select("idtheme").eq("idaudit", templateId);
+
+      // ========================================================
+      // insert table own
+      // ========================================================
+      for (const theme of templateThemes) {
+        if (!theme.idtheme) continue;
+        const { data: ownData, error: ownError } = await supabase
+          .from("own")
+          .insert([
+            {
+              idaudit: insertedAuditId,
+              idtheme: theme.idtheme,
+            },
+          ])
+          .select()
+          .single();
+
+        if (ownError) {
+          console.error(
+            "Erreur insertion Own pour le thème :",
+            theme.idtheme,
+            ownError
+          );
+        } else {
+          console.log("Own inséré pour le thème :", theme.idtheme, ownData);
+        }
+      }
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { data: auditParticipate, error: auditParticipateError } =
+        await supabase
+          .from("participate")
+          .insert([
+            {
+              idclient: insertedClientId,
+              idaudit: insertedAuditId,
+              participationdate: new Date().toISOString().split("T")[0],
+            },
+          ])
+          .select()
+          .single();
+      
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+    }
+
+    if (clientExistant && templateExistant) {
+      console.log("clientExistant = true && templateExistant = true");
+
+      // ========================================================
+      // récupération du client existant
+      // ========================================================
+      const existingClientId = existingClient[0].id;
+
+      // ========================================================
+      // récupération du template existant
+      // ========================================================
+      const existingTemplateId = existingTemplate[0].id;
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData.id;
+
+      const templateId = existingTemplate[0].id;
+
+      // ========================================================
+      // recherche de idtheme dans la table own
+      // ========================================================
+      const { data: templateThemes, error: templateThemesError } =
+        await supabase.from("own").select("idtheme").eq("idaudit", templateId);
+
+      // ========================================================
+      // insert table own
+      // ========================================================
+      for (const theme of templateThemes) {
+        if (!theme.idtheme) continue;
+        const { data: ownData, error: ownError } = await supabase
+          .from("own")
+          .insert([
+            {
+              idaudit: insertedAuditId,
+              idtheme: theme.idtheme,
+            },
+          ])
+          .select()
+          .single();
+
+        if (ownError) {
+          console.error(
+            "Erreur insertion Own pour le thème :",
+            theme.idtheme,
+            ownError
+          );
+        } else {
+          console.log("Own inséré pour le thème :", theme.idtheme, ownData);
+        }
+      }
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { error: participateError } = await supabase
+        .from("participate")
+        .insert([
+          {
+            idclient: existingClientId,
+            idaudit: insertedAuditId,
+            participationdate: new Date().toISOString().split("T")[0],
+          },
+        ]);
+      
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+    }
+
+    if (!clientExistant && !templateExistant) {
+      console.log("!clientExistant = false && !templateExistant = false");
+
+      // ========================================================
+      // insert table client
+      // ========================================================
+      const { data: clientData, error: error } = await supabase
+        .from("client")
+        .insert([
+          {
+            clientlastname: clientLastName,
+            clientfirstname: clientFirstName,
+            clientemail: clientEmail,
+            clientphone: clientPhone,
+            companyname: companyName,
+            clientaddress: clientAddress,
+            clientcity: clientCity,
+            clientcountry: clientCountry,
+            siren: siren,
+            vatnumber: vatNumber,
+            businessactivity: businessActivity,
+            rcsnumber: rcsNumber,
+            sharecapital: shareCapital ? parseFloat(shareCapital) : null,
+            socialnetworks: socialNetworks,
+            legalform: legalForm,
+            logo: logo || null,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedClientId = clientData?.id;
+      const auditNameFromForm = auditSearch.trim();
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData, error: auditError } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData?.id;
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const { data: auditParticipate, error: auditParticipateError } =
+        await supabase
+          .from("participate")
+          .insert([
+            {
+              idclient: insertedClientId,
+              idaudit: insertedAuditId,
+              participationdate: new Date().toISOString().split("T")[0],
+            },
+          ])
+          .select()
+          .single();
+          
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+    }
   }
 
   // ========================================================
   // Fin BD
   // ========================================================
+
   const handleSelectClient = (client: any) => {
     setClientLastName(client.clientlastname || "");
     setClientFirstName(client.clientfirstname || "");
@@ -463,17 +770,20 @@ export default function NewAuditPage() {
 
   useEffect(() => {
     if (suggestions.length === 0) return;
+
     console.log("Vérification sélection:", clientLastName);
     console.log("Suggestions disponibles:", suggestions);
+
     const client = suggestions.find((c) => {
       const fullName = `${c.clientlastname} ${c.clientfirstname}`;
       const match =
         fullName.toLowerCase().trim() === clientLastName.toLowerCase().trim();
       console.log(
-        `Comparaison: "${fullName}" === "${clientLastName}" ? ${match}`
+        `   Comparaison: "${fullName}" === "${clientLastName}" ? ${match}`
       );
       return match;
     });
+
     if (client) {
       console.log("Client trouvé, remplissage des champs...");
       handleSelectClient(client);
@@ -485,6 +795,7 @@ export default function NewAuditPage() {
   // ========================================================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const payload = {
       clientLastName,
       clientFirstName,
@@ -508,10 +819,12 @@ export default function NewAuditPage() {
     console.log("Créer client : ", payload);
     setError("");
     alert("client créé !");
+
     if (!validEmail.test(clientEmail)) {
       setMessage("Email invalide");
       return;
     }
+
     if (!validPhone.test(clientPhone)) {
       setMessage("Numéro de téléphone invalide");
       return;
@@ -524,6 +837,7 @@ export default function NewAuditPage() {
   return (
     <div className="new-client-audits">
       <h1 className="titre-new-audits">Création d'audit</h1>
+
       <form onSubmit={handleSubmit} className="new-audits-form">
         <div className="Client-info-name">
           <div className="new-field">
@@ -546,6 +860,7 @@ export default function NewAuditPage() {
               ))}
             </datalist>
           </div>
+
           <div className="new-field">
             <label htmlFor="client-first">Prénom du client</label>
             <input
@@ -569,6 +884,7 @@ export default function NewAuditPage() {
               required
             />
           </div>
+
           <div className="new-field">
             <label htmlFor="client-city">Ville du client</label>
             <input
@@ -579,6 +895,7 @@ export default function NewAuditPage() {
               required
             />
           </div>
+
           <div className="new-field">
             <label htmlFor="client-country">Pays du client</label>
             <input
@@ -615,6 +932,7 @@ export default function NewAuditPage() {
               onChange={(value: string) => setClientPhone(value)}
             />
           </div>
+
           <div className="new-field">
             <label htmlFor="client-social-rcs">Numéro RCS</label>
             <input
@@ -636,6 +954,7 @@ export default function NewAuditPage() {
               placeholder="Ex: ACME SARL"
             />
           </div>
+
           <div className="new-field">
             <label htmlFor="business-activity">Domaine d'activité</label>
             <input
@@ -645,6 +964,7 @@ export default function NewAuditPage() {
               placeholder="Ex: Informatique"
             />
           </div>
+
           <div className="new-field">
             <label htmlFor="business-shareCapital">capital social</label>
             <input
@@ -666,6 +986,7 @@ export default function NewAuditPage() {
               placeholder="Ex: FR12 345678901"
             />
           </div>
+
           <div className="new-field">
             <label htmlFor="client-social-legal">Forme juridique</label>
             <input
@@ -687,6 +1008,7 @@ export default function NewAuditPage() {
               placeholder="362 521 879 00034"
             />
           </div>
+
           <div className="new-field">
             <label htmlFor="business-activity">Logo de l'entreprise</label>
             <input
@@ -721,6 +1043,7 @@ export default function NewAuditPage() {
               placeholder="Ex: Audit sécurité..."
               autoComplete="off"
             />
+
             <datalist id="audits-list">
               {auditsTemplate
                 .filter(
@@ -747,6 +1070,7 @@ export default function NewAuditPage() {
               autoComplete="off"
               required
             />
+
             <datalist id="audittype-list">
               {auditType
                 .filter(
@@ -773,6 +1097,7 @@ export default function NewAuditPage() {
               autoComplete="off"
               required
             />
+
             <datalist id="auditoffer-list">
               {auditOffer
                 .filter(
