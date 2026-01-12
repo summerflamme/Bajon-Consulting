@@ -461,7 +461,11 @@ export default function NewAuditPage() {
             participationdate: new Date().toISOString().split("T")[0],
           },
         ]);
-      return;
+      
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
     }
 
     if (!clientExistant && templateExistant) {
@@ -571,10 +575,14 @@ export default function NewAuditPage() {
           ])
           .select()
           .single();
-      return;
+      
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
     }
 
-    if (clientExistant && templateExistant) { 
+    if (clientExistant && templateExistant) {
       console.log("clientExistant = true && templateExistant = true");
 
       // ========================================================
@@ -653,7 +661,11 @@ export default function NewAuditPage() {
             participationdate: new Date().toISOString().split("T")[0],
           },
         ]);
-      return;
+      
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
     }
 
     if (!clientExistant && !templateExistant) {
@@ -724,13 +736,12 @@ export default function NewAuditPage() {
           ])
           .select()
           .single();
-      return;
+          
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
     }
-
-    // Redirection
-    // setTimeout(() => {
-    //   window.location.href = `/audit/${insertedAuditId}/edit`;
-    // }, 1500);
   }
 
   // ========================================================
