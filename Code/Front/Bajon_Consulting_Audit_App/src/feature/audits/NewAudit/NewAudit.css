@@ -17,9 +17,7 @@
 
 .new-client-audits::before {
   content: "";
-  position: absolute;
   inset: 0;
-  background-image: url("../../../assets/fond-users-list.jpg");
   background-size: cover;
   background-position: center;
   filter: blur(20px);
