@@ -134,7 +134,7 @@ function TemplateList() {
         onSortOrderChange={setSortOrder}
       />
 
-      <a href="#" className="add-template-btn">
+      <a href="/newaudit?mode=template" className="add-template-btn">
         <Plus className="icon" /> Ajouter un nouveau template
       </a>
 
