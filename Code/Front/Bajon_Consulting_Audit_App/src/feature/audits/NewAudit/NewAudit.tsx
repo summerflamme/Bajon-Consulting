@@ -819,7 +819,7 @@ export default function NewAuditPage() {
   // ========================================================
   return (
     <div className="new-client-audits">
-      <h1 className="titre-new-audits">Création d'audit</h1>
+      <h1 className="titre-new-audits">Création {`${!isTemplateMode ? "d'audit" : "de template"}`}</h1>
 
       <form className="new-audits-form">
         {!isTemplateMode && (
