@@ -6,6 +6,7 @@ import SearchBar from "../../components/SearchBar";
 import UserRow from "./UserCard";
 import "./users.css";
 import { Plus } from "lucide-react";
+import { useAuth } from "../../feature/auth/useAuth"; // ✅ AJOUT
 
 interface APIUser {
   id: string;
@@ -38,9 +39,17 @@ interface User {
 
 function UserList() {
   const navigate = useNavigate();
+  const { currentRole } = useAuth(); // ✅ AJOUT
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // 🔐 PROTECTION ADMIN (AJOUT)
+  useEffect(() => {
+    if (currentRole && currentRole !== "Administrateur") {
+      navigate("/audits", { replace: true });
+    }
+  }, [currentRole, navigate]);
 
   // 🧠 états pour la SearchBar
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,7 +84,6 @@ function UserList() {
   const filteredUsers = useMemo(() => {
     let result = [...users];
 
-    // Recherche
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase();
       result = result.filter(
@@ -86,12 +94,10 @@ function UserList() {
       );
     }
 
-    // Filtre rôle
     if (roleFilter) {
       result = result.filter((u) => u.role === roleFilter);
     }
 
-    // Tri
     result.sort((a, b) => {
       let compare = 0;
       if (sortOption === "alphabetique") {

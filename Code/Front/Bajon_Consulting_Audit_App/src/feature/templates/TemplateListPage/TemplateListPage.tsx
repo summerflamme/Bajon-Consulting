@@ -13,6 +13,8 @@ function TemplateList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [auditType, setAuditType] = useState('');
   const [offerType, setOfferType] = useState('');
+  const [statusType, setStatusType] = useState('');
+  const [showArchived, setShowArchived] = useState('FALSE');
   const [sortField, setSortField] = useState('alphabetique');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -25,13 +27,16 @@ function TemplateList() {
       .select(`
         *,
         audittype ( id, nameaudittype ),
-        auditoffer ( id, nameauditoffer )
+        auditoffer ( id, nameauditoffer ),
+        status ( id, auditstatus )
       `)
       .eq('template', true);
 
     if (searchTerm.trim() !== '') query = query.ilike('auditname', `%${searchTerm}%`);
     if (auditType) query = query.eq('idaudittype', auditType);
     if (offerType) query = query.eq('idauditoffer', offerType);
+    if (statusType) query = query.eq('idstatus', statusType);
+    if (showArchived) query = query.eq("archived", showArchived);
 
     const { data: templatesData, error } = await query;
 
@@ -47,8 +52,7 @@ function TemplateList() {
           .from('modify')
           .select(`
             modificationdate,
-            modificationtime,
-            staff ( firstname, lastname )
+            modificationtime
           `)
           .eq('idaudit', template.id)
           .order('modificationdate', { ascending: true })
@@ -67,12 +71,8 @@ function TemplateList() {
             ...template,
             creation_date: creation.modificationdate,
             creation_time: creation.modificationtime,
-            creation_staff_firstname: creation.staff?.firstname,
-            creation_staff_lastname: creation.staff?.lastname,
             last_modif_date: last.modificationdate,
             last_modif_time: last.modificationtime,
-            last_modif_staff_firstname: last.staff?.firstname,
-            last_modif_staff_lastname: last.staff?.lastname,
           };
         }
 
@@ -114,7 +114,7 @@ function TemplateList() {
 
     setTemplates(sortedTemplates);
     setLoading(false);
-  }, [searchTerm, auditType, offerType, sortField, sortOrder]);
+  }, [searchTerm, auditType, offerType, statusType, showArchived, sortField, sortOrder]);
 
   useEffect(() => {
     fetchTemplates();
@@ -128,6 +128,8 @@ function TemplateList() {
         onSearchChange={setSearchTerm}
         onAuditTypeChange={setAuditType}
         onOfferTypeChange={setOfferType}
+        onStatusTypeChange={setStatusType}
+        onArchivedChange={setShowArchived}
         onSortChange={setSortField}
         onSortOrderChange={setSortOrder}
       />

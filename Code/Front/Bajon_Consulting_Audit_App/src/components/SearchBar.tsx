@@ -13,6 +13,8 @@ type SearchBarProps = {
   onSortChange?: (value: string) => void;
   onAuditTypeChange?: (value: string) => void;
   onOfferTypeChange?: (value: string) => void;
+  onStatusTypeChange?: (value: string) => void;
+  onArchivedChange?: (value: string) => void;
   onSortOrderChange?: (order: SortOrder) => void;
   onRoleFilterChange?: (value: string) => void;
 };
@@ -23,12 +25,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSortChange,
   onAuditTypeChange,
   onOfferTypeChange,
+  onStatusTypeChange,
+  onArchivedChange,
   onSortOrderChange,
   onRoleFilterChange,
 }) => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [offerTypes, setOfferTypes] = useState<any[]>([]);
   const [auditTypes, setAuditTypes] = useState<any[]>([]);
+  const [statusTypes, setStatusTypes] = useState<any[]>([]);
 
   const toggleSortOrder = () => {
     const newOrder: SortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
@@ -50,9 +55,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
       else console.error("Erreur de récupération des audits :", error);
     };
 
+    const fetchStatusTypes = async () => {
+      const { data, error } = await supabase.from("status").select("*");
+      if (!error) setStatusTypes(data || []);
+      else console.error("Erreur de récupération des statuts :", error);
+    };
+
     if (variant === 'audit') {
       fetchOfferTypes();
       fetchAuditTypes();
+      fetchStatusTypes();
     }
   }, [variant]);
 
@@ -92,6 +104,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 {offerType.nameauditoffer}
               </option>
             ))}
+          </select>
+
+          <select className="search-select" onChange={(e) => onStatusTypeChange?.(e.target.value)}>
+            <option value="">Tout (Type de statut)</option>
+            {statusTypes.map((statusType) => (
+              <option key={statusType.id} value={statusType.id}>
+                {statusType.auditstatus}
+              </option>
+            ))}
+          </select>
+
+          <select className="search-select" onChange={(e) => onArchivedChange?.(e.target.value)}>
+            <option value="">Tout (Archivé + Non Archivé)</option>
+            <option value="TRUE">Archivé</option>
+            <option value="FALSE" selected>Non Archivé</option>
           </select>
 
           <select className="search-select" onChange={(e) => onSortChange?.(e.target.value)}>
