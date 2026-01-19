@@ -4,10 +4,20 @@ import "react-international-phone/style.css";
 import "./clients.css"; // ✅ même design que le formulaire d’audit
 import { supabase } from "../../supabaseClient";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../../feature/auth/useAuth";
 
 export default function ClientEditPage() {
+  const { currentUser, currentRole } = useAuth();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
+  // ----------------- PROTECTION ACCES -----------------
+  useEffect(() => {
+    if (!currentUser) return;
+    if (currentRole !== "Administrateur") {
+      navigate("/audits", { replace: true });
+    }
+  }, [currentUser, currentRole, navigate]);
 
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -120,7 +130,6 @@ export default function ClientEditPage() {
       <h2 className="titre-new-audits">Modifier le client</h2>
 
       <form onSubmit={handleSubmit} className="new-audits-form">
-
         {/* Nom / Prénom */}
         <div className="Client-info-name">
           <div className="field">

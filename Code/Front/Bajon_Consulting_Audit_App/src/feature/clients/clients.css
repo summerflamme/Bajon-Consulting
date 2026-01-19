@@ -1,11 +1,9 @@
 /*____________________ICI CLIENTLIST____________________*/
 .fond-clients-list {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   min-height: 100vh; 
-  background-image: url("../../assets/fond-users-list.jpg");
   background-size: cover;
   background-position: center;
   background-attachment: fixed; 
@@ -225,9 +223,7 @@
 
 .client-info-wrapper::before {
   content: "";
-  position: absolute;
   inset: 0;
-  background-image: url("../../assets/img1.jpg");
   background-size: cover;
   background-position: center;
   opacity: 0.3;

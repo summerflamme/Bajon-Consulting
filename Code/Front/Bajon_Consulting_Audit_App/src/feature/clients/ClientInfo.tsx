@@ -110,7 +110,7 @@ function ClientInfoPage() {
           Modifier les informations
         </button>
 
-        <button className="btn secondary" onClick={() => navigate("/clients")}>
+        <button className="btn secondary" onClick={() => navigate("/clients/list")}>
           Retour
         </button>
       </div>
