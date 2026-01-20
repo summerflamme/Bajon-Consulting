@@ -1,4 +1,4 @@
--- Drop association / dependent tables first
+-- Drop table
 DROP TABLE IF EXISTS Modify CASCADE;
 DROP TABLE IF EXISTS Contain CASCADE;
 DROP TABLE IF EXISTS Own CASCADE;
@@ -6,8 +6,6 @@ DROP TABLE IF EXISTS Participate CASCADE;
 DROP TABLE IF EXISTS ClientAnswer CASCADE;
 DROP TABLE IF EXISTS OptionAnswer CASCADE;
 DROP TABLE IF EXISTS Question CASCADE;
-
--- Drop independent tables
 DROP TABLE IF EXISTS Status CASCADE;
 DROP TABLE IF EXISTS Type CASCADE;
 DROP TABLE IF EXISTS Theme CASCADE;
@@ -22,23 +20,23 @@ DROP TABLE IF EXISTS AuditOffer CASCADE;
 
 -- Table Client
 CREATE TABLE Client (
-    id SERIAL PRIMARY KEY, -- pas besoin
-    clientLastName VARCHAR(100), -- implémenté
-    clientFirstName VARCHAR(100), -- implémenté
-    clientEmail VARCHAR(255), -- implémenté
-    clientPhone VARCHAR(20), -- implémenté
-    companyName VARCHAR(150), -- implémenté
-    clientAddress VARCHAR(255), -- implémenté
-    clientCity VARCHAR(255), -- implémenté
-    clientCountry VARCHAR(100), -- implémenté
-    siren VARCHAR(20), -- implémenté
-    vatNumber VARCHAR(20), -- implémenté
-    businessActivity VARCHAR(100), -- implémenté
-    rcsNumber VARCHAR(50), -- implémenté
-    shareCapital NUMERIC(15,2), -- implémenté
-    socialNetworks VARCHAR(255), -- implémenté
-    legalForm VARCHAR(100), -- implémenté
-    logo BYTEA -- implémenté
+    id SERIAL PRIMARY KEY,
+    clientLastName VARCHAR(100), 
+    clientFirstName VARCHAR(100), 
+    clientEmail VARCHAR(255), 
+    clientPhone VARCHAR(20), 
+    companyName VARCHAR(150), 
+    clientAddress VARCHAR(255), 
+    clientCity VARCHAR(255), 
+    clientCountry VARCHAR(100), 
+    siren VARCHAR(20), 
+    vatNumber VARCHAR(20), 
+    businessActivity VARCHAR(100), 
+    rcsNumber VARCHAR(50), 
+    shareCapital NUMERIC(15,2), 
+    socialNetworks VARCHAR(255), 
+    legalForm VARCHAR(100), 
+    logo BYTEA
 );
 
 -- Table AuditType
