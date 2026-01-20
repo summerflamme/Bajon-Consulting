@@ -91,15 +91,6 @@ CREATE TABLE Audit (
     FOREIGN KEY (idStatus) REFERENCES Status(id)
 );
 
--- Table User ( pour les test )
-CREATE TABLE Staff (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    lastName VARCHAR(100),
-    firstName VARCHAR(100),
-    idRole INT NOT NULL,
-    FOREIGN KEY (idRole) REFERENCES Role(id)
-);
-
 -- Table Question
 CREATE TABLE Question (
     id SERIAL PRIMARY KEY,
@@ -154,17 +145,14 @@ CREATE TABLE Contain (
     FOREIGN KEY (idOptAnswer) REFERENCES OptionAnswer(id)
 );
 
--- Table Modify (relation User - Audit)
+-- Table Modify (relation Users - Audit)
 CREATE TABLE Modify (
     idmodify SERIAL,
-    idUser UUID,
-    -- ou quand test fini
-    --id UUID auth.users(id) ON DELETE CASCADE,
+    id UUID auth.users(id) ON DELETE CASCADE,
     idAudit INT NOT NULL,
     modificationDate DATE,
     modificationTime TIME,
-    PRIMARY KEY (idUser, idAudit, idmodify),
-    FOREIGN KEY (idUser) REFERENCES Staff(id),
-    --FOREIGN KEY (UUID) REFERENCES users(uid),
+    PRIMARY KEY (UUID, idAudit, idmodify),
+    FOREIGN KEY (UUID) REFERENCES users(uid),
     FOREIGN KEY (idAudit) REFERENCES Audit(id)
 );

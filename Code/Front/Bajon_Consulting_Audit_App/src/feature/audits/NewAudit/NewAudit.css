@@ -17,12 +17,11 @@
 
 .new-client-audits::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-image: url("../../../assets/fond-users-list.jpg");
   background-size: cover;
   background-position: center;
-  filter: blur(20px);
   filter: blur(20px);
   opacity: 100%;
   z-index: -1;
