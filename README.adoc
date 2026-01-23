@@ -76,7 +76,9 @@ Ce guide décrit les étapes nécessaires pour installer et exécuter l’applic
 Avant de procéder à l’installation, la machine hôte doit disposer des outils suivants :
 
 * Docker
-* Docker Compose
+* Docker Desktop
+
+Demarrage de docker desktop primordial avant de démarrer l'application .
 
 Aucune installation locale de Node.js, Java, Maven ou autres dépendances n’est requise.  
 L’ensemble de l’environnement d’exécution est fourni via les conteneurs Docker.
@@ -190,6 +192,7 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
 
 
 
