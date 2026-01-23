@@ -89,8 +89,8 @@ Cloner le dépôt du projet depuis le gestionnaire de version :
 
 [source,bash]
 ----
-git clone <url-du-depot>
-cd Bajon-Consulting
+git clone https://github.com/summerflamme/Bajon-Consulting.git
+cd Bajon-Consultin/Code
 ----
 
 ---
@@ -190,5 +190,6 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
 
 
