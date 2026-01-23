@@ -109,10 +109,12 @@ CREATE TABLE OptionAnswer (
 -- Table ClientAnswer
 CREATE TABLE ClientAnswer (
     id SERIAL PRIMARY KEY,
+    idQuestion INT NOT NULL,
+    idAudit INT NOT NULL,
     clientAnswer TEXT,
     clientAnswerPoints INT,
-    idQuestion INT NOT NULL,
-    FOREIGN KEY (idQuestion) REFERENCES Question(id)
+    FOREIGN KEY (idQuestion) REFERENCES Question(id),
+    FOREIGN KEY (idAudit) REFERENCES Audit(id)
 );
 
 -- Table Participate (relation Client - Audit)
