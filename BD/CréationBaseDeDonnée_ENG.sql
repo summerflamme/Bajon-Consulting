@@ -147,12 +147,11 @@ CREATE TABLE Contain (
 
 -- Table Modify (relation Users - Audit)
 CREATE TABLE Modify (
-    idmodify SERIAL,
-    id UUID auth.users(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL,
     idAudit INT NOT NULL,
     modificationDate DATE,
     modificationTime TIME,
-    PRIMARY KEY (UUID, idAudit, idmodify),
-    FOREIGN KEY (UUID) REFERENCES users(uid),
+    PRIMARY KEY (user_id, idAudit),
+    FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE,
     FOREIGN KEY (idAudit) REFERENCES Audit(id)
-);
+    )
