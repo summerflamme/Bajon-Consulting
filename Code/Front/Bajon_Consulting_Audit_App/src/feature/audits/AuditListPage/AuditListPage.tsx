@@ -5,8 +5,27 @@ import SearchBar from '../../../components/SearchBar';
 import './AuditListPage.css';
 import { Plus } from "lucide-react";
 
+interface Audit {
+  id: string | null;
+  auditname: string | null;
+  template: boolean;
+  archived: boolean;
+  idaudittype: string;
+  idauditoffer: string;
+  idstatus: string;
+  audittype: { id: string; nameaudittype: string } | null;
+  auditoffer: { id: string; nameauditoffer: string } | null;
+  status: { id: string; auditstatus: string } | null;
+  creation_user_id?: string | null;
+  creation_date?: string | null;
+  creation_time?: string | null;
+  last_modif_user_id?: string | null;
+  last_modif_date?: string | null;
+  last_modif_time?: string | null;
+}
+
 function AuditList() {
-  const [audits, setAudits] = useState<any[]>([]);
+  const [audits, setAudits] = useState<Audit[]>([]);
   const [loading, setLoading] = useState(false);
 
   // États pour filtres et tri
@@ -51,6 +70,7 @@ function AuditList() {
         const { data: modifies, error: modifyError } = await supabase
           .from('modify')
           .select(`
+            iduser,
             modificationdate,
             modificationtime
           `)
@@ -69,8 +89,10 @@ function AuditList() {
 
           return {
             ...audit,
+            creation_user_id: creation.iduser,
             creation_date: creation.modificationdate,
             creation_time: creation.modificationtime,
+            last_modif_user_id: last.iduser,
             last_modif_date: last.modificationdate,
             last_modif_time: last.modificationtime,
           };
@@ -78,8 +100,10 @@ function AuditList() {
 
         return {
           ...audit,
+          creation_user_id: null,
           creation_date: null,
           creation_time: null,
+          last_modif_user_id: null,
           last_modif_date: null,
           last_modif_time: null,
         };
