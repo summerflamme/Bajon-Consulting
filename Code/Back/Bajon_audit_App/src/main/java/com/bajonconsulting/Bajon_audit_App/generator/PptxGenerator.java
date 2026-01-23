@@ -15,16 +15,52 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Génère des présentations PowerPoint (.pptx) à partir d'un modèle et d'une liste de réponses d'audit.
+ * <p>
+ * Cette classe utilise Apache POI pour manipuler les slides et JFreeChart (via {@link GrapheGenerator})
+ * pour créer les graphiques insérés dans la présentation. Elle remplace des marqueurs présents dans
+ * le template (par exemple {{TITRE}}, {{NOM_CLIENT}}, {{IMAGE1}}, {{IMAGE2}}, {{IMAGE3}}) par du
+ * contenu dynamique et ajoute les images de graphiques aux positions définies.
+ * <p>
+ * La classe est annotée {@code @Component} pour être gérée par le conteneur Spring.
+ *
+ * @author Bajon Consulting
+ * @version 1.0
+ * @see com.bajonconsulting.Bajon_audit_App.generator.GrapheGenerator
+ */
 @Component
 public class PptxGenerator {
+    /**
+     * Générateur de graphiques réutilisable.
+     * <p>
+     * Instance privée et finale utilisée pour construire les objets JFreeChart insérés dans les
+     * slides (heatmap, bar chart, pie chart).
+     */
     private final GrapheGenerator grapheGenerator = new GrapheGenerator();
 
-
-
     /**
-     * Génère un PPTX en utilisant la liste d'AuditAnswerDto pour produire le heatmap.
-     * Le template peut contenir {{IMAGE1}} pour la heatmap et {{IMAGE2}} pour le line chart.
+     * Génère un fichier PPTX en mémoire à partir d'un titre et d'une liste de réponses d'audit.
+     * <p>
+     * Si un template `template.pptx` est présent dans le classpath, il est utilisé comme base
+     * et les marqueurs sont remplacés :
+     * <ul>
+     *   <li>{{TITRE}} : remplacé par le paramètre {@code title}</li>
+     *   <li>{{NOM_CLIENT}} : remplacé par "Bajon Consulting"</li>
+     *   <li>{{IMAGE1}} : remplacé par une heatmap (carte de chaleur)</li>
+     *   <li>{{IMAGE2}} : remplacé par un graphique en barres (moyenne par thème)</li>
+     *   <li>{{IMAGE3}} : remplacé par un graphique circulaire (répartition des réponses)</li>
+     * </ul>
+     * <p>
+     * Si le template est absent, une présentation minimale est créée avec le titre fourni.
+     * Les graphiques sont générés via {@link GrapheGenerator} et insérés aux ancres définies.
+     *
+     * @param title le titre à insérer dans la présentation; peut être null pour utiliser une valeur par défaut
+     * @param answers la liste des réponses d'audit utilisée pour construire les graphiques; ne doit pas être null
+     * @return un tableau d'octets contenant le contenu du fichier PPTX généré
+     * @throws IOException si une erreur survient lors de la lecture du template ou de l'écriture des images/pptx
      */
+
     public byte[] generatePptx(String title, List<AuditAnswerDto> answers) throws IOException {
         InputStream in = PptxGenerator.class.getResourceAsStream("/template.pptx");
 

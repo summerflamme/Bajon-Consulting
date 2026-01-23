@@ -65,7 +65,10 @@ curl -X DELETE http://localhost:8080/api/users/deleteUser/
 
 curl http://localhost:8080/api/pptx/download/{idAudit}
 
-
+/*
+url
+http://localhost:8080/swagger-ui.html
+*/
 
 
 Gestion d'erreur : 

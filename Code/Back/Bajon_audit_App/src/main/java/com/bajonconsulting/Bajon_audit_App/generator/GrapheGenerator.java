@@ -7,10 +7,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.SymbolAxis;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.plot.Plot;
-import org.jfree.chart.renderer.PaintScale;
 import org.jfree.chart.renderer.LookupPaintScale;
 import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -25,11 +22,32 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * Générateur de graphiques pour la visualisation des données d'audit.
+ * <p>
+ * Cette classe utilise la bibliothèque JFreeChart pour créer différents types de graphiques :
+ * <ul>
+ *   <li>Heatmap (carte de chaleur) : Question / Thème avec moyenne des points</li>
+ *   <li>Graphique en barres : Moyenne des points par thème</li>
+ *   <li>Graphique circulaire : Répartition des types de réponses</li>
+ * </ul>
+ *
+ * @author Bajon Consulting
+ * @version 1.0
+ */
 public class GrapheGenerator {
 
-    // 1) Heatmap QuestionLabel / ThemeName (valeur = moyenne clientAnswerPoints)
+    /**
+     * Génère une heatmap (carte de chaleur) représentant la moyenne des points par question et par thème.
+     * <p>
+     * Les couleurs vont du vert (scores faibles) au rouge (scores élevés).
+     * Chaque cellule représente la moyenne des {@code clientAnswerPoints} pour une combinaison question/thème donnée.
+     *
+     * @param answers la liste des réponses d'audit à analyser
+     * @return un objet {@link JFreeChart} contenant la heatmap générée
+     */
     public JFreeChart getHeatmap(List<AuditAnswerDto> answers) {
-        // Collect distinct labels
         List<String> questions = answers == null ? Collections.emptyList() :
                 answers.stream()
                         .map(a -> safe(a.getQuestionLabel(), () -> "question-" + safeId(a.getQuestionId())))
@@ -102,18 +120,17 @@ public class GrapheGenerator {
         renderer.setBlockWidth(1.0);
         renderer.setBlockHeight(1.0);
 
-        // Paint scale (gradient) from green (low) to red (high)
         LookupPaintScale paintScale = new LookupPaintScale(min, max, Color.lightGray);
         int steps = 100;
         for (int k = 0; k < steps; k++) {
             double v = min + (max - min) * k / Math.max(1, steps - 1);
             float ratio = (float) (k / (double) Math.max(1, steps - 1));
-            Color c = blend(new Color(0, 153, 0), new Color(204, 0, 0), ratio); // green->red
+            Color c = blend(new Color(0, 153, 0), new Color(204, 0, 0), ratio);
             paintScale.add(v, c);
         }
         renderer.setPaintScale(paintScale);
 
-        NumberAxis nx = new NumberAxis(); nx.setVisible(false); // underlying numeric axis not shown
+        NumberAxis nx = new NumberAxis(); nx.setVisible(false);
         NumberAxis ny = new NumberAxis(); ny.setVisible(false);
 
         XYPlot plot = new XYPlot(dataset, xAxis, yAxis, renderer);
@@ -121,7 +138,16 @@ public class GrapheGenerator {
         return chart;
     }
 
-    // 2) Bar chart : moyenne des points par thème
+    /**
+     * Génère un graphique en barres représentant la moyenne des points par thème.
+     * <p>
+     * Calcule la moyenne des {@code clientAnswerPoints} pour chaque thème distinct
+     * et affiche le résultat sous forme de barres verticales bleues.
+     * Les thèmes sont affichés sur l'axe X et la moyenne des points sur l'axe Y.
+     *
+     * @param answers la liste des réponses d'audit à analyser
+     * @return un objet {@link JFreeChart} contenant le graphique en barres généré
+     */
     public JFreeChart getBarChartAvgByTheme(List<AuditAnswerDto> answers) {
         Map<String, double[]> agg = new LinkedHashMap<>(); // theme -> {sum, count}
         for (AuditAnswerDto a : Optional.ofNullable(answers).orElse(Collections.emptyList())) {
@@ -150,14 +176,23 @@ public class GrapheGenerator {
                 false
         );
 
-        // afford some renderer tweaks
         CategoryPlot plot = chart.getCategoryPlot();
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
         renderer.setSeriesPaint(0, new Color(79, 129, 189));
         return chart;
     }
 
-    // 3) Pie / Donut chart : répartition des types de réponses (clientAnswer)
+    /**
+     * Génère un graphique circulaire représentant la répartition des types de réponses.
+     * <p>
+     * Compte le nombre d'occurrences de chaque type de réponse client et affiche
+     * la distribution sous forme de diagramme circulaire (pie chart).
+     * La méthode tente d'extraire la valeur via {@code getClientAnswer()} par réflexion,
+     * sinon utilise {@code clientAnswerPoints}.
+     *
+     * @param answers la liste des réponses d'audit à analyser
+     * @return un objet {@link JFreeChart} contenant le graphique circulaire généré
+     */
     public JFreeChart getPieChartResponseTypeDistribution(List<AuditAnswerDto> answers) {
         Map<String, Integer> counts = new LinkedHashMap<>();
         for (AuditAnswerDto a : Optional.ofNullable(answers).orElse(Collections.emptyList())) {
@@ -167,10 +202,8 @@ public class GrapheGenerator {
                 Object value = m.invoke(a);
                 if (value != null) resp = String.valueOf(value);
             } catch (NoSuchMethodException e) {
-                // getter absent -> fallback sur clientAnswerPoints
                 resp = a.getClientAnswerPoints() != null ? String.valueOf(a.getClientAnswerPoints()) : "n/a";
             } catch (ReflectiveOperationException e) {
-                // problème réflexion -> fallback sur clientAnswerPoints
                 resp = a.getClientAnswerPoints() != null ? String.valueOf(a.getClientAnswerPoints()) : "n/a";
             }
 
@@ -199,17 +232,46 @@ public class GrapheGenerator {
         return chart;
     }
 
-
-    /* Helpers */
+    /**
+     * Retourne une valeur de secours si la valeur fournie est nulle ou vide.
+     * <p>
+     * Vérifie si la chaîne de caractères est non nulle et non vide (après suppression des espaces).
+     * Si elle est valide, la retourne telle quelle, sinon invoque le fournisseur de secours.
+     *
+     * @param value la valeur à vérifier
+     * @param fallback le fournisseur de valeur de secours
+     * @return la valeur originale si valide, sinon la valeur de secours
+     */
     private String safe(String value, java.util.function.Supplier<String> fallback) {
         if (value != null && !value.isBlank()) return value;
         return fallback.get();
     }
 
+    /**
+     * Convertit un identifiant numérique en chaîne de caractères de manière sécurisée.
+     * <p>
+     * Retourne la représentation textuelle de l'identifiant si celui-ci n'est pas nul,
+     * sinon retourne "n/a".
+     *
+     * @param id l'identifiant numérique à convertir
+     * @return la représentation textuelle de l'identifiant ou "n/a" si nul
+     */
     private String safeId(Number id) {
         return id != null ? String.valueOf(id) : "n/a";
     }
 
+    /**
+     * Mélange deux couleurs selon un ratio donné.
+     * <p>
+     * Effectue une interpolation linéaire entre les deux couleurs fournies.
+     * Un ratio de 0 donne la première couleur, un ratio de 1 donne la seconde,
+     * et les valeurs intermédiaires produisent un mélange proportionnel.
+     *
+     * @param c1 la première couleur (ratio = 0)
+     * @param c2 la seconde couleur (ratio = 1)
+     * @param ratio le facteur de mélange entre 0.0 et 1.0
+     * @return une nouvelle {@link Color} résultant du mélange
+     */
     private Color blend(Color c1, Color c2, float ratio) {
         float r = Math.min(1f, Math.max(0f, ratio));
         int red = (int) (c1.getRed() * (1 - r) + c2.getRed() * r);
