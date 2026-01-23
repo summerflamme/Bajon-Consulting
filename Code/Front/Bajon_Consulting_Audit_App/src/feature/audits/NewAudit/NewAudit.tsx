@@ -759,44 +759,9 @@ export default function NewAuditPage() {
         .from("participate")
         .insert([
           {
-            idclient: existingClientId,
+            idclient: insertedClientId,
             idaudit: insertedAuditId,
             participationdate: new Date().toISOString().split("T")[0],
-          },
-        ]);
-      
-      // Redirection
-      setTimeout(() => {
-        window.location.href = `/audit/${insertedAuditId}/edit`;
-      }, 1500);
-    }
-
-    if (!clientExistant && !templateExistant) {
-      console.log("!clientExistant = false && !templateExistant = false");
-
-      // ========================================================
-      // insert table client
-      // ========================================================
-      const { data: clientData, error: error } = await supabase
-        .from("client")
-        .insert([
-          {
-            clientlastname: clientLastName,
-            clientfirstname: clientFirstName,
-            clientemail: clientEmail,
-            clientphone: clientPhone,
-            companyname: companyName,
-            clientaddress: clientAddress,
-            clientcity: clientCity,
-            clientcountry: clientCountry,
-            siren: siren,
-            vatnumber: vatNumber,
-            businessactivity: businessActivity,
-            rcsnumber: rcsNumber,
-            sharecapital: shareCapital ? parseFloat(shareCapital) : null,
-            socialnetworks: socialNetworks,
-            legalform: legalForm,
-            logo: logo || null,
           },
         ])
         .select()
@@ -854,7 +819,7 @@ export default function NewAuditPage() {
   // ========================================================
   return (
     <div className="new-client-audits">
-      <h1 className="titre-new-audits">Création d'audit</h1>
+      <h1 className="titre-new-audits">Création {`${!isTemplateMode ? "d'audit" : "de template"}`}</h1>
 
       <form className="new-audits-form">
         {!isTemplateMode && (
