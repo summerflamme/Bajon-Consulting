@@ -48,7 +48,7 @@ toc::[]
 |===
 
 ## Livrables attendus
-- **Dossier de recueil et d’analyse des besoins : (https://github.com/summerflamme/Bajon-Consulting/tree/main/Docs/Recueil%20de%20Besoins[lien])** +
+- **Dossier de recueil et d’analyse des besoins : (https://github.com/summerflamme/Bajon-Consulting/blob/Crash-Test/Docs/Recueil%20de%20Besoins/Recueil%20de%20besoin.pdf[lien])** +
 Ce document détaillera les besoins fonctionnels et techniques de l’application, ainsi que les attentes du client (BAJON Consulting). Il décrira les fonctionnalités principales de l’application, les priorités, ainsi que les spécifications techniques pour le développement.
 
 
@@ -60,7 +60,7 @@ Des maquettes visuelles de l'interface utilisateur (UI) de l'application seront 
 La première version de l'application sera développée et déployée en ligne. Cette version fonctionnelle comprendra les principales fonctionnalités permettant de gérer les audits, de suivre les étapes et les livrables, ainsi que de centraliser les informations des clients. L’application sera responsive, accessible depuis différents supports (PC, tablette, mobile), et permettra de gérer l'offre « Essentiel ».
 
 
-- **Documentation technique : (https://github.com/summerflamme/Bajon-Consulting/tree/main/Docs/Doc%20Tech[lien temporaire])** +
+- **Documentation technique : (https://github.com/summerflamme/Bajon-Consulting/blob/Crash-Test/Docs/Doc%20Tech/Documentation%20Technique.pdf[lien])** +
 La documentation technique détaillera l’architecture du système, les technologies utilisées, les choix techniques faits durant le développement ainsi que les étapes de déploiement et de maintenance. Elle sera utile pour les futures évolutions du projet et pour l’intégration d’autres fonctionnalités.
 
 
@@ -192,6 +192,7 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
 
 
 
