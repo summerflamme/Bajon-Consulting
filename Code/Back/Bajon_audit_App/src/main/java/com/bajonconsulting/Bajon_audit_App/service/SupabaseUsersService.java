@@ -1,12 +1,12 @@
-package com.bajonconsulting.Bajon_audit_App.Users;
+package com.bajonconsulting.Bajon_audit_App.service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bajonconsulting.Bajon_audit_App.Types.User;
-import com.bajonconsulting.Bajon_audit_App.Types.UserMetadata;
-import com.bajonconsulting.Bajon_audit_App.Types.supabaseUsersResponse;
+import com.bajonconsulting.Bajon_audit_App.types.UserDTO;
+import com.bajonconsulting.Bajon_audit_App.types.UserMetadataDTO;
+import com.bajonconsulting.Bajon_audit_App.types.supabaseUsersResponse;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -14,34 +14,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
-import com.bajonconsulting.Bajon_audit_App.SupabaseProperties;
+import com.bajonconsulting.Bajon_audit_App.types.SupabaseProperties;
 
 import reactor.core.publisher.Mono;
 
 @Service
 public class SupabaseUsersService {
 
-    private final SupabaseProperties supabaseProperties;
     private final WebClient webClient;
 
-    private List<Map<String, Object>> users;
 
-    public List<Map<String, Object>> getUsers() {
-        return users;
-    }
 
-    public void setUsers(List<Map<String , Object>> users) {
-        this.users = users;
-    }
 
     public SupabaseUsersService(SupabaseProperties supabaseProperties, WebClient.Builder webClientBuilder) {
-        this.supabaseProperties = supabaseProperties;
         this.webClient = webClientBuilder
                 .baseUrl(supabaseProperties.getUrl() + "auth/v1/admin")
                 .defaultHeader("apikey", supabaseProperties.getServiceRoleKey())
                 .defaultHeader("Authorization", "Bearer " + supabaseProperties.getServiceRoleKey())
                 .build();
     }
+
+
 
 
     // Requête Post
@@ -99,9 +92,6 @@ public class SupabaseUsersService {
                 });
     }
 
-
-
-
 // Requête Get
 
     public Mono<List<? extends Object>> getUserList (){
@@ -124,7 +114,7 @@ public class SupabaseUsersService {
                 });
     }
 
-    public Mono<User> getUserById(String id) {
+    public Mono<UserDTO> getUserById(String id) {
         return webClient.get()
                 .uri("/users/{id}", id)
                 .retrieve()
@@ -150,10 +140,12 @@ public Mono<Void> deleteUser(String id){
 }
 
 
+
+
     //==================================================================
 
-    private User mapToUser(Map<String, Object> userMap) {
-        User user = new User();
+    private UserDTO mapToUser(Map<String, Object> userMap) {
+        UserDTO user = new UserDTO();
         user.setUID((String) userMap.get("id"));
         user.setEmail((String) userMap.get("email"));
         user.setCreatedAt((String) userMap.get("created_at"));
@@ -161,7 +153,7 @@ public Mono<Void> deleteUser(String id){
 
         Map<String, Object> metada = (Map<String, Object>) userMap.get("user_metadata");
         if (metada != null) {
-            UserMetadata userMetadata = new UserMetadata();
+            UserMetadataDTO userMetadata = new UserMetadataDTO();
             userMetadata.setDisplayName((String) metada.get("displayName"));
             userMetadata.setFirstName((String)  metada.get("firstName"));
             userMetadata.setLastName((String) metada.get("lastName"));

@@ -1,10 +1,10 @@
-package com.bajonconsulting.Bajon_audit_App.Types;
+package com.bajonconsulting.Bajon_audit_App.types;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserMetadata {
+public class UserMetadataDTO {
 
     private String email;
 
@@ -22,7 +22,7 @@ public class UserMetadata {
     private String displayName;
 
     // Constructeurs
-    public UserMetadata() {}
+    public UserMetadataDTO() {}
 
     // Getters et setters
 

@@ -1,8 +1,8 @@
-package com.bajonconsulting.Bajon_audit_App.Types;
+package com.bajonconsulting.Bajon_audit_App.types;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class User {
+public class UserDTO {
 
 
     @JsonProperty("id")
@@ -17,10 +17,10 @@ public class User {
 
     //metadata
     @JsonProperty("user_metadata")
-    private UserMetadata userMetadata;
+    private UserMetadataDTO userMetadata;
 
 
-    public User() {
+    public UserDTO() {
     }
 
     //getter / setter
@@ -63,11 +63,11 @@ public class User {
         this.lastSignInAt = lastSignInAp;
     }
 
-    public UserMetadata getUserMetadata() {
+    public UserMetadataDTO getUserMetadata() {
         return this.userMetadata;
     }
 
-    public void setUserMetadata(UserMetadata userMetadata) {
+    public void setUserMetadata(UserMetadataDTO userMetadata) {
         this.userMetadata = userMetadata;
     }
 

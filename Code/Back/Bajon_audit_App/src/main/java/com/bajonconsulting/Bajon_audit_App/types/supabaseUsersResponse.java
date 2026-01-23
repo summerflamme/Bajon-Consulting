@@ -1,4 +1,4 @@
-package com.bajonconsulting.Bajon_audit_App.Types;
+package com.bajonconsulting.Bajon_audit_App.types;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

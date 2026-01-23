@@ -1,4 +1,4 @@
-package com.bajonconsulting.Bajon_audit_App;
+package com.bajonconsulting.Bajon_audit_App.types;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

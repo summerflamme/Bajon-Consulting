@@ -13,7 +13,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Bajon Audit API")
                         .version("1.0")
-                        .description("API pour l'application d'audit client"));
+                        .description("API backend admin pour la gestions des utilisateurs"));
     }
 }
 

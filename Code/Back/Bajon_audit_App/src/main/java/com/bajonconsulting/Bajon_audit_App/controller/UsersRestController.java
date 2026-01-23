@@ -1,20 +1,19 @@
-package com.bajonconsulting.Bajon_audit_App.Users;
+package com.bajonconsulting.Bajon_audit_App.controller;
 
-import com.bajonconsulting.Bajon_audit_App.Types.User;
+import com.bajonconsulting.Bajon_audit_App.types.UserDTO;
+import com.bajonconsulting.Bajon_audit_App.service.SupabaseUsersService;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
@@ -105,20 +104,35 @@ public class UsersRestController {
 
 
     // Requête Get
-
+    /*
+    Methode qui appelle la methode getUserList qui est une api de supabase
+    Route API utilisée par le front React dans le fichier userForm.tsx
+     */
     @GetMapping("/listUsers")
     public Mono<List<? extends Object>> getUserList(){
         return supabaseUsersService.getUserList();
     }
 
+
+    /*
+
+    Methode qui appelle la methode getUserById
+    Route API utilisée par le front React dans le fichier userForm.tsx
+    @param id : IN id de user envoyer par l'url {id}
+     */
     @GetMapping("/{id}")
-    public Mono<User> getUserById(@PathVariable String id) {
+    public Mono<UserDTO> getUserById(@PathVariable String id) {
         return supabaseUsersService.getUserById(id);
     }
-    
 
     //Requête DELETE
 
+
+    /*
+    Methode qui appelle la methode deleteUser du SupabaseUsersService
+    Route API utilisée par le front React dans le fichier UserCard.tsx
+    @param id : IN id de user envoyer par l'url {id}
+     */
     @DeleteMapping("deleteUser/{id}")
     public Mono<Void> deleteUser(@PathVariable String id) {
         return supabaseUsersService.deleteUser(id);
