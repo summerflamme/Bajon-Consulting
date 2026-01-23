@@ -142,6 +142,20 @@
 }
 
 /* ---------------- LOGOUT ---------------- */
+  .bg-img {
+  background-image: url("../assets/img2.JPG");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100%; 
+  background-attachment: fixed;
+}
+
+@supports selector(:has(.new-client-audits)) {
+  main:has(.new-client-audits) {
+    background-image: none;
+  }
+}
 
 .logout-button {
   background: transparent;
@@ -284,9 +298,8 @@
 /*_________________footer___________________*/
 
 .footer {
-  position: fixed;
-  left: 0;
-  right: 0;
+  
+  width: 100%; /* S'assure qu'il prend toute la largeur */
   height: 60px;
   background-color: #236084;
   display: flex;
@@ -296,7 +309,6 @@
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
   font-size: 14px;
-  bottom: 0;
 }
 
 .footer-content {

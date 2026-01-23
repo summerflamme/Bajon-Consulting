@@ -1,11 +1,8 @@
-ALTER TABLE Staff
-ADD COLUMN password VARCHAR(255) NOT NULL;
-
 -- =======================
 -- Remplissage des tables
 -- =======================
 
--- Table Client
+-- Table Client / ne pas garder
 INSERT INTO Client (clientLastName, clientFirstName, clientEmail, clientPhone, companyName, clientAddress, clientCity, clientCountry, siren, vatNumber, businessActivity, rcsNumber, shareCapital, socialNetworks, legalForm, logo)
 VALUES
 ('Dupont', 'Jean', 'jean.dupont@email.com', '0601020304', 'Dupont SARL', '10 rue de Paris', 'Paris', 'France', '123456789', 'FR123456789', 'Informatique', 'RCS12345', 5000.00, '@dupont', 'SARL', NULL),
@@ -16,20 +13,17 @@ VALUES
 
 -- Table AuditType
 INSERT INTO AuditType (nameAuditType) VALUES
-('Interne'),
-('Externe'),
-('Réglementaire'),
-('Conformité'),
-('Performance');
+('Essentiel'),
+('Avancé'),
+('Stratégique'),
 
 -- Table AuditOffer
 INSERT INTO AuditOffer (nameAuditOffer) VALUES
-('Standard'),
-('Premium'),
-('Express'),
-('Personnalisé'),
-('Gratuit');
+('Transformation Numérique & Gouvernance'),
+('Cybersécurité & conformité'),
+('Cloud & ERP'),
 
+-- Table Status
 INSERT INTO Status (auditStatus) VALUES
 ('En Cours'),
 ('En attente d’analyse'),
@@ -44,7 +38,7 @@ INSERT INTO Role (roleName) VALUES
 ('Manager'),
 ('Analyste'); 
 
--- Table Theme
+-- Table Theme / ne pas garder
 INSERT INTO Theme (themeName) VALUES
 ('Sécurité informatique'),
 ('Conformité légale'),
@@ -52,7 +46,7 @@ INSERT INTO Theme (themeName) VALUES
 ('Ressources humaines'),
 ('Développement durable');
 
--- Table Type
+-- Table Type / ne pas garder
 INSERT INTO Type (typeName) VALUES
 ('Oui/Non'),
 ('Échelle 1-5'),
@@ -60,7 +54,7 @@ INSERT INTO Type (typeName) VALUES
 ('Choix multiple'),
 ('Nombre');
 
--- Table Audit
+-- Table Audit / ne pas garder
 INSERT INTO Audit (auditName, idAuditType, idAuditOffer, idStatus, template, archived) VALUES
 ('Audit Sécurité', 1, 3, 1, true, false),
 ('Audit Financier', 5, 4, 2, false, true),
@@ -85,12 +79,7 @@ INSERT INTO Audit (auditName, idAuditType, idAuditOffer, idStatus, template, arc
 ('Audit dont le nom doir être extrèmement long pour pouvoir faire des test, du coup je doit mettre quelque mots pour pouvoir combler', 1, 1, 1, false, false);
 
 
--- Table User
-INSERT INTO Staff (id, lastName, firstName, idRole)VALUES 
-('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 'summer', 'flamme', 1),
-('d2be6ef6-16f5-4275-8f0a-e157f07b69c7', 'test', 'test', 2);
-
--- Table Question
+-- Table Question / ne pas garder
 INSERT INTO Question (label, idTheme) VALUES
 ('Le système est-il protégé par un pare-feu ?', 1),
 ('Toutes les factures sont-elles archivées ?', 3),
@@ -108,7 +97,7 @@ INSERT INTO Question (label, idTheme) VALUES
 ('Une procédure d’accueil des nouveaux employés existe-t-elle ?', 4),
 ('Un suivi de la consommation énergétique est-il effectué ?', 5);
 
--- Table OptionAnswer
+-- Table OptionAnswer / ne pas garder
 INSERT INTO OptionAnswer (optionLabel, optionPoints, idType) VALUES
 ('Oui', 10, 1),
 ('Non', 0, 1),
@@ -116,7 +105,7 @@ INSERT INTO OptionAnswer (optionLabel, optionPoints, idType) VALUES
 ('5 - Excellent', 5, 2),
 ('Texte libre', 0, 3);
 
--- Table ClientAnswer
+-- Table ClientAnswer / ne pas garder
 INSERT INTO ClientAnswer (clientAnswer, clientAnswerPoints, idQuestion) VALUES
 ('Oui', 10, 1),
 ('Non', 0, 1),
@@ -124,7 +113,7 @@ INSERT INTO ClientAnswer (clientAnswer, clientAnswerPoints, idQuestion) VALUES
 ('3 - Moyen', 3, 3),
 ('Réduction en cours', 4, 5);
 
--- Table Participate
+-- Table Participate / ne pas garder
 INSERT INTO Participate (idClient, idAudit, participationDate) VALUES
 (1, 1, '2024-01-16'),
 (2, 2, '2023-11-21'),
@@ -132,7 +121,7 @@ INSERT INTO Participate (idClient, idAudit, participationDate) VALUES
 (4, 4, '2023-09-02'),
 (5, 5, '2024-02-29');
 
--- Table Own
+-- Table Own / ne pas garder
 INSERT INTO Own (idAudit, idTheme) VALUES
 (1, 1),
 (2, 3),
@@ -140,7 +129,7 @@ INSERT INTO Own (idAudit, idTheme) VALUES
 (4, 2),
 (5, 5);
 
--- Table Contain
+-- Table Contain / ne pas garder
 INSERT INTO Contain (idQuestion, idOptAnswer) VALUES
 (1, 1),
 (1, 2),
@@ -148,7 +137,7 @@ INSERT INTO Contain (idQuestion, idOptAnswer) VALUES
 (3, 4),
 (5, 5);
 
--- Table Modify
+-- Table Modify / ne pas garder
 INSERT INTO Modify (idUser, idAudit, modificationDate, modificationTime) VALUES
 ('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 1, '2024-01-20', '10:30'),
 ('ed30a7ac-7ad3-40de-a570-c52606ec13b8', 2, '2023-11-25', '14:15'),
