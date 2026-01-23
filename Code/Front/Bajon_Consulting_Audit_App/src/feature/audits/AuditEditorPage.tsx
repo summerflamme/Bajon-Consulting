@@ -91,8 +91,6 @@ function AuditEditorPage({ mode = "view" }: Props) {
         <div className="audit-editor-page">
             <h1>{auditName || "Titre de l'audit"}</h1>
 
-       
-
             <AuditForm
                 auditId={routeId}
                 data={data}

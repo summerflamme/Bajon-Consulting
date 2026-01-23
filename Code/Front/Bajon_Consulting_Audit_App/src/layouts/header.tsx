@@ -4,6 +4,7 @@ import { LogoutIcon } from "../components/ui/logout";
 import { UserIcon } from "../components/ui/user";
 import { ChevronDownIcon } from "../components/ui/chevron-down";
 import { useAuth } from "../feature/auth/useAuth";
+import logo from "../assets/logo-bajon-consulting.png";
 
 /**
  * MenuToggleButton
@@ -74,11 +75,7 @@ export default function Header() {
   return (
     <header className="header">
       <a href="/">
-        <img
-          src="../../src/assets/logo-bajon-consulting.png"
-          alt="Logo"
-          className="header-logo"
-        />
+        <img src={logo} alt="Logo" className="header-logo" />
       </a>
 
       {currentUser && (
