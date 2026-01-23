@@ -16,6 +16,8 @@ services:
       args:
         # Remplace <IP_PUBLIQUE> par l’IP du serveur
         VITE_API_URL: "http://localhost:8080"
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
     container_name: bajon_frontend_prod
     restart: always
     depends_on:

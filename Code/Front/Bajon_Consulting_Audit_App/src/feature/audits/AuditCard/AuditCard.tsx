@@ -5,7 +5,7 @@ import { SquarePenIcon } from '@/components/ui/modify';
 import { SearchIcon } from '@/components/ui/search';
 import { ArchiveIcon } from '@/components/ui/archive';
 import { RefreshCCWIcon } from '@/components/ui/refresh-ccw';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../../../supabaseClient';
 import axios from 'axios';
 

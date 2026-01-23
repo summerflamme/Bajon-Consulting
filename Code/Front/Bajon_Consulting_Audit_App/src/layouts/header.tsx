@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MenuIcon } from "../components/ui/menu";
 import { LogoutIcon } from "../components/ui/logout";
 import { UserIcon } from "../components/ui/user";

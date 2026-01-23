@@ -164,7 +164,9 @@ function TemplateList() {
         ) : (
           <div className="template-grid">
             {templates.length > 0 ? (
-              templates.map((template) => <AuditCard key={template.id} audit={template} />)
+              templates.map((template) => (
+                <AuditCard key={template.id} audit={template} onArchiveToggle={fetchTemplates} />
+              ))
             ) : (
               <p>Aucun template trouvé.</p>
             )}
