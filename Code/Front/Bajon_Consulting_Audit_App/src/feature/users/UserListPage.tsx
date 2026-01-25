@@ -8,6 +8,8 @@ import "./users.css";
 import { Plus } from "lucide-react";
 import { useAuth } from "../../feature/auth/useAuth"; //  AJOUT
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 interface APIUser {
   id: string;
   email: string | null;
@@ -60,7 +62,7 @@ function UserList() {
   // --- Récupération des utilisateurs depuis le backend ---
   useEffect(() => {
     axios
-      .get<APIUser[]>("http://localhost:8080/api/users/listUsers")
+      .get<APIUser[]>(`${API_BASE_URL}/api/users/listUsers`)
       .then((response) => {
         const normalized = response.data.map((u) => ({
           id: u.id,
@@ -125,7 +127,7 @@ function UserList() {
   const handleDeleteUser = (id: string) => {
     if (window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
       axios
-        .delete(`http://localhost:8080/api/users/deleteUser/${id}`)
+        .delete(`${API_BASE_URL}/api/users/deleteUser/${id}`)
         .then(() => {
           setUsers((prev) => prev.filter((user) => user.id !== id));
           console.log('${id}');

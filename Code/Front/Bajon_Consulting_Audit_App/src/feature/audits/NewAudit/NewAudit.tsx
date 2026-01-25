@@ -11,8 +11,6 @@ export default function NewAuditPage() {
   // ========================================================
 
   // partie form client
-  const [nameAudit, setNameAudit] = useState("");
-  const [selectedAuditId, setSelectedAuditId] = useState("");
   const [auditType, setAuditType] = useState<any[]>([]);
   const [auditOffer, setAuditOffer] = useState<any[]>([]);
   const [clientLastName, setClientLastName] = useState("");
@@ -34,9 +32,9 @@ export default function NewAuditPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   // partie erreur
-  const [emailError, setEmailError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+  const [error] = useState("");
 
   const [emailErrorMessage, setEmailErrorMessage] = useState<string | null>(
     null,
@@ -46,25 +44,18 @@ export default function NewAuditPage() {
   );
 
   // partie sécuriter
-  const [message, setMessage] = useState("");
+  const [message] = useState("");
   const validEmail = new RegExp(
     "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$",
   );
   const validPhone = new RegExp("^(\\+33|0)[1-9](\\d{2}){4}$");
 
   // partie form audit
-  const [audits, setAudits] = useState<any[]>([]);
-  const [clients, setClients] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [fetchError, setFetchError] = useState(null);
-
   const [auditsTemplate, setAuditsTemplate] = useState<any[]>([]);
   const [selectedAuditTypeId, setSelectedAuditTypeId] = useState("");
   const [selectedAuditOfferId, setSelectedAuditOfferId] = useState("");
 
   const [auditSearch, setAuditSearch] = useState("");
-  const [auditTypeSearch, setAuditTypeSearch] = useState("");
-  const [auditOfferSearch, setAuditOfferSearch] = useState("");
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
 
@@ -74,45 +65,9 @@ export default function NewAuditPage() {
     new URLSearchParams(location.search).get("mode") === "template";
 
   // ========================================================
-  // Début BD / Récupération audits
-  // ========================================================
-  const fetchAudits = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from("audit")
-        .select(
-          `
-                    id,
-                    auditname,
-                    audittype (id, nameaudittype)
-                `,
-        )
-        .eq("template", false);
-
-      if (error) {
-        setFetchError(error.message);
-        setAudits([]);
-      } else {
-        setAudits(data ?? []);
-      }
-    } catch (err) {
-      setFetchError(err.message ?? "Erreur inconnue");
-      setAudits([]);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchAudits();
-  }, []);
-
-  // ========================================================
   // Récupération templates d'audits
   // ========================================================
-  const fetchAuditsTemplate = async (value) => {
-    setAuditSearch(value);
-
+  const fetchAuditsTemplate = async () => {
     const { data, error } = await supabase
       .from("audit")
       .select(
@@ -151,16 +106,14 @@ export default function NewAuditPage() {
   };
 
   useEffect(() => {
-    fetchAuditsTemplate("");
+    fetchAuditsTemplate();
   }, []);
 
   // ========================================================
   // Récupération d'audits type
   // ========================================================
 
-  const fetchAuditsType = async (value) => {
-    setAuditTypeSearch(value);
-
+  const fetchAuditsType = async () => {
     const { data, error } = await supabase
       .from("audittype")
       .select(
@@ -182,16 +135,14 @@ export default function NewAuditPage() {
   };
 
   useEffect(() => {
-    fetchAuditsType("");
+    fetchAuditsType();
   }, []);
 
   // ========================================================
   // Récupération d'audits offer
   // ========================================================
 
-  const fetchAuditsOffer = async (value) => {
-    setAuditOfferSearch(value);
-
+  const fetchAuditsOffer = async () => {
     const { data, error } = await supabase
       .from("auditoffer")
       .select(
@@ -213,7 +164,7 @@ export default function NewAuditPage() {
   };
 
   useEffect(() => {
-    fetchAuditsOffer("");
+    fetchAuditsOffer();
   }, []);
 
   // ========================================================
@@ -239,12 +190,6 @@ export default function NewAuditPage() {
   // ========================================================
   const handleSelectAuditTemplate = (value: string) => {
     setAuditSearch(value);
-    const selected = auditsTemplate.find((a) => a.auditname === value);
-    if (selected) {
-      setSelectedAuditId(selected.id);
-    } else {
-      setSelectedAuditId("");
-    }
   };
 
   useEffect(() => {
@@ -256,91 +201,14 @@ export default function NewAuditPage() {
     );
 
     if (selected) {
-      setSelectedAuditId(selected.id);
+      setSelectedAuditTypeId(selected.audittype?.id ?? "");
     }
   }, [auditSearch, auditsTemplate]);
 
   // ========================================================
-  // Sélection d'un audit type
-  // ========================================================
-  const handleSelectAuditType = (value: string) => {
-    setAuditTypeSearch(value);
-    const selected = auditType.find((a) => a.nameaudittype === value);
-    if (selected) {
-      setSelectedAuditTypeId(selected.id);
-    } else {
-      setSelectedAuditTypeId("");
-    }
-  };
-
-  useEffect(() => {
-    if (auditType.length === 0 || !auditTypeSearch) return;
-
-    const selected = auditType.find(
-      (a) =>
-        a.nameaudittype.toLowerCase().trim() ===
-        auditTypeSearch.toLowerCase().trim(),
-    );
-
-    if (selected) {
-      setSelectedAuditTypeId(selected.id);
-    }
-  }, [auditTypeSearch, auditType]);
-
-  // ========================================================
-  // Sélection d'un audit offer
-  // ========================================================
-  const handleSelectAuditOffer = (value: string) => {
-    setAuditOfferSearch(value);
-    const selected = auditOffer.find((a) => a.nameauditoffer === value);
-    if (selected) {
-      setSelectedAuditOfferId(selected.id);
-    } else {
-      setSelectedAuditOfferId("");
-    }
-  };
-
-  useEffect(() => {
-    if (auditOffer.length === 0 || !auditOfferSearch) return;
-
-    const selected = auditOffer.find(
-      (a) =>
-        a.nameauditoffer.toLowerCase().trim() ===
-        auditOfferSearch.toLowerCase().trim(),
-    );
-
-    if (selected) {
-      setSelectedAuditOfferId(selected.id);
-    }
-  }, [auditOfferSearch, auditOffer]);
-
-  // ========================================================
-  // Récupération clients
-  // ========================================================
-  const fetchClients = async () => {
-    try {
-      const { data, error } = await supabase.from("client").select("*");
-
-      if (error) {
-        setFetchError(error.message);
-        setClients([]);
-      } else {
-        setClients(data ?? []);
-      }
-    } catch (err) {
-      setFetchError(err.message ?? "Erreur inconnue");
-      setClients([]);
-    }
-  };
-
-  useEffect(() => {
-    fetchClients();
-  }, []);
-
-  // ========================================================
   // Autocomplétion client
   // ========================================================
-  const handleSearch = async (value) => {
+  const handleSearch = async (value: string) => {
     setClientLastName(value);
 
     if (value.length < 1) {
@@ -382,7 +250,6 @@ export default function NewAuditPage() {
       .eq("clientemail", clientEmail);
 
     if (existingClient && existingClient.length > 0) {
-      const client = existingClient[0];
       clientExiste = true;
     }
 
@@ -398,7 +265,6 @@ export default function NewAuditPage() {
       .limit(1);
 
     if (existingTemplate && existingTemplate.length > 0) {
-      const audit = existingTemplate[0];
       isTemplate = true;
     }
 
@@ -474,7 +340,11 @@ export default function NewAuditPage() {
       // ========================================================
       // récupération du client existant
       // ========================================================
-      const existingClientId = existingClient[0].id;
+      const existingClientId = existingClient?.[0]?.id;
+      if (!existingClientId) {
+        console.error("Client introuvable alors qu'il est attendu");
+        return;
+      }
 
       // ========================================================
       // insert table audit
@@ -528,7 +398,11 @@ export default function NewAuditPage() {
       // ========================================================
       // récupération du template existant
       // ========================================================
-      const existingTemplateId = existingTemplate[0].id;
+      const existingTemplateId = existingTemplate?.[0]?.id;
+      if (!existingTemplateId) {
+        console.error("Template introuvable alors qu'il est attendu");
+        return;
+      }
 
       // ========================================================
       // insert table client
@@ -594,10 +468,12 @@ export default function NewAuditPage() {
       // ========================================================
       // recherche de idtheme dans la table own
       // ========================================================
-      const { data: templateThemes } = await supabase
+      const { data: templateThemesData } = await supabase
         .from("own")
         .select("idtheme")
         .eq("idaudit", existingTemplateId);
+
+      const templateThemes = templateThemesData ?? [];
 
       // ========================================================
       // insert table own
@@ -651,12 +527,20 @@ export default function NewAuditPage() {
       // ========================================================
       // récupération du client existant
       // ========================================================
-      const existingClientId = existingClient[0].id;
+      const existingClientId = existingClient?.[0]?.id;
+      if (!existingClientId) {
+        console.error("Client introuvable alors qu'il est attendu");
+        return;
+      }
 
       // ========================================================
       // récupération du template existant
       // ========================================================
-      const existingTemplateId = existingTemplate[0].id;
+      const existingTemplateId = existingTemplate?.[0]?.id;
+      if (!existingTemplateId) {
+        console.error("Template introuvable alors qu'il est attendu");
+        return;
+      }
 
       // ========================================================
       // insert table audit
@@ -692,10 +576,12 @@ export default function NewAuditPage() {
       // ========================================================
       // recherche de idtheme dans la table own
       // ========================================================
-      const { data: templateThemes } = await supabase
+      const { data: templateThemesData } = await supabase
         .from("own")
         .select("idtheme")
         .eq("idaudit", existingTemplateId);
+
+      const templateThemes = templateThemesData ?? [];
 
       // ========================================================
       // insert table own
@@ -954,14 +840,15 @@ export default function NewAuditPage() {
                   value={clientEmail}
                   onChange={(e) => {
                     setClientEmail(e.target.value);
-                    setEmailErrorMessage("");
+                    setEmailErrorMessage(null);
+                    setEmailError(false);
                   }}
                   placeholder="ex@domaine.com"
                   required={!isTemplateMode}
                 />
 
                 {emailError && (
-                  <span className="error-tooltip">{emailError}</span>
+                  <span className="error-tooltip">{emailErrorMessage}</span>
                 )}
               </div>
             </div>
