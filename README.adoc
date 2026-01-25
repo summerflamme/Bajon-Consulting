@@ -56,7 +56,7 @@ Le tableau ci-dessous présente la répartition des principales fonctionnalités
 
 | Conception de la base de données
 | Modélisation du schéma relationnel, définition des tables et des relations
-| Titouan GAUZE, Bilon KWADJANI, Pierre CORNU, Robin GOURGUES
+| Titouan GAUZE,  Pierre CORNU
 
 | Fonctions SQL / RPC
 | Fonctions stockées pour la récupération, la mise à jour et l’insertion des audits, thèmes, questions et réponses
@@ -72,26 +72,26 @@ Le tableau ci-dessous présente la répartition des principales fonctionnalités
 
 | Frontend – Clients
 | Pages de gestion des clients (CRUD), affichage et formulaires
-| Robin GOURGUES
+| Simon CLAVEL
 
 | Frontend – Layout / Header
 | Mise en place du header, navigation globale et structure de l’interface
 | Simon CLAVEL
 
 | Frontend – Audits
-| Pages de création, consultation, modification et archivage des audits
-| Bilon KWADJANI
+| Formulaire de création, consultation, modification et archivage des audits et templates
+| Bilon Kwadjani
+
+| Utilisateur
+| Formulaire de création, consultation, modification et archivage des utilisateur
+| Robin GOURGUES
 
 | Frontend – Audits Card
 | Liste de Card de template d'audit et d'audit 
-|Pierre Cornu
+| Pierre Cornu ,Titouan GAUZE
 
 | Formulaires d’audit dynamiques
 | Génération des thèmes, questions et réponses à partir des templates
-| Bilon KWADJANI
-
-| Gestion des réponses client
-| Sélection, affichage et enregistrement des réponses aux audits
 | Bilon KWADJANI
 
 | Conteneurisation Docker
@@ -103,7 +103,7 @@ Le tableau ci-dessous présente la répartition des principales fonctionnalités
 | Simon CLAVEL, Robin GOURGUES, Bilon KWADJANI
 
 | Gestion de projet / Scrum
-| Organisation du travail, animation des réunions, coordination de l’équipe
+| Organisation du travail, animation des réunions, coordination de l’équipe,Documentation
 | Simon CLAVEL
 |===
 
@@ -253,6 +253,7 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
 
 
 
