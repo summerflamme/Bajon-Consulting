@@ -1,25 +1,34 @@
-package com.bajonconsulting.Bajon_audit_App.Users;
+package com.bajonconsulting.Bajon_audit_App.controller;
 
-import com.bajonconsulting.Bajon_audit_App.Types.User;
+import com.bajonconsulting.Bajon_audit_App.types.UserDTO;
+import com.bajonconsulting.Bajon_audit_App.service.SupabaseUsersService;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
 
-
+/**
+ * Contrôleur REST pour la gestion des utilisateurs via Supabase.
+ * <p>
+ * Ce contrôleur expose des endpoints pour effectuer des opérations CRUD sur les utilisateurs :
+ * création, lecture, mise à jour et suppression.
+ * <p>
+ * Utilise une approche réactive avec Project Reactor pour gérer les requêtes de manière asynchrone.
+ *
+ * @author Bajon Consulting
+ * @version 1.0
+ */
 @CrossOrigin(origins = "http://localhost:5173/")
 @RestController
 @RequestMapping("/api/users")
@@ -27,13 +36,36 @@ public class UsersRestController {
     private final SupabaseUsersService supabaseUsersService;
     private final Environment environment;
 
+    /**
+     * Constructeur avec injection de dépendances.
+     *
+     * @param supabaseUsersService le service de gestion des utilisateurs Supabase
+     * @param environment l'environnement Spring pour accéder aux propriétés de configuration
+     */
     public UsersRestController(SupabaseUsersService supabaseUsersService, Environment environment) {
         this.supabaseUsersService = supabaseUsersService;
         this.environment = environment;
     }
 
-    // Requête Post
-
+    /**
+     * Crée un nouvel utilisateur dans Supabase.
+     * <p>
+     * Endpoint accessible à : {@code POST /api/users/createUser}
+     * <p>
+     * Valide la présence de tous les champs requis avant de procéder à la création.
+     * Route utilisée par le front React dans le fichier userForm.tsx.
+     *
+     * @param payload les données de l'utilisateur à créer contenant :
+     *                <ul>
+     *                  <li>email - l'adresse email de l'utilisateur</li>
+     *                  <li>password - le mot de passe de l'utilisateur</li>
+     *                  <li>lastName - le nom de famille</li>
+     *                  <li>firstName - le prénom</li>
+     *                  <li>currentRole - le rôle actuel de l'utilisateur</li>
+     *                  <li>phone - le numéro de téléphone</li>
+     *                </ul>
+     * @return un {@link Mono} contenant la réponse avec les détails de l'utilisateur créé ou un message d'erreur
+     */
     @PostMapping("/createUser")
     public Mono<ResponseEntity<Map<String, Object>>> createUser(@RequestBody Map<String, Object> payload) {
         String email = (String) payload.get("email");
@@ -68,6 +100,25 @@ public class UsersRestController {
                 });
     }
 
+    /**
+     * Met à jour les informations d'un utilisateur existant.
+     * <p>
+     * Endpoint accessible à : {@code POST /api/users/updateUser/{id}}
+     * <p>
+     * Valide la présence de tous les champs requis avant de procéder à la mise à jour.
+     * Route utilisée par le front React dans le fichier userForm.tsx.
+     *
+     * @param payload les données de l'utilisateur à mettre à jour contenant :
+     *                <ul>
+     *                  <li>id - l'identifiant unique de l'utilisateur</li>
+     *                  <li>email - l'adresse email de l'utilisateur</li>
+     *                  <li>lastName - le nom de famille</li>
+     *                  <li>firstName - le prénom</li>
+     *                  <li>currentRole - le rôle actuel de l'utilisateur</li>
+     *                  <li>phone - le numéro de téléphone</li>
+     *                </ul>
+     * @return un {@link Mono} contenant la réponse avec les détails de l'utilisateur mis à jour ou un message d'erreur
+     */
     @PostMapping("/updateUser/{id}")
     public Mono<ResponseEntity<Map<String, Object>>> updateUser(@RequestBody Map<String, Object> payload){
         String id = (String) payload.get("id");
@@ -100,25 +151,55 @@ public class UsersRestController {
                     return Mono.just(respErr);
                 });
     }
-    
 
 
 
-    // Requête Get
 
+
+    /**
+     * Récupère la liste complète de tous les utilisateurs.
+     * <p>
+     * Endpoint accessible à : {@code GET /api/users/listUsers}
+     * <p>
+     * Appelle l'API Supabase pour obtenir la liste des utilisateurs.
+     * Route utilisée par le front React dans le fichier userForm.tsx.
+     *
+     * @return un {@link Mono} contenant la liste des utilisateurs
+     */
     @GetMapping("/listUsers")
     public Mono<List<? extends Object>> getUserList(){
         return supabaseUsersService.getUserList();
     }
 
+
+    /**
+     * Récupère les détails d'un utilisateur spécifique par son identifiant.
+     * <p>
+     * Endpoint accessible à : {@code GET /api/users/{id}}
+     * <p>
+     * Route utilisée par le front React dans le fichier userForm.tsx.
+     *
+     * @param id l'identifiant unique de l'utilisateur à récupérer
+     * @return un {@link Mono} contenant les données de l'utilisateur sous forme de {@link UserDTO}
+     */
     @GetMapping("/{id}")
-    public Mono<User> getUserById(@PathVariable String id) {
+    public Mono<UserDTO> getUserById(@PathVariable String id) {
         return supabaseUsersService.getUserById(id);
     }
-    
 
     //Requête DELETE
 
+
+    /**
+     * Supprime un utilisateur de Supabase.
+     * <p>
+     * Endpoint accessible à : {@code DELETE /api/users/deleteUser/{id}}
+     * <p>
+     * Route utilisée par le front React dans le fichier UserCard.tsx.
+     *
+     * @param id l'identifiant unique de l'utilisateur à supprimer
+     * @return un {@link Mono} vide indiquant la fin de l'opération de suppression
+     */
     @DeleteMapping("deleteUser/{id}")
     public Mono<Void> deleteUser(@PathVariable String id) {
         return supabaseUsersService.deleteUser(id);
