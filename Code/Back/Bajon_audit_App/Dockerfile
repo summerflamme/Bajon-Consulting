@@ -1,19 +1,8 @@
-FROM maven:3.9.6-eclipse-temurin-21
-
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copier Maven Wrapper + projet
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-COPY src ./src
-
-# Rendre mvnw exécutable
-RUN chmod +x mvnw
-
-# Compiler sans tests
-RUN ./mvnw clean package -DskipTests
+# suppose que tu buildes un jar "app.jar" (ou target/*.jar)
+COPY target/*.jar app.jar
 
 EXPOSE 8080
-
-CMD ["java", "-jar", "target/*.jar"]
- ADD source dest
+ENTRYPOINT ["java","-jar","/app/app.jar"]

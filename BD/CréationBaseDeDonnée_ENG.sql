@@ -1,4 +1,4 @@
--- Drop association / dependent tables first
+-- Drop table
 DROP TABLE IF EXISTS Modify CASCADE;
 DROP TABLE IF EXISTS Contain CASCADE;
 DROP TABLE IF EXISTS Own CASCADE;
@@ -6,8 +6,7 @@ DROP TABLE IF EXISTS Participate CASCADE;
 DROP TABLE IF EXISTS ClientAnswer CASCADE;
 DROP TABLE IF EXISTS OptionAnswer CASCADE;
 DROP TABLE IF EXISTS Question CASCADE;
-
--- Drop independent tables
+DROP TABLE IF EXISTS Status CASCADE;
 DROP TABLE IF EXISTS Type CASCADE;
 DROP TABLE IF EXISTS Theme CASCADE;
 DROP TABLE IF EXISTS Staff CASCADE;
@@ -21,23 +20,23 @@ DROP TABLE IF EXISTS AuditOffer CASCADE;
 
 -- Table Client
 CREATE TABLE Client (
-    id SERIAL PRIMARY KEY, -- pas besoin
-    clientLastName VARCHAR(100), -- implémenté
-    clientFirstName VARCHAR(100), -- implémenté
-    clientEmail VARCHAR(255), -- implémenté
-    clientPhone VARCHAR(20), -- implémenté
-    companyName VARCHAR(150), -- implémenté
-    clientAddress VARCHAR(255), -- implémenté
-    clientCity VARCHAR(255), -- implémenté
-    clientCountry VARCHAR(100), -- implémenté
-    siren VARCHAR(20), -- implémenté
-    vatNumber VARCHAR(20), -- implémenté
-    businessActivity VARCHAR(100), -- implémenté
-    rcsNumber VARCHAR(50), -- implémenté
-    shareCapital NUMERIC(15,2), -- implémenté
-    socialNetworks VARCHAR(255), -- implémenté
-    legalForm VARCHAR(100), -- implémenté
-    logo BYTEA -- implémenté
+    id SERIAL PRIMARY KEY,
+    clientLastName VARCHAR(100), 
+    clientFirstName VARCHAR(100), 
+    clientEmail VARCHAR(255), 
+    clientPhone VARCHAR(20), 
+    companyName VARCHAR(150), 
+    clientAddress VARCHAR(255), 
+    clientCity VARCHAR(255), 
+    clientCountry VARCHAR(100), 
+    siren VARCHAR(20), 
+    vatNumber VARCHAR(20), 
+    businessActivity VARCHAR(100), 
+    rcsNumber VARCHAR(50), 
+    shareCapital NUMERIC(15,2), 
+    socialNetworks VARCHAR(255), 
+    legalForm VARCHAR(100), 
+    logo BYTEA
 );
 
 -- Table AuditType
@@ -52,16 +51,10 @@ CREATE TABLE AuditOffer (
     nameAuditOffer VARCHAR(100) NOT NULL
 );
 
--- Table Audit
-CREATE TABLE Audit (
+-- Table Status
+CREATE TABLE Status(
     id SERIAL PRIMARY KEY,
-    idAuditType INT NOT NULL,
-    idAuditOffer INT NOT NULL,
-    auditName VARCHAR(150) NOT NULL,
-    status VARCHAR(50),
-    template BOOLEAN NOT NULL DEFAULT false,
-    FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
-    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id)
+    auditStatus VARCHAR(50)
 );
 
 -- Table role
@@ -70,20 +63,10 @@ CREATE TABLE Role  (
     roleName VARCHAR(150) NOT NULL
 );
 
--- Table User ( pour les test )
-CREATE TABLE Staff (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    lastName VARCHAR(100),
-    firstName VARCHAR(100),
-    idRole INT NOT NULL,
-    FOREIGN KEY (idRole) REFERENCES Role(id)
-);
-
 -- Table Theme
 CREATE TABLE Theme (
     id SERIAL PRIMARY KEY,
-    themeName VARCHAR(150),
-    status VARCHAR(50)
+    themeName VARCHAR(150)
 );
 
 -- Table Type
@@ -92,11 +75,24 @@ CREATE TABLE Type (
     typeName VARCHAR(100)
 );
 
+-- Table Audit
+CREATE TABLE Audit (
+    id SERIAL PRIMARY KEY,
+    idAuditType INT NOT NULL,
+    idAuditOffer INT NOT NULL,
+    idStatus INT NOT NULL,
+    auditName VARCHAR(150) NOT NULL,
+    template BOOLEAN NOT NULL DEFAULT false,
+    archived BOOLEAN NOT NULL DEFAULT false,
+    FOREIGN KEY (idAuditType) REFERENCES AuditType(id),
+    FOREIGN KEY (idAuditOffer) REFERENCES AuditOffer(id),
+    FOREIGN KEY (idStatus) REFERENCES Status(id)
+);
+
 -- Table Question
 CREATE TABLE Question (
     id SERIAL PRIMARY KEY,
     label VARCHAR(255),
-    status VARCHAR(50),
     idTheme INT NOT NULL,
     FOREIGN KEY (idTheme) REFERENCES Theme(id)
 );
@@ -113,10 +109,12 @@ CREATE TABLE OptionAnswer (
 -- Table ClientAnswer
 CREATE TABLE ClientAnswer (
     id SERIAL PRIMARY KEY,
+    idQuestion INT NOT NULL,
+    idAudit INT NOT NULL,
     clientAnswer TEXT,
     clientAnswerPoints INT,
-    idQuestion INT NOT NULL,
-    FOREIGN KEY (idQuestion) REFERENCES Question(id)
+    FOREIGN KEY (idQuestion) REFERENCES Question(id),
+    FOREIGN KEY (idAudit) REFERENCES Audit(id)
 );
 
 -- Table Participate (relation Client - Audit)
@@ -147,17 +145,13 @@ CREATE TABLE Contain (
     FOREIGN KEY (idOptAnswer) REFERENCES OptionAnswer(id)
 );
 
--- Table Modify (relation User - Audit)
+-- Table Modify (relation Users - Audit)
 CREATE TABLE Modify (
-    idmodify SERIAL,
-    idUser UUID,
-    -- ou quand test fini
-    --id UUID auth.users(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL,
     idAudit INT NOT NULL,
     modificationDate DATE,
     modificationTime TIME,
-    PRIMARY KEY (idUser, idAudit, idmodify),
-    FOREIGN KEY (idUser) REFERENCES Staff(id),
-    --FOREIGN KEY (UUID) REFERENCES users(uid),
+    PRIMARY KEY (user_id, idAudit),
+    FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE,
     FOREIGN KEY (idAudit) REFERENCES Audit(id)
-);
+    )

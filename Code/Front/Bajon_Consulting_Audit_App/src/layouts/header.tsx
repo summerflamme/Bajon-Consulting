@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MenuIcon } from "../components/ui/menu";
 import { LogoutIcon } from "../components/ui/logout";
 import { UserIcon } from "../components/ui/user";
 import { ChevronDownIcon } from "../components/ui/chevron-down";
 import { useAuth } from "../feature/auth/useAuth";
+import logo from "../assets/logo-bajon-consulting.png";
 
 /**
  * MenuToggleButton
@@ -50,12 +51,12 @@ export default function Header() {
   const menus = [
     { id: "audits", title: "Audits", link: "/audits" },
     { id: "templates", title: "Templates", link: "/templates" },
-    { id: "clients", title: "Clients", link: "/clients" },
+    { id: "clients", title: "Clients", link: "/clients/list" },
     {
       id: "user",
       title: <UserIcon size={28} />,
       subMenus: [
-        { title: "Mes informations", link: "/users/info" },
+        {title: "Mes informations", link: currentUser ? `/users/info/${currentUser.id}` : "/users/info"},
         { title: "Liste des utilisateurs", link: "/users/list" },
       ],
     },
@@ -74,11 +75,7 @@ export default function Header() {
   return (
     <header className="header">
       <a href="/">
-        <img
-          src="../../src/assets/logo-bajon-consulting.png"
-          alt="Logo"
-          className="header-logo"
-        />
+        <img src={logo} alt="Logo" className="header-logo" />
       </a>
 
       {currentUser && (

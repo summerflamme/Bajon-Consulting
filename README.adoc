@@ -48,7 +48,7 @@ toc::[]
 |===
 
 ## Livrables attendus
-- **Dossier de recueil et d’analyse des besoins : (https://github.com/summerflamme/Bajon-Consulting/tree/main/Docs/Recueil%20de%20Besoins[lien])** +
+- **Dossier de recueil et d’analyse des besoins : (https://github.com/summerflamme/Bajon-Consulting/blob/Crash-Test/Docs/Recueil%20de%20Besoins/Recueil%20de%20besoin.pdf[lien])** +
 Ce document détaillera les besoins fonctionnels et techniques de l’application, ainsi que les attentes du client (BAJON Consulting). Il décrira les fonctionnalités principales de l’application, les priorités, ainsi que les spécifications techniques pour le développement.
 
 
@@ -60,15 +60,113 @@ Des maquettes visuelles de l'interface utilisateur (UI) de l'application seront 
 La première version de l'application sera développée et déployée en ligne. Cette version fonctionnelle comprendra les principales fonctionnalités permettant de gérer les audits, de suivre les étapes et les livrables, ainsi que de centraliser les informations des clients. L’application sera responsive, accessible depuis différents supports (PC, tablette, mobile), et permettra de gérer l'offre « Essentiel ».
 
 
-- **Documentation technique : (https://github.com/summerflamme/Bajon-Consulting/tree/main/Docs/Doc%20Tech[lien temporaire])** +
+- **Documentation technique : (https://github.com/summerflamme/Bajon-Consulting/blob/Crash-Test/Docs/Doc%20Tech/Documentation%20Technique.pdf[lien])** +
 La documentation technique détaillera l’architecture du système, les technologies utilisées, les choix techniques faits durant le développement ainsi que les étapes de déploiement et de maintenance. Elle sera utile pour les futures évolutions du projet et pour l’intégration d’autres fonctionnalités.
 
 
-- **Guide utilisateur : (https://github.com/summerflamme/Bajon-Consulting/tree/main/Docs/Doc%20Utilisateur[lien temporaire])** +
+- **Guide utilisateur : (https://github.com/summerflamme/Bajon-Consulting/blob/Crash-Test/Docs/Doc%20Utilisateur/Document%20Guide%20Utilisateur.pdf[lien])** +
 Ce document aura pour but de guider les utilisateurs dans l’utilisation de l’application. Il expliquera le fonctionnement de l’application, la gestion des audits, le suivi des livrables et l’utilisation des différentes fonctionnalités. Ce guide sera à la fois simple et complet pour assurer une adoption rapide de l’outil par les équipes de BAJON Consulting.
 
-## Guide d'installation
+== Guide d’installation
 
+Ce guide décrit les étapes nécessaires pour installer et exécuter l’application *Bajon Consulting – Audit* en environnement local ou serveur, à l’aide de Docker.
+
+=== Prérequis
+
+Avant de procéder à l’installation, la machine hôte doit disposer des outils suivants :
+
+* Docker
+* Docker Desktop
+
+Demarrage de docker desktop primordial avant de démarrer l'application .
+
+Aucune installation locale de Node.js, Java, Maven ou autres dépendances n’est requise.  
+L’ensemble de l’environnement d’exécution est fourni via les conteneurs Docker.
+
+---
+
+=== Récupération du projet
+
+Cloner le dépôt du projet depuis le gestionnaire de version :
+
+[source,bash]
+----
+git clone https://github.com/summerflamme/Bajon-Consulting.git
+cd Bajon-Consultin/Code
+----
+
+---
+
+=== Configuration de l’environnement
+
+Créer un fichier `.env` à la racine du projet afin de définir les variables d’environnement nécessaires.
+
+Exemple de fichier `.env` :
+
+[source,env]
+
+IMPORTANT: Les variables destinées au frontend doivent obligatoirement être préfixées par `VITE_` afin d’être prises en compte lors du build.
+
+---
+
+=== Lancement de l’application
+
+Depuis la racine du projet, exécuter la commande suivante :
+
+[source,bash]
+----
+docker compose up -d --build
+----
+
+Cette commande :
+* construit les images Docker du frontend et du backend,
+* démarre les conteneurs en arrière-plan,
+* rend l’application accessible automatiquement.
+
+---
+
+=== Accès à l’application
+
+Une fois le déploiement terminé, l’application est accessible aux adresses suivantes :
+
+* Frontend : `http://localhost`
+* Backend (API) : `http://localhost:8080`
+
+---
+
+=== Arrêt de l’application
+
+Pour arrêter l’ensemble des services et supprimer les conteneurs :
+
+[source,bash]
+----
+docker compose down
+----
+
+---
+
+=== Déploiement sur un serveur distant
+
+Pour déployer l’application sur un serveur :
+
+. Installer Docker et Docker Compose sur le serveur.
+. Adapter les variables d’environnement (URL publique du serveur).
+. Lancer l’application avec :
++
+[source,bash]
+----
+docker compose up -d --build
+----
+
+Le frontend est exposé via le port 80 et le backend via le port 8080.
+
+---
+
+=== Notes complémentaires
+
+* L’authentification est gérée par Supabase Auth via une API externe.
+* L’application est destinée à un usage interne (client Bajon Consulting).
+* La conteneurisation garantit une cohérence totale entre les environnements de développement et de production.
 
 
 ## Guide d'utilisation
@@ -94,4 +192,9 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
+
+
+
+
 

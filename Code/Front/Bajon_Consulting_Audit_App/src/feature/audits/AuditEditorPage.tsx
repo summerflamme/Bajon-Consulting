@@ -10,9 +10,31 @@ type Props = {
     mode: "edit" | "view";
 };
 
-function AuditEditorPage({ auditData, mode = "view" }: Props) {
+function AuditEditorPage({ mode = "view" }: Props) {
     const params = useParams();
     const routeId = params.id ? parseInt(params.id, 10) : undefined;
+    //recupere le nom de l'audit pour l'afficher en titre sur supabase
+    async function getAuditNameById(auditId: number): Promise<string | null> {
+        const { data, error } = await supabase
+            .from('audit')
+            .select('auditname')
+            .eq('id', auditId)
+            .single();
+
+        if (error) {
+            console.error(error);
+            return null;
+        }
+
+        return data.auditname;
+    }
+    const [auditName, setAuditName] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (routeId) {
+            getAuditNameById(routeId).then(name => setAuditName(name));
+        }
+    }, [routeId]);
 
     const [data, setData] = useState<Section[]>([]);
     const [initialResponses, setInitialResponses] = useState<Response[]>([]);
@@ -25,15 +47,14 @@ function AuditEditorPage({ auditData, mode = "view" }: Props) {
         if (!id) return;
         setLoading(true);
         setError(null);
-
+        
         const { data, error } = await supabase.rpc("get_audit_data", { _idaudit: id });
-        setLoading(false);
+        
 
         if (error) {
             console.error("Erreur chargement audit :", error);
             setError(error.message);
         } else {
-            console.log("Fetched responses:", data);
 
             setData(data || []);
         }
@@ -47,7 +68,6 @@ function AuditEditorPage({ auditData, mode = "view" }: Props) {
             console.error("Erreur chargement réponses :", error);
             setError(error.message);
         } else {
-            console.log("Fetched responses:", data);
             setInitialResponses(data || []);
             setUpdatedResponses(data || []); // copie de départ
         }
@@ -69,11 +89,7 @@ function AuditEditorPage({ auditData, mode = "view" }: Props) {
 
     return (
         <div className="audit-editor-page">
-            <h1>{auditData?.title || "Titre de l'audit"}</h1>
-
-       
-            {loading && <p>Chargement des données...</p>}
-            {error && <p className="error">Erreur : {error}</p>}
+            <h1>{auditName || "Titre de l'audit"}</h1>
 
             <AuditForm
                 auditId={routeId}

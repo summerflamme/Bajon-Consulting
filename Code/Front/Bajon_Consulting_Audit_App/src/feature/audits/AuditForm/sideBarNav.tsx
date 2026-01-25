@@ -13,7 +13,6 @@ function SideBarNav({ data, currentIndex, goToSection }: { data: Section[]; curr
 
         <motion.div layout className={`sidebar-nav ${collapsed ? 'collapsed' : ''}`}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 className="sections-title">Sections</h3>
                 {/* ecran reduit */}
                 {window.innerWidth < 768 ? (
                     <ChevronDown

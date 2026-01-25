@@ -5,14 +5,35 @@ import SearchBar from '../../../components/SearchBar';
 import './TemplateListPage.css';
 import { Plus } from 'lucide-react';
 
+interface Audit {
+  id: string | null;
+  auditname: string | null;
+  template: boolean;
+  archived: boolean;
+  idaudittype: string;
+  idauditoffer: string;
+  idstatus: string;
+  audittype: { id: string; nameaudittype: string } | null;
+  auditoffer: { id: string; nameauditoffer: string } | null;
+  status: { id: string; auditstatus: string } | null;
+  creation_user_id?: string | null;
+  creation_date?: string | null;
+  creation_time?: string | null;
+  last_modif_user_id?: string | null;
+  last_modif_date?: string | null;
+  last_modif_time?: string | null;
+}
+
 function TemplateList() {
-  const [templates, setTemplates] = useState<any[]>([]);
+  const [templates, setTemplates] = useState<Audit[]>([]);
   const [loading, setLoading] = useState(false);
 
   // États pour filtres et tri
   const [searchTerm, setSearchTerm] = useState('');
   const [auditType, setAuditType] = useState('');
   const [offerType, setOfferType] = useState('');
+  const [statusType, setStatusType] = useState('');
+  const [showArchived, setShowArchived] = useState('FALSE');
   const [sortField, setSortField] = useState('alphabetique');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -25,13 +46,16 @@ function TemplateList() {
       .select(`
         *,
         audittype ( id, nameaudittype ),
-        auditoffer ( id, nameauditoffer )
+        auditoffer ( id, nameauditoffer ),
+        status ( id, auditstatus )
       `)
       .eq('template', true);
 
     if (searchTerm.trim() !== '') query = query.ilike('auditname', `%${searchTerm}%`);
     if (auditType) query = query.eq('idaudittype', auditType);
     if (offerType) query = query.eq('idauditoffer', offerType);
+    if (statusType) query = query.eq('idstatus', statusType);
+    if (showArchived) query = query.eq("archived", showArchived);
 
     const { data: templatesData, error } = await query;
 
@@ -46,9 +70,9 @@ function TemplateList() {
         const { data: modifies, error: modifyError } = await supabase
           .from('modify')
           .select(`
+            iduser,
             modificationdate,
-            modificationtime,
-            staff ( firstname, lastname )
+            modificationtime
           `)
           .eq('idaudit', template.id)
           .order('modificationdate', { ascending: true })
@@ -65,27 +89,23 @@ function TemplateList() {
 
           return {
             ...template,
+            creation_user_id: creation.iduser,
             creation_date: creation.modificationdate,
             creation_time: creation.modificationtime,
-            creation_staff_firstname: creation.staff?.firstname,
-            creation_staff_lastname: creation.staff?.lastname,
+            last_modif_user_id: last.iduser,
             last_modif_date: last.modificationdate,
             last_modif_time: last.modificationtime,
-            last_modif_staff_firstname: last.staff?.firstname,
-            last_modif_staff_lastname: last.staff?.lastname,
           };
         }
 
         return {
           ...template,
+          creation_user_id: null,
           creation_date: null,
           creation_time: null,
-          creation_staff_firstname: null,
-          creation_staff_lastname: null,
+          last_modif_user_id: null,
           last_modif_date: null,
           last_modif_time: null,
-          last_modif_staff_firstname: null,
-          last_modif_staff_lastname: null,
         };
       })
     );
@@ -114,7 +134,7 @@ function TemplateList() {
 
     setTemplates(sortedTemplates);
     setLoading(false);
-  }, [searchTerm, auditType, offerType, sortField, sortOrder]);
+  }, [searchTerm, auditType, offerType, statusType, showArchived, sortField, sortOrder]);
 
   useEffect(() => {
     fetchTemplates();
@@ -128,11 +148,13 @@ function TemplateList() {
         onSearchChange={setSearchTerm}
         onAuditTypeChange={setAuditType}
         onOfferTypeChange={setOfferType}
+        onStatusTypeChange={setStatusType}
+        onArchivedChange={setShowArchived}
         onSortChange={setSortField}
         onSortOrderChange={setSortOrder}
       />
 
-      <a href="#" className="add-template-btn">
+      <a href="/newaudit?mode=template" className="add-template-btn">
         <Plus className="icon" /> Ajouter un nouveau template
       </a>
 
@@ -142,7 +164,9 @@ function TemplateList() {
         ) : (
           <div className="template-grid">
             {templates.length > 0 ? (
-              templates.map((template) => <AuditCard key={template.id} audit={template} />)
+              templates.map((template) => (
+                <AuditCard key={template.id} audit={template} onArchiveToggle={fetchTemplates} />
+              ))
             ) : (
               <p>Aucun template trouvé.</p>
             )}

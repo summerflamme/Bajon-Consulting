@@ -1,85 +1,73 @@
 import { useState, useEffect } from "react";
-import { PhoneInput } from 'react-international-phone';
-import 'react-international-phone/style.css';
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 import "./NewAudit.css";
 import { supabase } from "../../../supabaseClient";
+import { useLocation } from "react-router-dom";
 
 export default function NewAuditPage() {
+  // ========================================================
+  // Setup
+  // ========================================================
 
-    const [nameAudit, setNameAudit] = useState("");
-    const [clientLastName, setClientLastName] = useState("");
-    const [clientFirstName, setClientFirstName] = useState("");
-    const [clientEmail, setClientEmail] = useState("");
-    const [clientPhone, setClientPhone] = useState("");
-    const [companyName, setCompanyName] = useState("");
-    const [clientAddress, setClientAddress] = useState("");
-    const [clientCity, setClientCity] = useState("");
-    const [clientCountry, setClientCountry] = useState("");
-    const [siren, setSiren] = useState("");
-    const [vatNumber, setVatNumber] = useState("");
-    const [businessActivity, setBusinessActivity] = useState("");
-    const [rcsNumber, setRcsNumber] = useState("");
-    const [shareCapital, setShareCapital] = useState("");
-    const [socialNetworks, setSocialNetworks] = useState("");
-    const [legalForm, setLegalForm] = useState("");
-    const [logo, setLogo] = useState("");
-    const [error, setError] = useState("");
+  // partie form client
+  const [auditType, setAuditType] = useState<any[]>([]);
+  const [auditOffer, setAuditOffer] = useState<any[]>([]);
+  const [clientLastName, setClientLastName] = useState("");
+  const [clientFirstName, setClientFirstName] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [clientAddress, setClientAddress] = useState("");
+  const [clientCity, setClientCity] = useState("");
+  const [clientCountry, setClientCountry] = useState("");
+  const [siren, setSiren] = useState("");
+  const [vatNumber, setVatNumber] = useState("");
+  const [businessActivity, setBusinessActivity] = useState("");
+  const [rcsNumber, setRcsNumber] = useState("");
+  const [shareCapital, setShareCapital] = useState("");
+  const [socialNetworks, setSocialNetworks] = useState("");
+  const [legalForm, setLegalForm] = useState("");
+  const [logo, setLogo] = useState("");
 
-    const [message, setMessage] = useState('');
-    const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$');
-    const validPhone = new RegExp('^(\\+33|0)[1-9](\\d{2}){4}$');
+  // partie erreur
+  const [emailError, setEmailError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
 
-    const [audits, setAudits] = useState<any[]>([]);
-    const [clients, setClients] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [fetchError, setFetchError] = useState(null);
+  const [emailErrorMessage, setEmailErrorMessage] = useState<string | null>(
+    null,
+  );
+  const [phoneErrorMessage, setPhoneErrorMessage] = useState<string | null>(
+    null,
+  );
 
-    const [auditsTemplate, setAuditsTemplate] = useState<any[]>([]);
-    const [selectedAuditId, setSelectedAuditId] = useState("");
-    const [suggestions, setSuggestions] = useState<any[]>([]);
-    const [auditSearch, setAuditSearch] = useState("");
+  // partie sécuriter
+  const validEmail = new RegExp(
+    "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$",
+  );
+  const validPhone = new RegExp("^(\\+33|0)[1-9](\\d{2}){4}$");
 
-    // ========================================================
-    // Récupération audits
-    // ========================================================
-    const fetchAudits = async () => {
-        setLoading(true);
-        try {
-            const { data, error } = await supabase
-                .from("audit")
-                .select(`
-                    id,
-                    auditname,
-                    audittype (id, nameaudittype)
-                `)
-                .eq("template", false);
+  // partie form audit
+  const [auditsTemplate, setAuditsTemplate] = useState<any[]>([]);
+  const [selectedAuditTypeId, setSelectedAuditTypeId] = useState("");
+  const [selectedAuditOfferId, setSelectedAuditOfferId] = useState("");
 
-            if (error) {
-                setFetchError(error.message);
-                setAudits([]);
-            } else {
-                setAudits(data ?? []);
-            }
-        } catch (err) {
-            setFetchError(err.message ?? "Erreur inconnue");
-            setAudits([]);
-        }
-        setLoading(false);
-    };
+  const [auditSearch, setAuditSearch] = useState("");
+  const [suggestions, setSuggestions] = useState<any[]>([]);
 
-    useEffect(() => {
-        fetchAudits();
-    }, []);
+  // partie diff audits/templates
+  const location = useLocation();
+  const isTemplateMode =
+    new URLSearchParams(location.search).get("mode") === "template";
 
-    // ========================================================
-    // Récupération templates d'audits
-    // ========================================================
-    const fetchAuditsTemplate = async (value) => {
-        setAuditSearch(value);
-        
-        const { data, error } = await supabase
-            .from("audit")
-            .select(`
+  // ========================================================
+  const fetchAuditsTemplate = async (value: string) => {
+    setAuditSearch(value);
+
+    const { data, error } = await supabase
+      .from("audit")
+      .select(
+        `
                 id,
                 auditname,
                 audittype:idaudittype (
@@ -96,475 +84,875 @@ export default function NewAuditPage() {
                         )
                     )
                 )
-            `)
-            .eq("template", true)
-            .order("auditname");
+            `,
+      )
+      .eq("template", true)
+      .order("auditname");
 
-        if (!error && data) {
-            console.log("Tous les audits chargés:", data.length);
-            const transformedData = data.map(audit => ({
-                id: audit.id,
-                auditname: audit.auditname,
-                audittype: audit.audittype,
-                themes: audit.own?.map(o => o.theme) || []
-            }));
+    if (!error && data) {
+      const transformedData = data.map((audit) => ({
+        id: audit.id,
+        auditname: audit.auditname,
+        audittype: audit.audittype,
+        themes: audit.own?.map((o) => o.theme) || [],
+      }));
 
-            setAuditsTemplate(transformedData);
+      setAuditsTemplate(transformedData);
+    }
+  };
+
+  useEffect(() => {
+    fetchAuditsTemplate("");
+  }, []);
+
+  // ========================================================
+  // Récupération d'audits type
+  // ========================================================
+
+  const fetchAuditsType = async () => {
+
+    const { data, error } = await supabase
+      .from("audittype")
+      .select(
+        `
+                id,
+                nameaudittype
+            `,
+      )
+      .order("nameaudittype");
+
+    if (!error && data) {
+      const transformedData = data.map((audittype) => ({
+        id: audittype.id,
+        nameaudittype: audittype.nameaudittype,
+      }));
+
+      setAuditType(transformedData);
+    }
+  };
+
+  useEffect(() => {
+    fetchAuditsType();
+  }, []);
+
+  // ========================================================
+  // Récupération d'audits offer
+  // ========================================================
+
+  const fetchAuditsOffer = async () => {
+
+    const { data, error } = await supabase
+      .from("auditoffer")
+      .select(
+        `
+                id,
+                nameauditoffer
+            `,
+      )
+      .order("nameauditoffer");
+
+    if (!error && data) {
+      const transformedData = data.map((auditoffer) => ({
+        id: auditoffer.id,
+        nameauditoffer: auditoffer.nameauditoffer,
+      }));
+
+      setAuditOffer(transformedData);
+    }
+  };
+
+  useEffect(() => {
+    fetchAuditsOffer();
+  }, []);
+
+  // ========================================================
+  // Sélection d'un template d'audit
+  // ========================================================
+  const handleSelectAuditTemplate = (value: string) => {
+    setAuditSearch(value);
+  };
+
+  // ========================================================
+  // Sélection d'un audit type
+  // ========================================================
+  // ========================================================
+  // Sélection d'un audit offer
+  // ========================================================
+
+  // ========================================================
+  const handleSearch = async (value: string) => {
+    setClientLastName(value);
+
+    if (value.length < 1) {
+      setSuggestions([]);
+      return;
+    }
+
+    const { data: handelsShearch, error: handelsShearchError } = await supabase
+      .from("client")
+      .select(`*`)
+      .or(`clientlastname.ilike.%${value}%,clientfirstname.ilike.%${value}%`)
+      .limit(10);
+
+    if (handelsShearchError) {
+      console.error("Erreur Supabase:", handelsShearchError);
+      setSuggestions([]);
+    } else {
+      setSuggestions(handelsShearch || []);
+    }
+  };
+
+  // ======================================================================================================
+  // Soumission du formulaire avec Insertion client + l'audit dans la base de donner
+  // ======================================================================================================
+  async function handleCreateClient() {
+    let clientExiste: boolean = false;
+    let isTemplate: boolean = false;
+
+    // ========================================================
+    // Vérifier si le client existe déjà
+    // ========================================================
+
+    const { data: existingClient } = await supabase
+      .from("client")
+      .select("*")
+      .eq("clientlastname", clientLastName)
+      .eq("clientfirstname", clientFirstName)
+      .eq("clientemail", clientEmail);
+
+    if (existingClient && existingClient.length > 0) {
+      clientExiste = true;
+    }
+
+    // ========================================================
+    // Vérifier si l'audit existe déjà
+    // ========================================================
+    const auditNameToCheck = (auditSearch || "").trim();
+    const { data: existingTemplate } = await supabase
+      .from("audit")
+      .select("*")
+      .eq("template", true)
+      .eq("auditname", auditNameToCheck)
+      .limit(1);
+
+    if (existingTemplate && existingTemplate.length > 0) {
+      isTemplate = true;
+    }
+
+    const clientExistant = clientExiste === true;
+    const templateExistant = isTemplate === true;
+
+    const idauditofferValue = selectedAuditOfferId;
+    const idaudittypeValue = selectedAuditTypeId;
+
+    const auditNameFromForm = auditSearch.trim();
+
+    // ========================================================
+    // vérification email & téléphone
+    // ========================================================
+    if (!isTemplateMode) {
+      if (!validEmail.test(clientEmail)) {
+        setEmailErrorMessage("Email invalide");
+        setEmailError(true);
+        return;
+      }
+      setEmailError(false);
+    }
+
+    if (!isTemplateMode) {
+      if (!validPhone.test(clientPhone)) {
+        setPhoneErrorMessage("Numéro de téléphone invalide");
+        setPhoneError(true);
+        return;
+      }
+      setPhoneError(false);
+    }
+
+    // ========================================================
+    // Condition pour les insert
+    // ========================================================
+
+    if (isTemplateMode) {
+      const { data: auditData } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: true,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData.id;
+
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+      return;
+    }
+    if (clientExistant && !templateExistant && existingClient) {
+      // ========================================================
+      // récupération du client existant
+      // ========================================================
+      const existingClientId = existingClient[0].id;
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData.id;
+
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const {} = await supabase.from("participate").insert([
+        {
+          idclient: existingClientId,
+          idaudit: insertedAuditId,
+          participationdate: new Date().toISOString().split("T")[0],
+        },
+      ]);
+
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+      return;
+    }
+    if (!clientExistant && templateExistant && existingTemplate) {
+      // ========================================================
+      // récupération du template existant
+      // ========================================================
+      const existingTemplateId = existingTemplate[0].id;
+
+      // ========================================================
+      // insert table client
+      // ========================================================
+      const { data: clientData } = await supabase
+        .from("client")
+        .insert([
+          {
+            clientlastname: clientLastName,
+            clientfirstname: clientFirstName,
+            clientemail: clientEmail,
+            clientphone: clientPhone,
+            companyname: companyName,
+            clientaddress: clientAddress,
+            clientcity: clientCity,
+            clientcountry: clientCountry,
+            siren: siren,
+            vatnumber: vatNumber,
+            businessactivity: businessActivity,
+            rcsnumber: rcsNumber,
+            sharecapital: shareCapital ? parseFloat(shareCapital) : null,
+            socialnetworks: socialNetworks,
+            legalform: legalForm,
+            logo: logo || null,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedClientId = clientData?.id;
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData?.id;
+
+      // ========================================================
+      // recherche de idtheme dans la table own
+      // ========================================================
+      const { data: templateThemes } = await supabase
+        .from("own")
+        .select("idtheme")
+        .eq("idaudit", existingTemplateId);
+
+      // ========================================================
+      // insert table own
+      // ========================================================
+      for (const theme of templateThemes ?? []) {
+        if (!theme.idtheme) continue;
+        const { error: ownError } = await supabase
+          .from("own")
+          .insert([
+            {
+              idaudit: insertedAuditId,
+              idtheme: theme.idtheme,
+            },
+          ])
+          .select()
+          .single();
+
+        if (ownError) {
+          console.error(
+            "Erreur insertion Own pour le thème :",
+            theme.idtheme,
+            ownError,
+          );
         }
-    };
+      }
 
-    useEffect(() => {
-        fetchAuditsTemplate("");
-    }, []);
-    
-    // ========================================================
-    // Sélection d'un template d'audit
-    // ========================================================
-    const handleSelectAuditTemplate = (value: string) => {
-        setAuditSearch(value);
-        const selected = auditsTemplate.find(a => a.auditname === value);
-        if (selected) {
-            setSelectedAuditId(selected.id);
-            console.log("Audit sélectionné:", selected);
-        } else {
-            setSelectedAuditId("");
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const {} = await supabase
+        .from("participate")
+        .insert([
+          {
+            idclient: insertedClientId,
+            idaudit: insertedAuditId,
+            participationdate: new Date().toISOString().split("T")[0],
+          },
+        ])
+        .select()
+        .single();
+
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+      return;
+    }
+    if (clientExistant && templateExistant && existingClient && existingTemplate) {
+      console.log("c'est crée");
+
+      // ========================================================
+      // récupération du client existant
+      // ========================================================
+      const existingClientId = existingClient[0].id ;
+
+      // ========================================================
+      // récupération du template existant
+      // ========================================================
+      const existingTemplateId = existingTemplate[0].id;
+
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
+
+      const insertedAuditId = auditData.id;
+
+      // ========================================================
+      // recherche de idtheme dans la table own
+      // ========================================================
+      const { data: templateThemes } = await supabase
+        .from("own")
+        .select("idtheme")
+        .eq("idaudit", existingTemplateId);
+
+      // ========================================================
+      // insert table own
+      // ========================================================
+      for (const theme of templateThemes ?? []) {
+        if (!theme.idtheme) continue;
+        const { error: ownError } = await supabase
+          .from("own")
+          .insert([
+            {
+              idaudit: insertedAuditId,
+              idtheme: theme.idtheme,
+            },
+          ])
+          .select()
+          .single();
+
+        if (ownError) {
+          console.error(
+            "Erreur insertion Own pour le thème :",
+            theme.idtheme,
+            ownError,
+          );
         }
-    };
+      }
 
-    useEffect(() => {
-        if (auditsTemplate.length === 0 || !auditSearch) return;
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const {} = await supabase.from("participate").insert([
+        {
+          idclient: existingClientId,
+          idaudit: insertedAuditId,
+          participationdate: new Date().toISOString().split("T")[0],
+        },
+      ]);
 
-        console.log("Vérification audit:", auditSearch);
-        
-        const selected = auditsTemplate.find(
-            (a) => a.auditname.toLowerCase().trim() === auditSearch.toLowerCase().trim()
-        );
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+      return;
+    }
+    if (!clientExistant && !templateExistant) {
+      // ========================================================
+      // insert table client
+      // ========================================================
+      const { data: clientData } = await supabase
+        .from("client")
+        .insert([
+          {
+            clientlastname: clientLastName,
+            clientfirstname: clientFirstName,
+            clientemail: clientEmail,
+            clientphone: clientPhone,
+            companyname: companyName,
+            clientaddress: clientAddress,
+            clientcity: clientCity,
+            clientcountry: clientCountry,
+            siren: siren,
+            vatnumber: vatNumber,
+            businessactivity: businessActivity,
+            rcsnumber: rcsNumber,
+            sharecapital: shareCapital ? parseFloat(shareCapital) : null,
+            socialnetworks: socialNetworks,
+            legalform: legalForm,
+            logo: logo || null,
+          },
+        ])
+        .select()
+        .single();
 
-        if (selected) {
-            console.log("Audit trouvé et sélectionné:", selected.auditname, "ID:", selected.id);
-            setSelectedAuditId(selected.id);
-        } else {
-            console.log("Aucun audit exact trouvé pour:", auditSearch);
-        }
-    }, [auditSearch, auditsTemplate]);
+      const insertedClientId = clientData?.id;
+      const auditNameFromForm = auditSearch.trim();
 
-    // ========================================================
-    // Récupération clients
-    // ========================================================
-    const fetchClients = async () => {
-        try {
-            const { data, error } = await supabase
-                .from("client")
-                .select("*");
+      // ========================================================
+      // insert table audit
+      // ========================================================
+      const { data: auditData } = await supabase
+        .from("audit")
+        .insert([
+          {
+            idaudittype: idaudittypeValue,
+            idauditoffer: idauditofferValue,
+            idstatus: 1,
+            auditname: auditNameFromForm,
+            template: false,
+          },
+        ])
+        .select()
+        .single();
 
-            if (error) {
-                setFetchError(error.message);
-                setClients([]);
-            } else {
-                setClients(data ?? []);
-            }
-        } catch (err) {
-            setFetchError(err.message ?? "Erreur inconnue");
-            setClients([]);
-        }
-    };
+      const insertedAuditId = auditData?.id;
 
-    useEffect(() => {
-        fetchClients();
-    }, []);
+      // ========================================================
+      // insert table participer
+      // ========================================================
+      const {} = await supabase
+        .from("participate")
+        .insert([
+          {
+            idclient: insertedClientId,
+            idaudit: insertedAuditId,
+            participationdate: new Date().toISOString().split("T")[0],
+          },
+        ])
+        .select()
+        .single();
 
-    // ========================================================
-    // Autocomplétion client
-    // ========================================================
-    const handleSearch = async (value) => {
-        console.log("Recherche pour:", value);
-        setClientLastName(value);
+      // Redirection
+      setTimeout(() => {
+        window.location.href = `/audit/${insertedAuditId}/edit`;
+      }, 1500);
+      return;
+    }
+  }
 
-        if (value.length < 1) {
-            setSuggestions([]);
-            return;
-        }
+  // ========================================================
+  // Fin BD
+  // ========================================================
 
-        const { data, error } = await supabase
-            .from("client")
-            .select(`*`)
-            .or(`clientlastname.ilike.%${value}%,clientfirstname.ilike.%${value}%`)
-            .limit(10);
+  const handleSelectClient = (client: any) => {
+    setClientLastName(client.clientlastname || "");
+    setClientFirstName(client.clientfirstname || "");
+    setClientEmail(client.clientemail || "");
+    setClientPhone(client.clientphone || "");
+    setCompanyName(client.companyname || "");
+    setClientAddress(client.clientaddress || "");
+    setClientCity(client.clientcity || "");
+    setClientCountry(client.clientcountry || "");
+    setSiren(client.siren || "");
+    setVatNumber(client.vatnumber || "");
+    setBusinessActivity(client.businessactivity || "");
+    setRcsNumber(client.rcsnumber || "");
+    setShareCapital(client.sharecapital || "");
+    setSocialNetworks(client.socialnetworks || "");
+    setLegalForm(client.legalform || "");
+    setLogo(client.logo || "");
+    setSuggestions([]);
+  };
 
-        if (error) {
-            console.error("Erreur Supabase:", error);
-            setSuggestions([]);
-        } else {
-            console.log("Résultats trouvés:", data?.length, data);
-            if (data && data.length > 0) {
-                console.log("Noms des colonnes:", Object.keys(data[0]));
-                console.log("Premier client complet:", data[0]);
-            }
-            setSuggestions(data || []);
-        }
-    };
+  useEffect(() => {
+    if (suggestions.length === 0) return;
 
-    const handleSelectClient = (client) => {
-        setClientLastName(client.clientlastname || "");
-        setClientFirstName(client.clientfirstname || "");
-        setClientEmail(client.clientemail || "");
-        setClientPhone(client.clientphone || "");
-        setCompanyName(client.companyname || "");
-        setClientAddress(client.clientaddress || "");
-        setClientCity(client.clientcity || "");
-        setClientCountry(client.clientcountry || "");
-        setSiren(client.siren || "");
-        setVatNumber(client.vatnumber || "");
-        setBusinessActivity(client.businessactivity || "");
-        setRcsNumber(client.rcsnumber || "");
-        setShareCapital(client.sharecapital || "");
-        setSocialNetworks(client.socialnetworks || "");
-        setLegalForm(client.legalform || "");
-        setLogo(client.logo || "");
-        setSuggestions([]);
-    };
+    const client = suggestions.find((c) => {
+      const fullName = `${c.clientlastname} ${c.clientfirstname}`;
+      const match =
+        fullName.toLowerCase().trim() === clientLastName.toLowerCase().trim();
+      return match;
+    });
 
-    useEffect(() => {
-        if (suggestions.length === 0) return;
+    if (client) {
+      handleSelectClient(client);
+    }
+  }, [clientLastName, suggestions]);
 
-        console.log("Vérification sélection:", clientLastName);
-        console.log("Suggestions disponibles:", suggestions);
+  // ========================================================
+  // Affichage
+  // ========================================================
+  return (
+    <div className="new-client-audits">
+      <h1 className="titre-new-audits">
+        Création {`${!isTemplateMode ? "d'audit" : "de template"}`}
+      </h1>
 
-        // Cherche correspondance nom prénom
-        const client = suggestions.find(
-            (c) => {
-                const fullName = `${c.clientlastname} ${c.clientfirstname}`;
-                const match = fullName.toLowerCase().trim() === clientLastName.toLowerCase().trim();
-                console.log(`   Comparaison: "${fullName}" === "${clientLastName}" ? ${match}`);
-                return match;
-            }
-        );
-        
-        if (client) {
-            console.log("Client trouvé, remplissage des champs...");
-            handleSelectClient(client);
-        }
-    }, [clientLastName, suggestions]);
+      <form className="new-audits-form">
+        {!isTemplateMode && (
+          <>
+            <div className="Client-info-name">
+              <div className="new-field">
+                <label htmlFor="client-last">Nom du client</label>
+                <input
+                  className="new-input-style"
+                  list="client-list"
+                  value={clientLastName}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder="Ex: Dupont"
+                  autoComplete="off"
+                  required={!isTemplateMode}
+                />
+                <datalist id="client-list">
+                  {suggestions.map((c) => (
+                    <option
+                      key={c.id}
+                      value={`${c.clientlastname} ${c.clientfirstname}`}
+                    />
+                  ))}
+                </datalist>
+              </div>
 
-    // ========================================================
-    // Soumission du formulaire
-    // ========================================================
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+              <div className="new-field">
+                <label htmlFor="client-first">Prénom du client</label>
+                <input
+                  className="new-input-style"
+                  value={clientFirstName}
+                  onChange={(e) => setClientFirstName(e.target.value)}
+                  placeholder="Ex: Jean"
+                  required={!isTemplateMode}
+                />
+              </div>
+            </div>
 
-        const payload = {
-            clientLastName,
-            clientFirstName,
-            clientEmail,
-            clientPhone,
-            companyName,
-            clientAddress,
-            clientCity,
-            clientCountry,
-            siren,
-            vatNumber,
-            businessActivity,
-            rcsNumber,
-            socialNetworks,
-            legalForm,
-            logo,
-            nameAudit,
-        };
-        console.log("Créer client : ", payload);
-        setError("");
-        alert("client créé !");
+            <div className="Client-info-adr">
+              <div className="new-field">
+                <label htmlFor="client-adr">adresse du client</label>
+                <input
+                  className="new-input-style"
+                  value={clientAddress}
+                  onChange={(e) => setClientAddress(e.target.value)}
+                  placeholder="Ex: 37 Rue du Dolmen"
+                  required={!isTemplateMode}
+                />
+              </div>
 
-        if (!validEmail.test(clientEmail)) {
-            setMessage("Email invalide");
-            return;
-        }
+              <div className="new-field">
+                <label htmlFor="client-city">Ville du client</label>
+                <input
+                  className="new-input-style"
+                  value={clientCity}
+                  onChange={(e) => setClientCity(e.target.value)}
+                  placeholder="Ex: Poitiers"
+                  required={!isTemplateMode}
+                />
+              </div>
 
-        if (!validPhone.test(clientPhone)) {
-            setMessage("Numéro de téléphone invalide");
-            return;
-        }
-    };
+              <div className="new-field">
+                <label htmlFor="client-country">Pays du client</label>
+                <input
+                  className="new-input-style"
+                  value={clientCountry}
+                  onChange={(e) => setClientCountry(e.target.value)}
+                  placeholder="Ex: France"
+                  required={!isTemplateMode}
+                />
+              </div>
+            </div>
 
-    // ========================================================
-    // Affichage
-    // ========================================================
-    return (
-        <div className="new-audits">
-            <h2 className="titre-new-audits">Créer un audit</h2>
+            <div className="Client-info-mail">
+              <div className={`new-field ${emailError ? "field-error" : ""}`}>
+                <label htmlFor="client-email">Email du client</label>
+                <input
+                  type="email"
+                  className="new-input-style"
+                  value={clientEmail}
+                  onChange={(e) => {
+                    setClientEmail(e.target.value);
+                    setEmailErrorMessage("");
+                  }}
+                  placeholder="ex@domaine.com"
+                  required={!isTemplateMode}
+                />
 
-            <form onSubmit={handleSubmit} className="new-audits-form">
-                <div className="Client-info-name">
-                    <div className="field">
-                        <label htmlFor="client-last">Nom du client</label>
-                        <input
-                            className="input-style"
-                            list="client-list"
-                            value={clientLastName}
-                            onChange={(e) => handleSearch(e.target.value)}
-                            placeholder="Ex: Dupont"
-                            autoComplete="off"
-                            required
-                        />
-                        <datalist id="client-list">
-                            {suggestions.map((c) => (
-                                <option
-                                    key={c.id}
-                                    value={`${c.clientlastname} ${c.clientfirstname}`}
-                                />
-                            ))}
-                        </datalist>
-                    </div>
+                {emailErrorMessage && (
+                  <span className="error-tooltip">{emailErrorMessage}</span>
+                )}
+              </div>
+            </div>
 
-                    <div className="field">
-                        <label htmlFor="client-first">Prénom du client</label>
-                        <input
-                            className="input-style"
-                            value={clientFirstName}
-                            onChange={(e) => setClientFirstName(e.target.value)}
-                            placeholder="Ex: Jean"
-                            required
-                        />
-                    </div>
-                </div>
+            <div className="Client-info-contact">
+              <div className={`new-field ${phoneError ? "field-error" : ""}`}>
+                <label htmlFor="client-phone">Téléphone</label>
+                <PhoneInput
+                  inputClassName="new-input-style"
+                  defaultCountry="fr"
+                  value={clientPhone}
+                  onChange={(value: string) => {
+                    setClientPhone(value);
+                    setPhoneError(false);
+                    setPhoneErrorMessage(null);
+                  }}
+                />
 
-                <div className="Client-info-adr">
-                    <div className="field">
-                        <label htmlFor="client-adr">adresse du client</label>
-                        <input
-                            className="input-style"
-                            value={clientAddress}
-                            onChange={(e) => setClientAddress(e.target.value)}
-                            placeholder="Ex: 37 Rue du Dolmen"
-                            required
-                        />
-                    </div>
+                {phoneError && (
+                  <span className="error-tooltip">{phoneErrorMessage}</span>
+                )}
+              </div>
 
-                    <div className="field">
-                        <label htmlFor="client-city">Ville du client</label>
-                        <input
-                            className="input-style"
-                            value={clientCity}
-                            onChange={(e) => setClientCity(e.target.value)}
-                            placeholder="Ex: Poitiers"
-                            required
-                        />
-                    </div>
+              <div className="new-field">
+                <label htmlFor="client-social-rcs">Numéro RCS</label>
+                <input
+                  className="new-input-style"
+                  value={rcsNumber}
+                  onChange={(e) => setRcsNumber(e.target.value)}
+                  placeholder="Ex: RCS PARIS B 517 403 572"
+                />
+              </div>
+            </div>
 
-                    <div className="field">
-                        <label htmlFor="client-country">Pays du client</label>
-                        <input
-                            className="input-style"
-                            value={clientCountry}
-                            onChange={(e) => setClientCountry(e.target.value)}
-                            placeholder="Ex: France"
-                            required
-                        />
-                    </div>
-                </div>
+            <div className="Client-business-info">
+              <div className="new-field">
+                <label htmlFor="company-name">Nom de l'entreprise</label>
+                <input
+                  className="new-input-style"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Ex: ACME SARL"
+                />
+              </div>
 
-                <div className="Client-info-mail">
-                    <div className="field">
-                        <label htmlFor="client-email">Email du client</label>
-                        <input
-                            className="input-style"
-                            type="email"
-                            value={clientEmail}
-                            onChange={(e) => setClientEmail(e.target.value)}
-                            placeholder="ex@domaine.com"
-                            required
-                        />
-                    </div>
-                </div>
+              <div className="new-field">
+                <label htmlFor="business-activity">Domaine d'activité</label>
+                <input
+                  className="new-input-style"
+                  value={businessActivity}
+                  onChange={(e) => setBusinessActivity(e.target.value)}
+                  placeholder="Ex: Informatique"
+                />
+              </div>
 
-                <div className="Client-info-contact">
-                    <div className="field">
-                        <label htmlFor="client-phone">Téléphone</label>
-                        <PhoneInput
-                            inputClassName="input-style"
-                            defaultCountry="fr"
-                            value={clientPhone}
-                            onChange={(value: string) => setClientPhone(value)}
-                        />
-                    </div>
+              <div className="new-field">
+                <label htmlFor="business-shareCapital">capital social</label>
+                <input
+                  className="new-input-style"
+                  value={shareCapital}
+                  onChange={(e) => setShareCapital(e.target.value)}
+                  placeholder="Ex: 1000000.00"
+                />
+              </div>
+            </div>
 
-                    <div className="field">
-                        <label htmlFor="client-social-rcs">Numéro RCS</label>
-                        <input
-                            className="input-style"
-                            value={rcsNumber}
-                            onChange={(e) => setRcsNumber(e.target.value)}
-                            placeholder="Ex: Linkedin"
-                        />
-                    </div>
-                </div>
+            <div className="Client-business-legal">
+              <div className="new-field">
+                <label htmlFor="company-vat">Numéro de TVA</label>
+                <input
+                  className="new-input-style"
+                  value={vatNumber}
+                  onChange={(e) => setVatNumber(e.target.value)}
+                  placeholder="Ex: FR12 345678901"
+                />
+              </div>
 
-                <div className="Client-business-info">
-                    <div className="field">
-                        <label htmlFor="company-name">Nom de l'entreprise</label>
-                        <input
-                            className="input-style"
-                            value={companyName}
-                            onChange={(e) => setCompanyName(e.target.value)}
-                            placeholder="Ex: ACME SARL"
-                        />
-                    </div>
+              <div className="new-field">
+                <label htmlFor="client-social-legal">Forme juridique</label>
+                <input
+                  className="new-input-style"
+                  value={legalForm}
+                  onChange={(e) => setLegalForm(e.target.value)}
+                  placeholder="SARL"
+                />
+              </div>
+            </div>
 
-                    <div className="field">
-                        <label htmlFor="business-activity">Domaine d'activité</label>
-                        <input
-                            className="input-style"
-                            value={businessActivity}
-                            onChange={(e) => setBusinessActivity(e.target.value)}
-                            placeholder="Ex: Informatique"
-                        />
-                    </div>
+            <div className="Client-business-img">
+              <div className="new-field">
+                <label htmlFor="business-activity">Siren</label>
+                <input
+                  className="new-input-style"
+                  value={siren}
+                  onChange={(e) => setSiren(e.target.value)}
+                  placeholder="362 521 879 00034"
+                />
+              </div>
+              
+              {/* pas encore implémenté */}
+              {/* <div className="new-field">
+                <label htmlFor="business-activity">Logo de l'entreprise</label>
+                <input
+                  className="new-input-style"
+                  value={logo}
+                  onChange={(e) => setLogo(e.target.value)}
+                  placeholder="..."
+                />
+              </div> */}
+            </div>
 
-                    <div className="field">
-                        <label htmlFor="business-shareCapital">capital social</label>
-                        <input
-                            className="input-style"
-                            value={shareCapital}
-                            onChange={(e) => setShareCapital(e.target.value)}
-                            placeholder="Ex: 1000000.00"
-                        />
-                    </div>
-                </div>
+            <div className="Client-business-social">
+              <div className="new-field">
+                <label htmlFor="client-social-networks">Réseau social</label>
+                <input
+                  className="new-input-style"
+                  value={socialNetworks}
+                  onChange={(e) => setSocialNetworks(e.target.value)}
+                  placeholder="Ex: Linkedin"
+                />
+              </div>
+            </div>
+          </>
+        )}
 
-                <div className="Client-business-legal">
-                    <div className="field">
-                        <label htmlFor="company-vat">Numéro de TVA</label>
-                        <input
-                            className="input-style"
-                            value={vatNumber}
-                            onChange={(e) => setVatNumber(e.target.value)}
-                            placeholder="Ex: FR12 345678901"
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label htmlFor="client-social-legal">Forme juridique</label>
-                        <input
-                            className="input-style"
-                            value={legalForm}
-                            onChange={(e) => setLegalForm(e.target.value)}
-                            placeholder="..."
-                        />
-                    </div>
-                </div>
-
-                <div className="Client-business-img">
-                    <div className="field">
-                        <label htmlFor="business-activity">Domaine d'activité</label>
-                        <input
-                            className="input-style"
-                            value={businessActivity}
-                            onChange={(e) => setBusinessActivity(e.target.value)}
-                            placeholder="Informatique"
-                        />
-                    </div>
-
-                    <div className="field">
-                        <label htmlFor="business-activity">Logo de l'entreprise</label>
-                        <input
-                            className="input-style"
-                            value={logo}
-                            onChange={(e) => setLogo(e.target.value)}
-                            placeholder="Informatique"
-                        />
-                    </div>
-                </div>
-
-                <div className="Client-business-social">
-                    <div className="field">
-                        <label htmlFor="client-social-networks">Réseau social</label>
-                        <input
-                            className="input-style"
-                            value={socialNetworks}
-                            onChange={(e) => setSocialNetworks(e.target.value)}
-                            placeholder="Ex: Linkedin"
-                        />
-                    </div>
-                </div>
-
-                <div className="audits-template">
-                    <div className="field">
-                        <label htmlFor="audits-name">Template audits</label>
-                        <input
-                            className="input-style"
-                            list="audits-list"
-                            value={auditSearch}
-                            onChange={(e) => setAuditSearch(e.target.value)}
-                            placeholder="Ex: Audit sécurité..."
-                            autoComplete="off"
-                            required
-                        />
-
-                        <datalist id="audits-list">
-                            {auditsTemplate
-                                .filter(a => 
-                                    auditSearch.length === 0 || 
-                                    a.auditname.toLowerCase().includes(auditSearch.toLowerCase())
-                                )
-                                .map((a) => (
-                                    <option key={a.id} value={a.auditname} />
-                                ))
-                            }
-                        </datalist>
-                        {/* {selectedAuditId && (
-                            <small style={{ color: 'green', marginTop: '4px' }}>
-                                Audit trouvé
-                            </small>
-                        )} */}
-                    </div>
-                </div>
-
-                <div className="form-actions">
-                    <a href="/audit" className="new-audits-btn">Créer</a>
-                    <a href="/audits" className="new-audits-btn">Annulé</a>
-                </div>
-
-                {error && <p className="form-message">{error}</p>}
-            </form>
-
-            {/* Test en court */}
-
-            {selectedAuditId && (
-                <div className="audit-list">
-                    {auditsTemplate
-                        .filter((a) => a.id === selectedAuditId)
-                        .map((a) => (
-                            <div key={a.id} className="audit-card">
-                                <h3>{a.auditname}</h3>
-
-                                {a.audittype && (
-                                    <p><strong>Type :</strong> {a.audittype.nameaudittype}</p>
-                                )}
-
-                                <div className="themes">
-                                    <strong><h4>Thèmes et Questions :</h4></strong>
-                                    {a.themes && a.themes.length > 0 ? (
-                                        a.themes.map((theme: any) => (
-                                            <div key={theme.id}>
-                                                <p> {theme.themename}</p>
-                                                {theme.question && theme.question.length > 0 ? (
-                                                    <ul>
-                                                        {theme.question.map((q: any) => (
-                                                            <li key={q.id}>{q.label}</li>
-                                                        ))}
-                                                    </ul>
-                                                ) : (
-                                                    <p>Aucune question</p>
-                                                )}
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p>Aucun thème trouvé</p>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                </div>
+        <div className="Client-audits-template">
+          <div className="new-field">
+            <label htmlFor="audits-name">Audits</label>
+            <input
+              className="new-input-style"
+              list="audits-list"
+              value={auditSearch}
+              onChange={(e) => handleSelectAuditTemplate(e.target.value)}
+              placeholder="Ex: Audit sécurité..."
+              autoComplete="off"
+            />
+            {!isTemplateMode && (
+              <datalist id="audits-list">
+                {auditsTemplate.map((a) => (
+                  <option key={a.id} value={a.auditname} />
+                ))}
+              </datalist>
             )}
+          </div>
+
+          <div className="new-field">
+            <label htmlFor= "audits-type">Type d'audit</label>
+
+            <select
+              id="audits-type"
+              // ne suis pas sur
+              className={`new-input-style ${
+                selectedAuditTypeId === "" ? "select-placeholder" : ""
+              }`}
+              value={selectedAuditTypeId}
+              onChange={(e) => {
+                setSelectedAuditTypeId(e.target.value);
+              }}
+              required
+            >
+              <option value="" disabled hidden className="test">
+                {" "}
+                Sélection d'un type d’audit{" "}
+              </option>
+              {auditType.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.nameaudittype}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="new-field">
+            <label htmlFor="audits-offer">Offre d'audit</label>
+
+            <select
+              id="audits-offer"
+              // ne suis pas sur
+              className={`new-input-style ${
+                selectedAuditOfferId === "" ? "select-placeholder" : ""
+              }`}
+              value={selectedAuditOfferId}
+              onChange={(e) => {
+                setSelectedAuditOfferId(e.target.value);
+              }}
+              required
+            >
+              <option value="" disabled hidden>
+                {" "}
+                Sélection d'une offre d’audit{" "}
+              </option>
+              {auditOffer.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.nameauditoffer}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-    );
+
+        <div className="form-actions">
+          <button
+            type="button"
+            className="new-audits-btn"
+            onClick={handleCreateClient}
+          >
+            Créer
+          </button>
+          <a href="/audits" className="new-audits-btn">
+            Annuler
+          </a>
+        </div>
+
+      </form>
+    </div>
+  );
 }

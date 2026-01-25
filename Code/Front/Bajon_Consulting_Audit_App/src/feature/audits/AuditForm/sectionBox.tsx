@@ -190,7 +190,7 @@ function SectionBox({
                                         onPrevious?.();
                                     }
                                 }}
-                                className="btn-nav"
+                                className="auditform-list-btn"
                             >
                                 {currentQuestionIndex > 0
                                     ? "Précédent"
@@ -218,7 +218,7 @@ function SectionBox({
                                         onEnd?.();
                                     }
                                 }}
-                                className="btn-primary"
+                                className="auditform-list-btn"
                             >
                                 {currentQuestionIndex < questions.length - 1
                                     ? "Suivant"
@@ -238,7 +238,7 @@ function SectionBox({
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ duration: 0.15 }}
-                        className="btn-add shadow-sm"
+                        className="auditform-list-btn"
                     >
                         Ajouter une question
                     </motion.button>
