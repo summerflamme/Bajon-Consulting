@@ -293,10 +293,10 @@ export default function ClientEditPage() {
 
         {/* Boutons */}
           <div className="form-actions">
-        <button type="button" className="new-audits-btn" onClick={() => navigate("/clients")}>
+        <button type="button" className="new-audits-btn" onClick={() => navigate("/clients/list")}>
             Enregistrer
           </button>
-          <button type="button" className="new-audits-btn" onClick={() => navigate("/clients")}>
+          <button type="button" className="new-audits-btn" onClick={() => navigate("/clients/list")}>
             Annuler
           </button>
         </div>
