@@ -5,11 +5,49 @@ import { SquarePenIcon } from '@/components/ui/modify';
 import { SearchIcon } from '@/components/ui/search';
 import { ArchiveIcon } from '@/components/ui/archive';
 import { RefreshCCWIcon } from '@/components/ui/refresh-ccw';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../../../supabaseClient';
+import axios from 'axios';
 
-function AuditCard({ audit, onArchiveToggle }) {
-  const [isArchived, setIsArchived] = useState(audit.archived);
+interface Audit {
+  id: string | null;
+  auditname: string | null;
+  template: boolean;
+  archived: boolean;
+  idaudittype: string;
+  idauditoffer: string;
+  idstatus: string;
+  audittype: { id: string; nameaudittype: string } | null;
+  auditoffer: { id: string; nameauditoffer: string } | null;
+  status: { id: string; auditstatus: string } | null;
+  creation_user_id?: string | null;
+  creation_date?: string | null;
+  creation_time?: string | null;
+  last_modif_user_id?: string | null;
+  last_modif_date?: string | null;
+  last_modif_time?: string | null;
+}
+
+interface User {
+  id: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  email: string;
+  phone?: string | null;
+  currentRole?: string | null;
+  created_at?: string | null;
+  last_sign_in_at?: string | null;
+}
+
+interface AuditCardProps {
+  audit: Audit;
+  onArchiveToggle?: () => void;
+}
+
+function AuditCard({ audit, onArchiveToggle }: AuditCardProps) {
+  const [isArchived, setIsArchived] = useState<boolean>(audit.archived === true);
+  const [creationUser, setCreationUser] = useState<User | null>(null);
+  const [lastModifUser, setLastModifUser] = useState<User | null>(null);
 
   const toggleArchived = async () => {
     try {
@@ -38,11 +76,41 @@ function AuditCard({ audit, onArchiveToggle }) {
     }
   };
 
-  useEffect (() => {
-        // Optionnel : récupérer les données utilisateur si nécessaire
-    },
-  );
-  
+  // Récupérer les données des utilisateurs
+  useEffect(() => {
+    const fetchLastModifUser = async () => {
+      if (!audit.last_modif_user_id) return;
+      axios
+        .get(`http://localhost:8080/api/users/${audit.last_modif_user_id}`)
+        .then((response) => {
+          setLastModifUser(response.data);
+        })
+        .catch((error) => {
+          console.error("Erreur lors du chargement de l'utilisateur :", error);
+        });
+    };
+
+    fetchLastModifUser();
+    if (!audit.last_modif_user_id) return;
+  }, [audit.last_modif_user_id]);
+
+  useEffect(() => {
+    const fetchCreationUser = async () => {
+      if (!audit.creation_user_id) return;
+      axios
+        .get(`http://localhost:8080/api/users/${audit.creation_user_id}`)
+      .then((response) => {
+        setCreationUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement de l'utilisateur :", error);
+      });
+
+    };
+    fetchCreationUser();
+    if (!audit.creation_user_id) return;
+  }, [audit.creation_user_id]);
+
   const navigate = useNavigate();
   return (
     <div className="audit-card">
@@ -56,7 +124,7 @@ function AuditCard({ audit, onArchiveToggle }) {
           {audit.creation_date} à {audit.creation_time}
         </p>
         <p className="audit-card-text">
-          par {audit.creation_staff_firstname || "—"} {audit.creation_staff_lastname || ""}
+          par {creationUser ? `${creationUser.firstName} ${creationUser.lastName}` : audit.creation_user_id}
         </p>
       </div>
 
@@ -80,7 +148,7 @@ function AuditCard({ audit, onArchiveToggle }) {
           {audit.last_modif_date} à {audit.last_modif_time}
         </p>
         <p className="audit-card-text">
-          par {audit.last_modif_staff_firstname || "—"} {audit.last_modif_staff_lastname || ""}
+          par {lastModifUser ? `${lastModifUser.firstName} ${lastModifUser.lastName}` : audit.creation_user_id}
         </p>
         <button className="audit-card-btn"><HistoryIcon /></button>
       </div>

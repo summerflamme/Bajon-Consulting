@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import "./clients.css"; // ✅ même design que le formulaire d’audit
@@ -19,7 +20,6 @@ export default function ClientEditPage() {
     }
   }, [currentUser, currentRole, navigate]);
 
-  const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -57,7 +57,6 @@ export default function ClientEditPage() {
         return;
       }
 
-      setClient(data);
       setClientLastName(data.clientlastname || "");
       setClientFirstName(data.clientfirstname || "");
       setClientEmail(data.clientemail || "");
@@ -86,7 +85,7 @@ export default function ClientEditPage() {
   // ============================================
   // Submit — Mettre à jour le client
   // ============================================
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const payload = {

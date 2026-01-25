@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import '../auth/auth.css';
 import { PhoneInput } from 'react-international-phone';
@@ -48,8 +48,7 @@ function UserForm({ mode, user }: UserFormProps) {
     const [message, setMessage] = useState('');
     const [role, setRole] = useState<Role[]>([]);
     const [currentRoleState, setCurrentRoleState] = useState('');
-    const [currentUserState, setCurrentUserState] = useState<User | undefined>(user); 
-    const [APIResp, setAPIresp] = useState([]);
+    const [currentUserState, setCurrentUserState] = useState<User | undefined>(user);
 
     interface Role {
         id: number;
@@ -76,13 +75,6 @@ function UserForm({ mode, user }: UserFormProps) {
             else setRole(data ?? []);
         };
         fetchRole();
-    }, []);
-
-    // ----------------- FETCH LIST USERS (APIResp) -----------------
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/users/listUsers")
-            .then(response => setAPIresp(response.data))
-            .catch(error => console.error("Error fetching data: ", error));
     }, []);
 
     // ----------------- INIT FORM SI EDITION -----------------
