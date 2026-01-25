@@ -19,6 +19,7 @@
   content: "";
   position: fixed;
   inset: 0;
+  background-image: url("../../../assets/fond-users-list.jpg");
   background-size: cover;
   background-position: center;
   filter: blur(20px);
@@ -55,7 +56,9 @@
   box-sizing: border-box;
   border: 1px solid #676767;
   border-radius: 6px;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
   min-height: 42px;
 }
 
@@ -179,7 +182,6 @@
   animation: fadeIn 0.15s ease-in;
 }
 
-
 /* bouton crée/supr */
 
 .new-audits-btn {
@@ -221,7 +223,9 @@
   box-sizing: border-box;
   border: 1px solid #676767;
   border-radius: 6px;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
   min-height: 42px;
   background-color: white;
 }
@@ -272,7 +276,9 @@
   height: 42px !important;
   min-height: 42px !important;
   box-sizing: border-box !important;
-  transition: box-shadow 0.15s ease, border-color 0.15s ease !important;
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease !important;
   background-color: white !important;
   margin: 0 !important;
 }
@@ -282,4 +288,3 @@
 .select-placeholder {
   color: rgba(0, 0, 0, 0.45);
 }
-

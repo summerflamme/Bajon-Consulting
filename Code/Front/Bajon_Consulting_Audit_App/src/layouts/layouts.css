@@ -150,6 +150,13 @@
   min-height: 100%; 
   background-attachment: fixed;
 }
+
+@supports selector(:has(.new-client-audits)) {
+  main:has(.new-client-audits) {
+    background-image: none;
+  }
+}
+
 .logout-button {
   background: transparent;
   color: #246184;
