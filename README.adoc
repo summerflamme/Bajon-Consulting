@@ -84,6 +84,7 @@ Le tableau ci-dessous présente la répartition des principales fonctionnalités
 
 | Frontend – Audits Card
 | Liste de Card de template d'audit et d'audit 
+|Pierre Cornu
 
 | Formulaires d’audit dynamiques
 | Génération des thèmes, questions et réponses à partir des templates
@@ -252,6 +253,7 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
 
 
 
