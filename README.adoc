@@ -58,9 +58,6 @@ Le tableau ci-dessous présente la répartition des principales fonctionnalités
 | Modélisation du schéma relationnel, définition des tables et des relations
 | Titouan GAUZE,  Pierre CORNU
 
-| Fonctions SQL / RPC
-| Fonctions stockées pour la récupération, la mise à jour et l’insertion des audits, thèmes, questions et réponses
-| Bilon KWADJANI
 
 | Backend (API)
 | Développement de l’API REST, logique métier, communication avec la base de données
@@ -253,6 +250,7 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
 
 
 
