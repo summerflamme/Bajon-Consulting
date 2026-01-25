@@ -15,13 +15,13 @@ VALUES
 INSERT INTO AuditType (nameAuditType) VALUES
 ('Essentiel'),
 ('Avancé'),
-('Stratégique'),
+('Stratégique');
 
 -- Table AuditOffer
 INSERT INTO AuditOffer (nameAuditOffer) VALUES
 ('Transformation Numérique & Gouvernance'),
 ('Cybersécurité & conformité'),
-('Cloud & ERP'),
+('Cloud & ERP');
 
 -- Table Status
 INSERT INTO Status (auditStatus) VALUES
