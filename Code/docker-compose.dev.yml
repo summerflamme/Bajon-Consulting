@@ -11,7 +11,7 @@ services:
       - ../:/workspace:cached
       - ../.git:/workspace/.git
       - bajon_backend_target:/workspace/Code/Back/Bajon_audit_App/target
-    env_file: ../.env
+    env_file: /.env
     ports:
       - "8080:8080"
     environment:
@@ -26,7 +26,7 @@ services:
     volumes:
       - ../:/workspace:cached
       - ../.git:/workspace/.git
-    env_file: ../.env
+    env_file: /.env
     ports:
       - "5173:5173"
     environment:

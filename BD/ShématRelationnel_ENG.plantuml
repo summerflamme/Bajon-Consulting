@@ -61,6 +61,8 @@ entity Question {
     +id : int <<PK>>
     label : varchar(255)
     idTheme : int <<FK>>
+    descriptions : text
+    status : text
 }
 
 entity OptionAnswer {
