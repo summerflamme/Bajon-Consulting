@@ -42,6 +42,7 @@ interface User {
 interface AuditCardProps {
   audit: Audit;
   onArchiveToggle?: () => void;
+  onDelete?: () => void;
 }
 
 function AuditCard({ audit, onArchiveToggle }: AuditCardProps) {
@@ -49,8 +50,12 @@ function AuditCard({ audit, onArchiveToggle }: AuditCardProps) {
   const [creationUser, setCreationUser] = useState<User | null>(null);
   const [lastModifUser, setLastModifUser] = useState<User | null>(null);
 
+  console.log('Audit:', audit);
+
   const toggleArchived = async () => {
     try {
+      if (!audit.id) return;
+      if (!window.confirm("Voulez-vous supprimer cet audit ?")) return;
       const newArchivedState = !isArchived;
       // Mise à jour via Supabase
       const { error } = await supabase
@@ -66,7 +71,7 @@ function AuditCard({ audit, onArchiveToggle }: AuditCardProps) {
       // Mise à jour locale après succès
       setIsArchived(newArchivedState);
       console.log(`Audit ${audit.id} archived state updated to ${newArchivedState}`);
-      
+
       // Appel du callback parent pour rafraîchir la liste
       if (onArchiveToggle) {
         onArchiveToggle();
@@ -75,6 +80,8 @@ function AuditCard({ audit, onArchiveToggle }: AuditCardProps) {
       console.error('Error toggling archive state:', error);
     }
   };
+
+
 
   // Récupérer les données des utilisateurs
   useEffect(() => {
@@ -99,12 +106,12 @@ function AuditCard({ audit, onArchiveToggle }: AuditCardProps) {
       if (!audit.creation_user_id) return;
       axios
         .get(`http://localhost:8080/api/users/${audit.creation_user_id}`)
-      .then((response) => {
-        setCreationUser(response.data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du chargement de l'utilisateur :", error);
-      });
+        .then((response) => {
+          setCreationUser(response.data);
+        })
+        .catch((error) => {
+          console.error("Erreur lors du chargement de l'utilisateur :", error);
+        });
 
     };
     fetchCreationUser();
@@ -136,10 +143,11 @@ function AuditCard({ audit, onArchiveToggle }: AuditCardProps) {
 
       <div className="audit-card-body">
         <button className="audit-card-btn" onClick={() => navigate(`/audit/${audit.id}/view`)}><SearchIcon /></button>
-        <span className='audit-card-text'> </span>
+        <span className='audit-card-text'></span>
         <button className="audit-card-btn" onClick={() => navigate(`/audit/${audit.id}/edit`)}><SquarePenIcon /></button>
-        <span className='audit-card-text'> </span>
-        {isArchived ?(<button className="audit-card-btn" onClick={toggleArchived}><RefreshCCWIcon /> </button>) : (<button className="audit-card-btn" onClick={toggleArchived}><ArchiveIcon /></button>) }
+        <span className='audit-card-text'> 
+        {isArchived ? (<button className="audit-card-btn" onClick={toggleArchived}><RefreshCCWIcon /> </button>) : (<button className="audit-card-btn" onClick={toggleArchived}><ArchiveIcon /></button>)}
+        </span>
       </div>
 
       <div className="audit-card-footer">

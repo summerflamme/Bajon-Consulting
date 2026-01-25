@@ -5,7 +5,7 @@ import "./AuditStyle.css";
 import { DeleteIcon } from "../../../components/ui/delete";
 
 type Props = {
-    idAnswer: number; // ✅ cohérent avec la BDD
+    idAnswer: number; //  cohérent avec la BDD
     text: string;
     score: number;
     questionId: number;
@@ -45,7 +45,7 @@ function AnswerBox({
     );
 
 
-    // ✅ Gestion des cases à cocher (multi-choice)
+    //  Gestion des cases à cocher (multi-choice)
     const onChangeCheckbox = useCallback(() => {
         setResponses((prev) => {
             // Vérifie si la paire (idQuestion, idAnswer) existe déjà
@@ -56,7 +56,7 @@ function AnswerBox({
             );
 
             if (exists) {
-                // 🔹 Si déjà présente → on la retire
+                // Si déjà présente → on la retire
                 return prev.filter(
                     (r) =>
                         !(
@@ -66,12 +66,12 @@ function AnswerBox({
                 );
             }
 
-            // 🔹 Sinon → on l’ajoute proprement (garde les autres de la même question)
+            // Sinon → on l’ajoute proprement (garde les autres de la même question)
             return [...prev, { idQuestion: questionId, idAnswer }];
         });
     }, [questionId, idAnswer, setResponses]);
 
-    // ✅ Gestion des boutons radio (choix unique)
+    //  Gestion des boutons radio (choix unique)
     const onChangeRadio = useCallback(() => {
         setResponses((prev) => {
             const alreadyExists = prev.some(
@@ -81,11 +81,11 @@ function AnswerBox({
             );
 
             if (alreadyExists) {
-                // 🔸 Si on reclique sur la même réponse → on désélectionne
+                // Si on reclique sur la même réponse → on désélectionne
                 return prev.filter((r) => r.idQuestion !== questionId);
             }
 
-            // 🔹 Supprime les anciennes réponses pour cette question et ajoute la nouvelle
+            // Supprime les anciennes réponses pour cette question et ajoute la nouvelle
             const others = prev.filter((r) => r.idQuestion !== questionId);
             return [...others, { idQuestion: questionId, idAnswer }];
         });

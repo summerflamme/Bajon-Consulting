@@ -166,9 +166,11 @@ function UserForm({ mode, user }: UserFormProps) {
                         />
                         <label htmlFor='phone'>Numéro de téléphone</label>
                         <PhoneInput
+                            className="phoneInput"
                             defaultCountry='fr'
                             value={phone}
                             onChange={(phone) => setPhone(phone)}
+                            inputProps={{ id: "phone" }}
                         />
                         <label htmlFor='role'>Rôle</label>
                         <select
