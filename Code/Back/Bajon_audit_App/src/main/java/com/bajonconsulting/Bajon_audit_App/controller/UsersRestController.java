@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author Bajon Consulting
  * @version 1.0
  */
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = {"http://localhost:5173", "http://127.0.0.1:5173","http://localhost:8080"})
 @RestController
 @RequestMapping("/api/users")
 public class UsersRestController {

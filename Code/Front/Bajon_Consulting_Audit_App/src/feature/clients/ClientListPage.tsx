@@ -6,7 +6,7 @@ import ClientCard from "./ClientCard";
 import SearchBar from "../../components/SearchBar";
 import "./clients.css";
 
-// ✅ Typage strict du client
+//  Typage strict du client
 interface Client {
   id: string;
   clientfirstname: string;

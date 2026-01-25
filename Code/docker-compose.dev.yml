@@ -8,9 +8,10 @@ services:
     container_name: bajon_backend_dev
     volumes:
       # Mount le code source pour le hot reload (compatible Windows/Linux)
-      - ../:/workspace:cached
+      - ./:/workspace:cached
       - ../.git:/workspace/.git
-      - bajon_backend_target:/workspace/Code/Back/Bajon_audit_App/target
+      - ../.devcontainer:/workspace/.devcontainer
+      - bajon_backend_target:/workspace/Back/Bajon_audit_App/target
     env_file: /.env
     ports:
       - "8080:8080"
@@ -24,8 +25,9 @@ services:
       dockerfile: Dockerfile.dev
     container_name: bajon_frontend_dev
     volumes:
-      - ../:/workspace:cached
+      - ./:/workspace:cached
       - ../.git:/workspace/.git
+      - ../.devcontainer:/workspace/.devcontainer
     env_file: /.env
     ports:
       - "5173:5173"

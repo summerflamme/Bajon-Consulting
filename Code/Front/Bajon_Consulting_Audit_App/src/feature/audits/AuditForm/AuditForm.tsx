@@ -32,7 +32,7 @@ function AuditForm({
     const navigate = useNavigate();
     const toast = useToast();
 
-    // 🔁 Compare les réponses initiales et modifiées
+    // Compare les réponses initiales et modifiées
     const getChangedResponses = (initial: Response[], updated: Response[]) => {
         const serialize = (arr: Response[]) => arr.map(r => `${r.idQuestion}-${r.idAnswer}`);
         const initialSet = new Set(serialize(initial));
@@ -54,6 +54,28 @@ function AuditForm({
             ],
         };
         onUpdate([...data, newSection]);
+        // positionner directement la nouvelle section
+        setCurrentIndex(data.length);
+        // demander au rendu de la nouvelle section de se focaliser
+        setFocusSectionId(newSection.id);
+    };
+
+    const [focusSectionId, setFocusSectionId] = useState<number | null>(null);
+
+    // Supprime une section en protégeant l'index courant
+    const removeSection = (id: number) => {
+        const newData = data.filter((s) => s.id !== id);
+        onUpdate(newData);
+
+        // Ajuste l'index courant pour rester dans les bornes
+        if (newData.length === 0) {
+            setCurrentIndex(0);
+        } else {
+            setCurrentIndex((i) => Math.max(0, Math.min(i, newData.length - 1)));
+        }
+
+        // supprime tout focus pending
+        setFocusSectionId(null);
     };
 
     // --- Mise à jour (structure ou réponses) ---
@@ -93,7 +115,7 @@ function AuditForm({
                 return;
             }
 
-            console.log("✅ Succès :", result);
+            console.log(" Succès :", result);
             toast?.success(
                 isEditMode
                     ? "Structure d’audit mise à jour avec succès"
@@ -107,7 +129,7 @@ function AuditForm({
 
             navigate("/audits");
         } catch (err) {
-            console.error("💥 Erreur inattendue :", err);
+            console.error("Erreur inattendue :", err);
             const msg =
                 err instanceof Error
                     ? err.message
@@ -161,6 +183,8 @@ function AuditForm({
                         id={currentSection.id}
                         title={currentSection.title}
                         questions={currentSection.questions}
+                        focusOnMount={focusSectionId === currentSection.id}
+                        onFocusDone={() => setFocusSectionId(null)}
                         mode={mode}
                         onUpdate={(updatedSection) =>
                             onUpdate(
@@ -169,7 +193,7 @@ function AuditForm({
                                 )
                             )
                         }
-                        handleRemoveSection={() => onUpdate(data.filter((s) => s.id !== currentSection.id))}
+                        handleRemoveSection={() => removeSection(currentSection.id)}
                         responses={updatedResponses}
                         setResponses={setUpdatedResponses}
                         onEnd={handleNext}

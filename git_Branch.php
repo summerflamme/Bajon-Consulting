@@ -32,6 +32,6 @@ if (!empty(trim($check))) {
 }
 
 // Création et switch sur la branche
-echo "✅ Création de la branche : $branchName\n";
+echo " Création de la branche : $branchName\n";
 shell_exec("git checkout -b " . escapeshellarg($branchName));
 echo "✨ Vous êtes maintenant sur la branche '$branchName'.\n";

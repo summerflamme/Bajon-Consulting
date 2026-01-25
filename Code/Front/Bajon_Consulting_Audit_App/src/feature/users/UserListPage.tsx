@@ -6,7 +6,7 @@ import SearchBar from "../../components/SearchBar";
 import UserRow from "./UserCard";
 import "./users.css";
 import { Plus } from "lucide-react";
-import { useAuth } from "../../feature/auth/useAuth"; // ✅ AJOUT
+import { useAuth } from "../../feature/auth/useAuth"; //  AJOUT
 
 interface APIUser {
   id: string;
@@ -39,7 +39,7 @@ interface User {
 
 function UserList() {
   const navigate = useNavigate();
-  const { currentRole } = useAuth(); // ✅ AJOUT
+  const { currentRole } = useAuth(); //  AJOUT
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
