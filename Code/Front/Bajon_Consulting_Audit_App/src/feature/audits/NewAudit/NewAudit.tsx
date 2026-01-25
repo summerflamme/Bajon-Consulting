@@ -31,11 +31,12 @@ export default function NewAuditPage() {
   const [socialNetworks, setSocialNetworks] = useState("");
   const [legalForm, setLegalForm] = useState("");
   const [logo, setLogo] = useState("");
-  const [error, setError] = useState("");
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   // partie erreur
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [error, setError] = useState("");
 
   const [emailErrorMessage, setEmailErrorMessage] = useState<string | null>(
     null,
@@ -216,6 +217,24 @@ export default function NewAuditPage() {
   }, []);
 
   // ========================================================
+  // Récupération de l'utilisateur
+  // ========================================================
+  const fetchCurrentUser = async () => {
+    const { data, error } = await supabase.auth.getUser();
+
+    if (!error && data?.user) {
+      setCurrentUser({
+        id: data.user.id,
+        email: data.user.email,
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  // ========================================================
   // Sélection d'un template d'audit
   // ========================================================
   const handleSelectAuditTemplate = (value: string) => {
@@ -349,6 +368,7 @@ export default function NewAuditPage() {
   async function handleCreateClient() {
     let clientExiste: boolean = false;
     let isTemplate: boolean = false;
+    const userId = currentUser.id;
 
     // ========================================================
     // Vérifier si le client existe déjà
@@ -432,6 +452,18 @@ export default function NewAuditPage() {
 
       const insertedAuditId = auditData.id;
 
+      // ========================================================
+      // insert table modify
+      // ========================================================
+      const {} = await supabase.from("modify").insert([
+        {
+          user_id: userId,
+          idaudit: insertedAuditId,
+          modificationdate: new Date().toISOString().split("T")[0],
+          modificationtime: new Date().toTimeString().split(" ")[0],
+        },
+      ]);
+
       // Redirection
       setTimeout(() => {
         window.location.href = `/audit/${insertedAuditId}/edit`;
@@ -462,6 +494,18 @@ export default function NewAuditPage() {
         .single();
 
       const insertedAuditId = auditData.id;
+
+      // ========================================================
+      // insert table modify
+      // ========================================================
+      const {} = await supabase.from("modify").insert([
+        {
+          user_id: userId,
+          idaudit: insertedAuditId,
+          modificationdate: new Date().toISOString().split("T")[0],
+          modificationtime: new Date().toTimeString().split(" ")[0],
+        },
+      ]);
 
       // ========================================================
       // insert table participer
@@ -534,6 +578,18 @@ export default function NewAuditPage() {
         .single();
 
       const insertedAuditId = auditData?.id;
+
+      // ========================================================
+      // insert table modify
+      // ========================================================
+      const {} = await supabase.from("modify").insert([
+        {
+          user_id: userId,
+          idaudit: insertedAuditId,
+          modificationdate: new Date().toISOString().split("T")[0],
+          modificationtime: new Date().toTimeString().split(" ")[0],
+        },
+      ]);
 
       // ========================================================
       // recherche de idtheme dans la table own
@@ -620,6 +676,18 @@ export default function NewAuditPage() {
         .single();
 
       const insertedAuditId = auditData.id;
+
+      // ========================================================
+      // insert table modify
+      // ========================================================
+      const {} = await supabase.from("modify").insert([
+        {
+          user_id: userId,
+          idaudit: insertedAuditId,
+          modificationdate: new Date().toISOString().split("T")[0],
+          modificationtime: new Date().toTimeString().split(" ")[0],
+        },
+      ]);
 
       // ========================================================
       // recherche de idtheme dans la table own
@@ -721,6 +789,18 @@ export default function NewAuditPage() {
         .single();
 
       const insertedAuditId = auditData?.id;
+
+      // ========================================================
+      // insert table modify
+      // ========================================================
+      const {} = await supabase.from("modify").insert([
+        {
+          user_id: userId,
+          idaudit: insertedAuditId,
+          modificationdate: new Date().toISOString().split("T")[0],
+          modificationtime: new Date().toTimeString().split(" ")[0],
+        },
+      ]);
 
       // ========================================================
       // insert table participer
@@ -980,7 +1060,7 @@ export default function NewAuditPage() {
                   placeholder="362 521 879 00034"
                 />
               </div>
-              
+
               {/* pas encore implémenté */}
               {/* <div className="new-field">
                 <label htmlFor="business-activity">Logo de l'entreprise</label>
@@ -1028,7 +1108,7 @@ export default function NewAuditPage() {
           </div>
 
           <div className="new-field">
-            <label htmlFor= "audits-type">Type d'audit</label>
+            <label htmlFor="audits-type">Type d'audit</label>
 
             <select
               id="audits-type"
