@@ -11,9 +11,9 @@ interface UserCardProps {
   phone: string;
   createdAt?: string;
   updatedAt?: string;
-  onConsult?: (id: string) => void; // ✅ ajouté
-  onEdit?: (id: string) => void;    // ✅ ajouté
-  onDelete?: (id: string) => void;  // ✅ ajouté
+  onConsult?: (id: string) => void; // 
+  onEdit?: (id: string) => void;    // 
+  onDelete?: (id: string) => void;  //  ajouté
 }
 
 function UserCard({

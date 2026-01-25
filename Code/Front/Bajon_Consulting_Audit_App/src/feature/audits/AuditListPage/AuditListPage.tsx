@@ -70,10 +70,10 @@ function AuditList() {
         const { data: modifies, error: modifyError } = await supabase
           .from('modify')
           .select(`
-            iduser,
-            modificationdate,
-            modificationtime
-          `)
+    user_id,
+    modificationdate,
+    modificationtime
+  `)
           .eq('idaudit', audit.id)
           .order('modificationdate', { ascending: true })
           .order('modificationtime', { ascending: true });
@@ -86,30 +86,23 @@ function AuditList() {
         if (modifies && modifies.length > 0) {
           const creation = modifies[0];
           const last = modifies[modifies.length - 1];
-
+          console.log('Modification audit ID', audit.id, '=>', { creation, last });
           return {
             ...audit,
-            creation_user_id: creation.iduser,
+            creation_user_id: creation.user_id,
             creation_date: creation.modificationdate,
             creation_time: creation.modificationtime,
-            last_modif_user_id: last.iduser,
+            last_modif_user_id: last.user_id,
             last_modif_date: last.modificationdate,
             last_modif_time: last.modificationtime,
           };
         }
 
-        return {
-          ...audit,
-          creation_user_id: null,
-          creation_date: null,
-          creation_time: null,
-          last_modif_user_id: null,
-          last_modif_date: null,
-          last_modif_time: null,
-        };
+        return audit;
+
       })
     );
-
+    console.log('Audits avec dates :', auditsWithDates);
     const sortedAudits = [...auditsWithDates];
 
     if (sortField === 'alphabetique') {

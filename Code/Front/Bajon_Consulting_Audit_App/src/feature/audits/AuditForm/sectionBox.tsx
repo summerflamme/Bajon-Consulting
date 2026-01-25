@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import QuestionBox from "./questionBox";
 import type { Audit, Question, Section, Response } from "../../../types/audit";
 import "./AuditStyle.css";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { DeleteIcon } from "../../../components/ui/delete";
 
 type Props = {
@@ -16,6 +16,8 @@ type Props = {
     setResponses: React.Dispatch<React.SetStateAction<Response[]>>;
     onPrevious?: () => void;
     onEnd?: () => void;
+    focusOnMount?: boolean;
+    onFocusDone?: () => void;
 };
 
 function SectionBox({
@@ -29,8 +31,24 @@ function SectionBox({
     onPrevious,
     responses,
     setResponses,
+    focusOnMount,
+    onFocusDone,
 }: Props) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const titleRef = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        if (focusOnMount && titleRef.current) {
+            // focus et bring into view
+            titleRef.current.focus();
+            try {
+                titleRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            } catch (e) {
+                // ignore
+            }
+            onFocusDone?.();
+        }
+    }, [focusOnMount, onFocusDone]);
 
     // --- Gestion du titre de section ---
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,6 +149,7 @@ function SectionBox({
                     >
                         <label className="font-semibold">Titre de la section</label>
                         <motion.input
+                            ref={titleRef}
                             type="text"
                             placeholder="Entrer le titre de la section"
                             onChange={handleTitleChange}

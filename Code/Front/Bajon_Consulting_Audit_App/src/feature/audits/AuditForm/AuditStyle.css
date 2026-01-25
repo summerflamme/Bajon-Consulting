@@ -277,6 +277,17 @@
   background-color: #ebf8ff;
 }
 
+/* Selected state for view mode answers */
+.answer-choice.selected {
+  background-color: #0056b3;
+  color: #ffffff;
+  border-color: #0056b3;
+}
+
+.answer-choice.selected label {
+  color: #ffffff;
+}
+
 /* Delete icon à droite */
 .delete-icon {
   margin-left: auto;

@@ -47,6 +47,61 @@ toc::[]
 | 07/10/2025 | Quatrième réunion avec le client | https://github.com/summerflamme/Bajon-Consulting/blob/Dev-Pierre/Docs/CR%20R%C3%A9union/CR-R%C3%A9union-06.pdf[CR-Réunion-06.pdf]
 |===
 
+## Répartition des développements (Version V1)
+
+Le tableau ci-dessous présente la répartition des principales fonctionnalités développées dans le cadre de la version V1 de l’application *Bajon Consulting – Audit*.
+
+|===
+| Fonctionnalité | Description | Développeur(s)
+
+| Conception de la base de données
+| Modélisation du schéma relationnel, définition des tables et des relations
+| Titouan GAUZE,  Pierre CORNU
+
+
+| Backend (API)
+| Développement de l’API REST, logique métier, communication avec la base de données
+| Robin GOURGUES
+
+| Authentification (Supabase)
+| Intégration de Supabase Auth (email / mot de passe), gestion des sessions
+| Robin GOURGUES, Simon CLAVEL
+
+| Frontend – Clients
+| Pages de gestion des clients (CRUD), affichage et formulaires
+| Simon CLAVEL
+
+| Frontend – Layout / Header
+| Mise en place du header, navigation globale et structure de l’interface
+| Simon CLAVEL , Bilon Kwadjani
+
+| Frontend – Audits
+| Formulaire de création, consultation, modification et archivage des audits et templates
+| Bilon Kwadjani
+
+| Utilisateur
+| Formulaire de création, consultation, modification et archivage des utilisateur
+| Simon CLAVEL , Robin GOURGUES
+
+| Frontend – Audits Card
+| Liste de Card de template d'audit et d'audit 
+| Pierre Cornu ,Titouan GAUZE
+
+
+| Conteneurisation Docker
+| Mise en place des environnements Docker (développement et production)
+| Bilon KWADJANI
+
+| Variables d’environnement
+| Gestion et configuration des variables d’environnement (Docker, Supabase, frontend)
+| Simon CLAVEL, Robin GOURGUES, Bilon KWADJANI
+
+| Gestion de projet / Scrum
+| Organisation du travail, animation des réunions, coordination de l’équipe,Documentation
+| Simon CLAVEL
+|===
+
+
 ## Livrables attendus
 - **Dossier de recueil et d’analyse des besoins : (https://github.com/summerflamme/Bajon-Consulting/blob/Crash-Test/Docs/Recueil%20de%20Besoins/Recueil%20de%20besoin.pdf[lien])** +
 Ce document détaillera les besoins fonctionnels et techniques de l’application, ainsi que les attentes du client (BAJON Consulting). Il décrira les fonctionnalités principales de l’application, les priorités, ainsi que les spécifications techniques pour le développement.
@@ -192,6 +247,12 @@ Ce qui est prévu pour les versions futures :
 - 02/10/2025
 - 03/10/2025
 - 23/10/2025
+
+
+
+
+
+
 
 
 

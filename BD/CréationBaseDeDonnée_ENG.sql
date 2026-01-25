@@ -93,6 +93,8 @@ CREATE TABLE Audit (
 CREATE TABLE Question (
     id SERIAL PRIMARY KEY,
     label VARCHAR(255),
+    descriptions TEXT,
+    status TEXT,
     idTheme INT NOT NULL,
     FOREIGN KEY (idTheme) REFERENCES Theme(id)
 );

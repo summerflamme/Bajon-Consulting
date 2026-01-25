@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
-import "./clients.css"; // ✅ même design que le formulaire d’audit
+import "./clients.css"; //  même design que le formulaire d’audit
 import { supabase } from "../../supabaseClient";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../feature/auth/useAuth";
@@ -196,12 +196,13 @@ export default function ClientEditPage() {
         {/* Téléphone + RCS */}
         <div className="Client-info-contact">
           <div className="field">
-            <label>Téléphone</label>
+            <label htmlFor="client-phone">Téléphone</label>
             <PhoneInput
               inputClassName="input-style"
               defaultCountry="fr"
               value={clientPhone}
               onChange={(value) => setClientPhone(value)}
+              inputProps={{ id: "client-phone" }}
             />
           </div>
 
@@ -291,8 +292,8 @@ export default function ClientEditPage() {
         </div>
 
         {/* Boutons */}
-        <div className="form-actions">
-          <button type="submit" className="new-audits-btn">
+          <div className="form-actions">
+        <button type="button" className="new-audits-btn" onClick={() => navigate("/clients")}>
             Enregistrer
           </button>
           <button type="button" className="new-audits-btn" onClick={() => navigate("/clients")}>
